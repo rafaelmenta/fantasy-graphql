@@ -1,8 +1,6 @@
 import User from './user';
 import TeamSl from './team-sl';
-
-
-const      UserTeam = require('./associations/user-team');
+import UserTeam from './associations/user-team';
 
 TeamSl.Users = TeamSl.belongsToMany(User, {
   through: UserTeam, 
@@ -14,7 +12,7 @@ User.Teams = User.belongsToMany(TeamSl, {
   foreignKey: 'id_user'
 });
 
-export default {
-  User : User,
-  TeamSl : TeamSl
+export {
+  User,
+  TeamSl
 };

@@ -1,5 +1,5 @@
-var Conn = require('../../database/connection'),
-    Sequelize = require('sequelize');
+import Conn from '../../database/connection';
+import Sequelize from 'sequelize';
 
 const UserTeam = Conn.define('user_team', {
   ut_code : {
@@ -26,4 +26,4 @@ const UserTeam = Conn.define('user_team', {
   createdAt: false
 });
 
-module.exports = UserTeam;
+export default UserTeam;

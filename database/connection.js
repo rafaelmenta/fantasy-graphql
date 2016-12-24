@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize');
+import Sequelize from 'sequelize';
 
 const Conn = new Sequelize(
   'api_dev',
@@ -10,4 +10,4 @@ const Conn = new Sequelize(
   }
 );
 
-module.exports = Conn;
+export default Conn;

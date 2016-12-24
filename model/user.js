@@ -1,8 +1,7 @@
-const Sequelize = require('Sequelize'),
-      Conn = require('../database/connection'),
-      UserTeam = require('./associations/user-team');
-
-      import TeamSl from './team-sl';
+import Sequelize from 'Sequelize';
+import Conn from '../database/connection';
+import UserTeam  from'./associations/user-team';
+import TeamSl from './team-sl';
 
 const User = Conn.define('user', {
   id_user : {

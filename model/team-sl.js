@@ -1,7 +1,6 @@
-const Conn = require('../database/connection'),
-      Sequelize = require('sequelize'),
-      UserTeam = require('./associations/user-team');
-
+import Conn from '../database/connection';
+import Sequelize from 'sequelize';
+import UserTeam from './associations/user-team';
 import User from './user';
 
 
