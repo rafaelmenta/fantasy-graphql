@@ -26,7 +26,7 @@ const Player = Conn.define('player', {
   player_slug : Sequelize.STRING,
   retired : Sequelize.BOOLEAN,
   rookie : Sequelize.BOOLEAN,
-  birthdate : Sequelize.DATE,
+  birthdate : Sequelize.DATEONLY,
   contract_salary : Sequelize.DECIMAL,
   contract_years : Sequelize.INTEGER
 }, {

@@ -5,6 +5,8 @@ import PlayerQuery from './player';
 import DivisionQuery from './division';
 import ConferenceQuery from './conference';
 import LeagueQuery from './league';
+import GameQuery from './game';
+import RoundQuery from './round';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -22,7 +24,9 @@ const Query = new GraphQLObjectType({
     PlayerQuery,
     DivisionQuery,
     ConferenceQuery,
-    LeagueQuery
+    LeagueQuery,
+    GameQuery,
+    RoundQuery
   ))
 });
 

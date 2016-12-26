@@ -1,0 +1,37 @@
+import TeamSlType from './team-sl';
+import {Game} from '../../model/setup';
+
+const graphql = require('graphql'),
+      resolver = require('graphql-sequelize').resolver;
+
+const {
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLList
+} =  graphql;
+
+const GameType = new GraphQLObjectType({
+  name: 'Game',
+  fields: () => ({
+    id_game: {
+      type: GraphQLInt,
+    },
+    id_type: {
+      type: GraphQLInt,
+    },
+    id_round: {
+      type: GraphQLInt,
+    },
+    home_team: {
+      type: TeamSlType,
+      resolve: resolver(Game.HomeTeam)
+    },
+    away_team: {
+      type: TeamSlType,
+      resolve: resolver(Game.AwayTeam)
+    }
+  })
+});
+
+export default GameType;

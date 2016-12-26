@@ -11,11 +11,11 @@ const {
 } =  graphql;
 
 
-const TeamSLQuery = {
+const DivisionQuery = {
   divisions: {
    type: new GraphQLList(DivisionType),
     resolve: resolver(Division)
   }
 };
 
-export default TeamSLQuery;
+export default DivisionQuery;

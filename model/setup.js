@@ -5,6 +5,8 @@ import TeamNba from './team-nba';
 import Division from './division';
 import Conference from './conference';
 import League from './league';
+import Game from './game';
+import Round from './round';
 
 import UserTeam from './associations/user-team';
 import TeamPlayer from './associations/team-player';
@@ -24,6 +26,24 @@ TeamSl.Players = TeamSl.belongsToMany(Player, {
 
 TeamSl.Division = TeamSl.belongsTo(Division, {
   foreignKey : 'id_division'
+});
+
+////////////// Game Relationships
+
+Game.HomeTeam = Game.belongsTo(TeamSl, {
+  as : 'home',
+  foreignKey : 'home_team'
+});
+
+Game.AwayTeam = Game.belongsTo(TeamSl, {
+  as : 'away',
+  foreignKey : 'away_team'
+});
+
+////////////// Round Relationships
+
+Round.Games = Round.hasMany(Game, {
+  foreignKey : 'id_round'
 });
 
 ////////////// Division Relationships
@@ -53,7 +73,7 @@ Conference.Teams = function(conference) {
   });
 };
 
-////////////// Conference Relationships
+////////////// League Relationships
 
 League.Conferences = League.hasMany(Conference, {
   foreignKey : 'id_league'
@@ -108,5 +128,7 @@ export {
   TeamNba,
   Division,
   Conference,
-  League
+  League,
+  Game,
+  Round
 };
