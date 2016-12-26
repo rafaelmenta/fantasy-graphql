@@ -1,6 +1,5 @@
-import UserType from './user';
 import PlayerType from './player';
-import TeamSl from '../../model/team-sl';
+import TeamNba from '../../model/team-nba';
 
 
 const graphql = require('graphql'),
@@ -13,10 +12,10 @@ const {
   GraphQLList
 } =  graphql;
 
-const TeamSlType = new GraphQLObjectType({
-  name: 'TeamSl',
+const TeamNbaType = new GraphQLObjectType({
+  name: 'TeamNba',
   fields: () => ({
-    id_sl: {
+    id_nba: {
       type: GraphQLInt
     },
     city: {
@@ -25,18 +24,17 @@ const TeamSlType = new GraphQLObjectType({
     nickname: {
       type: GraphQLString
     },
+    symbol: {
+      type: GraphQLString
+    },
     slug: {
       type: GraphQLString
     },
-    users: {
-      type: new GraphQLList(UserType), 
-      resolve: resolver(TeamSl.Users)
-    },
     players: {
       type: new GraphQLList(PlayerType),
-      resolve: resolver(TeamSl.Players)
+      resolve: resolver(TeamNba.Players)
     }
   })
 });
 
-export default TeamSlType;
+export default TeamNbaType;
