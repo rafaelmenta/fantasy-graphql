@@ -1,0 +1,72 @@
+# fragment teamFramgent on TeamSl {
+#   id_sl
+#   city
+#   nickname
+#   slug
+# }
+
+fragment teamNba on TeamNba {
+  id_nba
+  city
+  nickname
+  symbol
+  slug
+}
+
+fragment shortPlayer on Player {
+  id_player
+  first_name
+  last_name
+  id_nba
+  player_slug
+  birthdate
+  default_primary
+  default_secondary
+  primary_position
+  secondary_position
+  team_nba {
+    ...teamNba
+  }
+}
+
+# fragment shortUser on User {
+#   id_user
+#   nickname
+# }
+
+# fragment completeUser on User {
+#   id_user
+#   login
+#   nickname
+#   teams {
+#     ...teamFramgent
+#   }
+# }
+
+{
+  # teams_nba {
+  #   ...teamNba
+  #   players {
+  #     ...shortPlayer
+  #   }
+  # }
+  # players {
+  #   ...shortPlayer
+  # }
+  # user(id_user: 19) {
+  #   ...completeUser
+  # }
+  # users {
+  #   ...completeUser
+  # }
+  # teams {
+  #   city
+  #   nickname
+  #   users {
+  #     ...shortUser
+  #   }
+  #   players {
+  #     ...shortPlayer
+  #   }
+  # }
+}

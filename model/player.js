@@ -23,8 +23,6 @@ const Player = Conn.define('player', {
     type: Sequelize.STRING,
     field: 'secondary_position'
   },
-  // primary_position : Sequelize.STRING,
-  // secondary_position : Sequelize.STRING,
   player_slug : Sequelize.STRING,
   retired : Sequelize.BOOLEAN,
   rookie : Sequelize.BOOLEAN,

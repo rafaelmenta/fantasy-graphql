@@ -1,5 +1,6 @@
 import UserType from './user';
 import PlayerType from './player';
+import DivisionType from './division';
 import TeamSl from '../../model/team-sl';
 
 
@@ -35,6 +36,10 @@ const TeamSlType = new GraphQLObjectType({
     players: {
       type: new GraphQLList(PlayerType),
       resolve: resolver(TeamSl.Players)
+    },
+    division: {
+      type: DivisionType,
+      resolve: resolver(TeamSl.Division)
     }
   })
 });
