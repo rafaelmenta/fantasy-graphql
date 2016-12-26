@@ -7,6 +7,7 @@ import Conference from './conference';
 import League from './league';
 import Game from './game';
 import Round from './round';
+import Season from './season';
 
 import UserTeam from './associations/user-team';
 import TeamPlayer from './associations/team-player';
@@ -45,6 +46,24 @@ Game.AwayTeam = Game.belongsTo(TeamSl, {
 Round.Games = Round.hasMany(Game, {
   foreignKey : 'id_round'
 });
+
+Round.Season = Round.belongsTo(Season, {
+  foreignKey : 'id_season'
+});
+
+////////////// Season Relationships
+
+Season.Rounds = Season.hasMany(Round, {
+  foreignKey : 'id_season'
+});
+
+Season.Current = function() {
+  return Season.findOne({
+    where : {
+      current : true
+    }
+  });
+};
 
 ////////////// Division Relationships
 
@@ -130,5 +149,6 @@ export {
   Conference,
   League,
   Game,
-  Round
+  Round,
+  Season
 };
