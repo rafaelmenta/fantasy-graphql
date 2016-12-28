@@ -1,6 +1,7 @@
 import Player from '../../model/player';
 import TeamNbaType from './team-nba';
 import PlayerPerformanceType from './player-performance';
+import PlayerStatsType from './player-stats';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -39,6 +40,7 @@ const PlayerType = new GraphQLObjectType({
     birthdate: { type: GraphQLString },
     contract_salary: { type: GraphQLFloat },
     contract_years: { type: GraphQLInt },
+    
     team_nba : {
       type : TeamNbaType,
       resolve : resolver(Player.TeamNba)
@@ -49,6 +51,16 @@ const PlayerType = new GraphQLObjectType({
       args : {
         id_round : {
           name : 'id_round',
+          type : new GraphQLList(GraphQLInt)
+        }
+      }
+    },
+    stats : {
+      type : new GraphQLList(PlayerStatsType),
+      resolve : resolver(Player.Stats),
+      args : {
+        id_season : {
+          name :'id_season',
           type : new GraphQLList(GraphQLInt)
         }
       }
