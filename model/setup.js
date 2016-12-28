@@ -6,6 +6,7 @@ import Division from './division';
 import Conference from './conference';
 import League from './league';
 import Game from './game';
+import GameNba from './game-nba';
 import Round from './round';
 import Season from './season';
 import PlayerPerformance from './player-performance';
@@ -31,6 +32,40 @@ TeamSl.Players = TeamSl.belongsToMany(Player, {
 TeamSl.Division = TeamSl.belongsTo(Division, {
   foreignKey : 'id_division'
 });
+
+////////////// Game NBA Relationships
+
+GameNba.HomeTeam = GameNba.belongsTo(TeamNba, {
+  as : 'home',
+  foreignKey : 'id_home'
+});
+
+GameNba.AwayTeam = GameNba.belongsTo(TeamNba, {
+  as : 'away',
+  foreignKey : 'id_away'
+});
+
+GameNba.HomeRound = GameNba.belongsTo(Round, {
+  as : 'home_round',
+  foreignKey : 'id_round_home'
+});
+
+GameNba.AwayRound = GameNba.belongsTo(Round, {
+  as : 'away_round',
+  foreignKey : 'id_round_away'
+});
+
+GameNba.DateGames = function(root, args) {
+  // const beginDate = new Date(`${args.date} 00:00:00 EDT`);
+  // console.log('date is', beginDate);
+  return GameNba.findAll({
+    attributes: { 
+      include: [[GameNba.sequelize.fn('DATE', GameNba.sequelize.col('game_time')), 'game_date']]
+     }, having : {
+      'game_date' : args.date
+     }
+  });
+};
 
 ////////////// Game Relationships
 
@@ -180,6 +215,7 @@ export {
   Conference,
   League,
   Game,
+  GameNba,
   Round,
   Season,
   PlayerPerformance,

@@ -10,6 +10,7 @@ import RoundQuery from './round';
 import SeasonQuery from './season';
 import PlayerPerformanceQuery from './player-performance';
 import PlayerStatsQuery from './player-stats';
+import GameNbaQuery from './game-nba';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -32,7 +33,8 @@ const Query = new GraphQLObjectType({
     RoundQuery,
     SeasonQuery,
     PlayerPerformanceQuery,
-    PlayerStatsQuery
+    PlayerStatsQuery,
+    GameNbaQuery
   ))
 });
 
