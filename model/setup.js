@@ -8,6 +8,7 @@ import League from './league';
 import Game from './game';
 import Round from './round';
 import Season from './season';
+import PlayerPerformance from './player-performance';
 
 import UserTeam from './associations/user-team';
 import TeamPlayer from './associations/team-player';
@@ -64,6 +65,16 @@ Season.Current = function() {
     }
   });
 };
+
+////////////// Player Performance Relationships
+
+PlayerPerformance.Player = PlayerPerformance.belongsTo(Player, {
+  foreignKey : 'id_player'
+});
+
+PlayerPerformance.Round = PlayerPerformance.belongsTo(Round, {
+  foreignKey : 'id_round'
+});
 
 ////////////// Division Relationships
 
@@ -134,6 +145,10 @@ Player.TeamSl = Player.belongsToMany(TeamSl, {
   foreignKey : 'id_player'
 });
 
+Player.Performances = Player.hasMany(PlayerPerformance, {
+  foreignKey : 'id_player'
+});
+
 ////////////// Team NBA Relationships
 
 TeamNba.Players = TeamNba.hasMany(Player, {
@@ -150,5 +165,6 @@ export {
   League,
   Game,
   Round,
-  Season
+  Season,
+  PlayerPerformance
 };

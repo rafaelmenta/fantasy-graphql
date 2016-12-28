@@ -12,6 +12,16 @@ const {
 
 
 const RoundQuery = {
+  round : {
+    type : RoundType,
+    resolve : resolver(Round),
+    args : {
+      id_round : {
+        name : 'id_round',
+        type : new GraphQLNonNull(GraphQLInt)
+      }
+    }
+  },
   rounds: {
    type: new GraphQLList(RoundType),
     resolve: resolver(Round)

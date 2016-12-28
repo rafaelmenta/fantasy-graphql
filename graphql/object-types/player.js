@@ -1,5 +1,6 @@
 import Player from '../../model/player';
 import TeamNbaType from './team-nba';
+import PlayerPerformanceType from './player-performance';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -41,6 +42,16 @@ const PlayerType = new GraphQLObjectType({
     team_nba : {
       type : TeamNbaType,
       resolve : resolver(Player.TeamNba)
+    },
+    performances : {
+      type : new GraphQLList(PlayerPerformanceType),
+      resolve : resolver(Player.Performances),
+      args : {
+        id_round : {
+          name : 'id_round',
+          type : new GraphQLList(GraphQLInt)
+        }
+      }
     }
   })
 });
