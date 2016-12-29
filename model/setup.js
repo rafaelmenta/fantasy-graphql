@@ -12,11 +12,13 @@ import GameNba from './game-nba';
 import Round from './round';
 import Season from './season';
 import PlayerPerformance from './player-performance';
+import Trade from './trade';
 
 import PlayerStats from './views/player-stats';
 
 import UserTeam from './associations/user-team';
 import TeamPlayer from './associations/team-player';
+import PlayerTrade from './associations/player-trade';
 
 ////////////// Team SL Relationships
 
@@ -58,8 +60,6 @@ GameNba.AwayRound = GameNba.belongsTo(Round, {
 });
 
 GameNba.DateGames = function(root, args) {
-  // const beginDate = new Date(`${args.date} 00:00:00 EDT`);
-  // console.log('date is', beginDate);
   return GameNba.findAll({
     attributes: { 
       include: [[GameNba.sequelize.fn('DATE', GameNba.sequelize.col('game_time')), 'game_date']]
@@ -213,6 +213,44 @@ User.Teams = User.belongsToMany(TeamSl, {
   foreignKey: 'id_user'
 });
 
+////////////// Trade Relationships
+
+Trade.Sender = Trade.belongsTo(TeamSl, {
+  as : 'sender',
+  foreignKey : 'id_sender'
+});
+
+Trade.Receiver = Trade.belongsTo(TeamSl, {
+  as : 'receiver',
+  foreignKey : 'id_receiver'
+});
+
+// Trade.ReceiverPlayers = Trade.belongsToMany(Player, {
+//   through : PlayerTrade,
+//   include : {
+//     through : {
+//       model : PlayerTrade,
+//       as : 'sender',
+//       where : {
+//         is_sender : false
+//       },
+//     }
+//   },
+//   foreignKey : 'id_trade',
+// });
+
+// Trade.SenderPlayers = Trade.belongsToMany(Player, {
+//   through : {
+//     model : PlayerTrade,
+//     as : 'sender',
+//     where : {
+//       is_sender : 'true'
+//     }
+//   },
+//   foreignKey : 'id_trade',
+//   constraints : false
+// });
+
 ////////////// Player Relationships
 
 Player.TeamNba = Player.belongsTo(TeamNba, {
@@ -230,6 +268,11 @@ Player.Performances = Player.hasMany(PlayerPerformance, {
 
 Player.Stats = Player.hasMany(PlayerStats, {
   foreignKey : 'id_player'
+});
+
+Player.Trades = Player.belongsToMany(Trade, {
+  through : PlayerTrade,
+  foreignKey : 'id_player',
 });
 
 ////////////// Team NBA Relationships
@@ -253,5 +296,6 @@ export {
   PlayerPerformance,
   PlayerStats,
   Draft,
-  Pick
+  Pick,
+  Trade
 };
