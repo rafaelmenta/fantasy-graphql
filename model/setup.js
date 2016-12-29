@@ -5,6 +5,8 @@ import TeamNba from './team-nba';
 import Division from './division';
 import Conference from './conference';
 import League from './league';
+import Draft from './draft';
+import Pick from './pick';
 import Game from './game';
 import GameNba from './game-nba';
 import Round from './round';
@@ -174,6 +176,36 @@ League.Owner = League.belongsTo(User, {
   foreignKey : 'id_owner'
 });
 
+////////////// Draft Relationships
+
+Pick.Draft = Pick.belongsTo(Draft, {
+  foreignKey : 'id_draft'
+});
+
+Pick.Owner = Pick.belongsTo(TeamSl, {
+  as : 'owner',
+  foreignKey : 'id_owner'
+});
+
+Pick.Original = Pick.belongsTo(TeamSl, {
+  as : 'original',
+  foreignKey : 'id_sl_original'
+});
+
+////////////// Draft Relationships
+
+Draft.Season = Draft.belongsTo(Season, {
+  foreignKey : 'id_season'
+});
+
+Draft.League = Draft.belongsTo(League, {
+  foreignKey : 'id_league'
+});
+
+Draft.Picks = Draft.hasMany(Pick, {
+  foreignKey : 'id_draft'
+});
+
 ////////////// User Relationships
 
 User.Teams = User.belongsToMany(TeamSl, {
@@ -219,5 +251,7 @@ export {
   Round,
   Season,
   PlayerPerformance,
-  PlayerStats
+  PlayerStats,
+  Draft,
+  Pick
 };

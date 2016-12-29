@@ -11,6 +11,8 @@ import SeasonQuery from './season';
 import PlayerPerformanceQuery from './player-performance';
 import PlayerStatsQuery from './player-stats';
 import GameNbaQuery from './game-nba';
+import DraftQuery from './draft';
+import PickQuery from './pick';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -34,7 +36,9 @@ const Query = new GraphQLObjectType({
     SeasonQuery,
     PlayerPerformanceQuery,
     PlayerStatsQuery,
-    GameNbaQuery
+    GameNbaQuery,
+    DraftQuery,
+    PickQuery
   ))
 });
 
