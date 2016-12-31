@@ -1,5 +1,6 @@
 import TeamSlType from './team-sl';
 import PlayerType from './player';
+import PickType from './pick';
 import {Trade} from '../../model/setup';
 
 const graphql = require('graphql'),
@@ -48,14 +49,14 @@ const TradeType = new GraphQLObjectType({
       type: new GraphQLList(PlayerType),
       resolve: Trade.ReceiverPlayers
     },
-    // sender_picks: {
-    //   type: new GraphQLList(PickType),
-    //   resolve: resolver(Trade.SenderPicks)
-    // },
-    // receiver_picks: {
-    //   type: new GraphQLList(PickType),
-    //   resolve: resolver(Trade.ReceiverPicks)
-    // }
+    sender_picks: {
+      type: new GraphQLList(PickType),
+      resolve: Trade.SenderPicks
+    },
+    receiver_picks: {
+      type: new GraphQLList(PickType),
+      resolve: Trade.ReceiverPicks
+    }
   })
 });
 

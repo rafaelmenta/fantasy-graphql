@@ -19,6 +19,7 @@ import PlayerStats from './views/player-stats';
 import UserTeam from './associations/user-team';
 import TeamPlayer from './associations/team-player';
 import PlayerTrade from './associations/player-trade';
+import PickTrade from './associations/pick-trade';
 
 ////////////// Team SL Relationships
 
@@ -192,6 +193,11 @@ Pick.Original = Pick.belongsTo(TeamSl, {
   foreignKey : 'id_sl_original'
 });
 
+Pick.Trades = Pick.belongsToMany(Trade, {
+  through : PickTrade,
+  foreignKey : 'id_pick'
+})
+
 ////////////// Draft Relationships
 
 Draft.Season = Draft.belongsTo(Season, {
@@ -230,6 +236,11 @@ Trade.Players = Trade.belongsToMany(Player, {
   foreignKey : 'id_player'
 });
 
+Trade.Picks = Trade.belongsToMany(Pick, {
+  through : PickTrade, 
+  foreignKey : 'id_pick'
+})
+
 // Note to future self:
 //   In order to make queries using through models you need to define relationships (not only belongsToMany)
 //   on association model with actual entities.
@@ -261,6 +272,35 @@ Trade.SenderPlayers = function(trade) {
 Trade.ReceiverPlayers = function(trade) {
   return Trade.TradePlayers(trade, false);
 }
+
+PickTrade.belongsTo(Pick, {
+  foreignKey : 'id_pick'
+});
+Pick.hasMany(PickTrade, {
+  foreignKey : 'id_pick'
+});
+
+Trade.TradePicks = function(trade, isSender) {
+  return Pick.findAll({
+    include : [{
+      model : PickTrade,
+      foreignKey : 'id_pick',
+      where : {
+        is_sender : isSender,
+        id_trade : trade.id_trade
+      }
+    }]
+  });
+}
+
+Trade.SenderPicks = function(trade) {
+  return Trade.TradePicks(trade, true)
+}
+
+Trade.ReceiverPicks = function(trade) {
+  return Trade.TradePicks(trade, false);
+}
+
 
 ////////////// Player Relationships
 
