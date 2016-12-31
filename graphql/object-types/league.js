@@ -1,7 +1,8 @@
 import TeamSlType from './team-sl';
 import UserType from './user';
 import ConferenceType from './conference';
-import { League, Conference } from '../../model/Setup';
+import FreeAgencyHistoryType from './free-agency-history';
+import { League, Conference, FreeAgencyHistory } from '../../model/Setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -16,7 +17,7 @@ const {
 const LeagueType = new GraphQLObjectType({
   name: 'League',
   fields: () => ({
-    id_conference: {
+    id_league: {
       type: GraphQLInt,
     },
     name: {
@@ -39,6 +40,10 @@ const LeagueType = new GraphQLObjectType({
     teams: {
       type: new GraphQLList(TeamSlType),
       resolve: League.Teams
+    },
+    free_agency_history: {
+      type: new GraphQLList(FreeAgencyHistoryType),
+      resolve: FreeAgencyHistory.ByLeague
     }
   })
 });

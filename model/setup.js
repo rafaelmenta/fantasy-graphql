@@ -12,6 +12,7 @@ import GameNba from './game-nba';
 import Round from './round';
 import Season from './season';
 import PlayerPerformance from './player-performance';
+import FreeAgencyHistory from './free-agency-history';
 import Trade from './trade';
 
 import PlayerStats from './views/player-stats';
@@ -21,10 +22,14 @@ import TeamPlayer from './associations/team-player';
 import PlayerTrade from './associations/player-trade';
 import PickTrade from './associations/pick-trade';
 
+// @TODO extract to config
+const DEFAULT_LIMIT = 20;
+// end todo
+
 ////////////// Team SL Relationships
 
 TeamSl.Users = TeamSl.belongsToMany(User, {
-  through: UserTeam, 
+  through: UserTeam,
   foreignKey: 'id_sl'
 });
 
@@ -62,7 +67,7 @@ GameNba.AwayRound = GameNba.belongsTo(Round, {
 
 GameNba.DateGames = function(root, args) {
   return GameNba.findAll({
-    attributes: { 
+    attributes: {
       include: [[GameNba.sequelize.fn('DATE', GameNba.sequelize.col('game_time')), 'game_date']]
      }, having : {
       'game_date' : args.date
@@ -177,7 +182,37 @@ League.Owner = League.belongsTo(User, {
   foreignKey : 'id_owner'
 });
 
-////////////// Draft Relationships
+////////////// Free Agency History Relationships
+
+FreeAgencyHistory.Player = FreeAgencyHistory.belongsTo(Player, {
+  foreignKey : 'id_player'
+});
+
+FreeAgencyHistory.TeamSl = FreeAgencyHistory.belongsTo(TeamSl, {
+  foreignKey : 'id_sl'
+});
+
+FreeAgencyHistory.ByLeague = function(league, args) {
+  const id_league = league.id_league || args.id_league;
+  return FreeAgencyHistory.findAll({
+    include: [{
+      model: TeamSl,
+      include: [{
+        model: Division,
+        include: [{
+          model: Conference,
+          where : {
+            id_league : id_league
+          }
+        }]
+      }]
+    }],
+    order : 'event_date DESC',
+    limit : args.limit || DEFAULT_LIMIT
+  })
+}
+
+////////////// Pick Relationships
 
 Pick.Draft = Pick.belongsTo(Draft, {
   foreignKey : 'id_draft'
@@ -215,7 +250,7 @@ Draft.Picks = Draft.hasMany(Pick, {
 ////////////// User Relationships
 
 User.Teams = User.belongsToMany(TeamSl, {
-  through: UserTeam, 
+  through: UserTeam,
   foreignKey: 'id_user'
 });
 
@@ -237,7 +272,7 @@ Trade.Players = Trade.belongsToMany(Player, {
 });
 
 Trade.Picks = Trade.belongsToMany(Pick, {
-  through : PickTrade, 
+  through : PickTrade,
   foreignKey : 'id_pick'
 })
 
@@ -348,5 +383,6 @@ export {
   PlayerStats,
   Draft,
   Pick,
-  Trade
+  Trade,
+  FreeAgencyHistory
 };

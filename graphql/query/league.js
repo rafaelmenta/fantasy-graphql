@@ -15,6 +15,16 @@ const LeagueQuery = {
   leagues: {
    type: new GraphQLList(LeagueType),
     resolve: resolver(League)
+  },
+  league: {
+    type: LeagueType,
+    resolve: resolver(League),
+    args: {
+      id_league: {
+        type: new GraphQLNonNull(GraphQLInt),
+        name: 'id_league'
+      }
+    }
   }
 };
 
