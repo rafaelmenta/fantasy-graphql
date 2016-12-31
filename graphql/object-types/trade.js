@@ -40,14 +40,14 @@ const TradeType = new GraphQLObjectType({
       type: TeamSlType,
       resolve: resolver(Trade.Receiver)
     },
-    // sender_players: {
-    //   type: new GraphQLList(PlayerType),
-    //   resolve: resolver(Trade.SenderPlayers)
-    // },
-    // receiver_players: {
-    //   type: new GraphQLList(PlayerType),
-    //   resolve: resolver(Trade.ReceiverPlayers)
-    // },
+    sender_players: {
+      type: new GraphQLList(PlayerType),
+      resolve: Trade.SenderPlayers
+    },
+    receiver_players: {
+      type: new GraphQLList(PlayerType),
+      resolve: Trade.ReceiverPlayers
+    },
     // sender_picks: {
     //   type: new GraphQLList(PickType),
     //   resolve: resolver(Trade.SenderPicks)

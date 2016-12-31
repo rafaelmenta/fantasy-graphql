@@ -14,7 +14,13 @@ const {
 const TradeQuery = {
   trade : {
     type : TradeType,
-    resolve : resolver(Trade) 
+    resolve : resolver(Trade),
+    args : {
+      id_trade : {
+        name : 'id_trade',
+        type : new GraphQLNonNull(GraphQLInt)
+      }
+    }
   },
   trades: {
     type: new GraphQLList(TradeType),

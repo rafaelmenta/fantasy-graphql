@@ -225,31 +225,42 @@ Trade.Receiver = Trade.belongsTo(TeamSl, {
   foreignKey : 'id_receiver'
 });
 
-// Trade.ReceiverPlayers = Trade.belongsToMany(Player, {
-//   through : PlayerTrade,
-//   include : {
-//     through : {
-//       model : PlayerTrade,
-//       as : 'sender',
-//       where : {
-//         is_sender : false
-//       },
-//     }
-//   },
-//   foreignKey : 'id_trade',
-// });
+Trade.Players = Trade.belongsToMany(Player, {
+  through : PlayerTrade,
+  foreignKey : 'id_player'
+});
 
-// Trade.SenderPlayers = Trade.belongsToMany(Player, {
-//   through : {
-//     model : PlayerTrade,
-//     as : 'sender',
-//     where : {
-//       is_sender : 'true'
-//     }
-//   },
-//   foreignKey : 'id_trade',
-//   constraints : false
-// });
+// Note to future self:
+//   In order to make queries using through models you need to define relationships (not only belongsToMany)
+//   on association model with actual entities.
+
+PlayerTrade.belongsTo(Player, {
+  foreignKey : 'id_player'
+});
+Player.hasMany(PlayerTrade, {
+  foreignKey : 'id_player'
+});
+
+Trade.TradePlayers = function(trade, isSender) {
+  return Player.findAll({
+    include : [{
+      model : PlayerTrade,
+      foreignKey : 'id_player',
+      where : {
+        is_sender : isSender,
+        id_trade : trade.id_trade
+      }
+    }]
+  });
+}
+
+Trade.SenderPlayers = function(trade) {
+  return Trade.TradePlayers(trade, true)
+}
+
+Trade.ReceiverPlayers = function(trade) {
+  return Trade.TradePlayers(trade, false);
+}
 
 ////////////// Player Relationships
 
