@@ -1,6 +1,7 @@
 import TeamSlType from './team-sl';
 import UserType from './user';
 import ConferenceType from './conference';
+import LeagueConfigtype from './league-config';
 import FreeAgencyHistoryType from './free-agency-history';
 import { League, Conference, FreeAgencyHistory } from '../../model/Setup';
 
@@ -40,6 +41,10 @@ const LeagueType = new GraphQLObjectType({
     teams: {
       type: new GraphQLList(TeamSlType),
       resolve: League.Teams
+    },
+    configs: {
+      type: new GraphQLList(LeagueConfigtype),
+      resolve: resolver(League.Configs)
     },
     free_agency_history: {
       type: new GraphQLList(FreeAgencyHistoryType),

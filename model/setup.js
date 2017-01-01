@@ -21,6 +21,7 @@ import UserTeam from './associations/user-team';
 import TeamPlayer from './associations/team-player';
 import PlayerTrade from './associations/player-trade';
 import PickTrade from './associations/pick-trade';
+import LeagueConfig from './associations/league-config';
 
 // @TODO extract to config
 const DEFAULT_LIMIT = 20;
@@ -180,6 +181,10 @@ League.Teams = function(league) {
 
 League.Owner = League.belongsTo(User, {
   foreignKey : 'id_owner'
+});
+
+League.Configs = League.hasMany(LeagueConfig, {
+  foreignKey : 'id_league'
 });
 
 ////////////// Free Agency History Relationships
