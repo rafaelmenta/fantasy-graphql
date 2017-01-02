@@ -9,6 +9,7 @@ import GameQuery from './game';
 import RoundQuery from './round';
 import SeasonQuery from './season';
 import PlayerPerformanceQuery from './player-performance';
+import PlayerTeamPerformanceQuery from './player-team-performance';
 import PlayerStatsQuery from './player-stats';
 import GameNbaQuery from './game-nba';
 import DraftQuery from './draft';
@@ -37,6 +38,7 @@ const Query = new GraphQLObjectType({
     RoundQuery,
     SeasonQuery,
     PlayerPerformanceQuery,
+    PlayerTeamPerformanceQuery,
     PlayerStatsQuery,
     GameNbaQuery,
     DraftQuery,
