@@ -22,7 +22,7 @@ const PlayerTeamPerformanceQuery = {
   //     }
   //   }
   // },
-  team_performances: {
+  player_team_performances: {
     type: new GraphQLList(PlayerTeamPerformanceType),
     resolve: resolver(PlayerTeamPerformance),
     args : {

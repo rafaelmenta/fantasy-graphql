@@ -12,6 +12,7 @@ import GameNba from './game-nba';
 import Round from './round';
 import Season from './season';
 import PlayerPerformance from './player-performance';
+import TeamPerformance from './team-performance';
 import PlayerTeamPerformance from './player-team-performance';
 import FreeAgencyHistory from './free-agency-history';
 import Trade from './trade';
@@ -89,6 +90,23 @@ Game.AwayTeam = Game.belongsTo(TeamSl, {
   foreignKey : 'away_team'
 });
 
+Game.GetPerformance = function(idSl, idRound) {
+  return TeamPerformance.findOne({
+    where : {
+      id_sl : idSl,
+      id_round : idRound
+    }
+  });
+}
+
+Game.HomePerformance = function(game, args) {
+  return Game.GetPerformance(game.home_team, game.id_round)
+};
+
+Game.AwayPerformance = function(game, args) {
+  return Game.GetPerformance(game.away_team, game.id_round)
+};
+
 ////////////// Round Relationships
 
 Round.Games = Round.hasMany(Game, {
@@ -130,6 +148,16 @@ PlayerPerformance.Player = PlayerPerformance.belongsTo(Player, {
 });
 
 PlayerPerformance.Round = PlayerPerformance.belongsTo(Round, {
+  foreignKey : 'id_round'
+});
+
+////////////// Team Performance Relationships
+
+TeamPerformance.Team = TeamPerformance.belongsTo(TeamSl, {
+  foreignKey : 'id_sl'
+});
+
+TeamPerformance.Round = TeamPerformance.belongsTo(Round, {
   foreignKey : 'id_round'
 });
 
@@ -412,6 +440,7 @@ export {
   Round,
   Season,
   PlayerPerformance,
+  TeamPerformance,
   PlayerTeamPerformance,
   PlayerStats,
   Draft,
