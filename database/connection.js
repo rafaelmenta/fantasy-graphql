@@ -1,4 +1,7 @@
 import Sequelize from 'sequelize';
+import env from '../config';
+
+const config = env.config;
 
 // @TODO move out later
 Date.prototype.stdTimezoneOffset = function() {
@@ -15,12 +18,12 @@ let now = new Date();
 let timezone = now.dst() ? '-4:00' : '-5:00'
 
 const Conn = new Sequelize(
-  'api_dev',
-  'apidev',
-  'n01sf4zap4i!!',
+  config.database.name,
+  config.database.login,
+  config.database.password,
   {
-    host: '50.116.45.45',
-    dialect: 'mysql',
+    host: config.database.host,
+    dialect: config.database.dialect,
     timezone: timezone
   }
 );

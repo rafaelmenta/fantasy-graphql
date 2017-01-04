@@ -5,29 +5,45 @@
 #   slug
 # }
 
-fragment teamNba on TeamNba {
-  id_nba
-  city
-  nickname
-  symbol
-  slug
-}
+# fragment teamNba on TeamNba {
+#   id_nba
+#   city
+#   nickname
+#   symbol
+#   slug
+# }
 
-fragment shortPlayer on Player {
-  id_player
-  first_name
-  last_name
-  id_nba
-  player_slug
-  birthdate
-  default_primary
-  default_secondary
-  primary_position
-  secondary_position
-  team_nba {
-    ...teamNba
-  }
-}
+# fragment shortPlayer on Player {
+#   id_player
+#   first_name
+#   last_name
+#   id_nba
+#   player_slug
+#   birthdate
+#   default_primary
+#   default_secondary
+#   primary_position
+#   secondary_position
+#   team_nba {
+#     ...teamNba
+#   }
+# }
+
+# fragment stats on PlayerPerformance {
+#   minutes
+#   field_goal_attempts
+#   free_throw_attempts
+#   points
+#   defensive_rebounds
+#   offensive_rebounds
+#   assists
+#   steals
+#   blocks
+#   turnovers
+#   personal_fouls
+#   win_loss
+#   fantasy_points
+# }
 
 # fragment shortUser on User {
 #   id_user
@@ -44,6 +60,177 @@ fragment shortPlayer on Player {
 # }
 
 {
+  # trade(id_trade:114483) {
+  #   id_trade
+  #   sender_players {
+  #     first_name
+  #   }
+  #   sender_picks{
+  #     id_pick
+  #   }
+  #   receiver_picks{
+  #     id_pick
+  #   }
+  # }
+  
+  trades(id_sender:77 id_receiver:72, status_trade:4) {
+    id_trade
+    status_trade
+    sender {
+      city
+    }
+    receiver {
+      city
+    }
+    sender_players {
+      id_player
+      first_name
+      last_name
+    }
+    sender_picks{
+      id_pick
+      draft {
+        year_draft
+      }
+    }
+    receiver_picks{
+      id_pick
+      draft {
+        year_draft
+      }
+    }
+    receiver_players {
+      id_player
+      first_name
+      last_name
+    }
+  }
+  
+  # drafts (id_league:1, year_draft: 2016) {
+  #   year_draft
+  #   picks {
+  #     id_pick
+  #     is_used
+  #     original {
+  #       city
+  #     }
+  #     owner {
+  #       city
+  #     }
+  #   }
+  # }
+  
+  # game_nba(id_game_nba: 8018) {
+  #   game_time
+  # }
+  
+#   date_games_nba(date: "2016/10/30") {
+#     id_game_nba,
+#     game_time
+#     home_team {
+#       city
+#     }
+#     away_team {
+#       city
+#     }
+#   }
+  
+  # games_nba(id_home:[1,3], id_away:[1,3]) {
+  #   id_game_nba
+  #   game_time
+  #   home_team {
+  #     city
+  #   }
+  #   round_home {
+  #     round_number
+  #   }
+  #   away_team {
+  #     city
+  #   }
+  #   round_away {
+  #     round_number
+  #   }
+  # }
+  
+  # player(id_player:553) {
+  #   first_name
+  #   last_name
+  #   stats (id_season:[7,8]){
+  #     season {
+  #       id_season
+  #       year
+  #     }
+  #     fantasy_points
+  #   }
+  # }
+  
+  # player_averages(id_player : 553) {
+  #   season{
+  #     year
+  #   }
+  #   player {
+  #     first_name
+  #     last_name
+  #   }
+  #   fantasy_points
+  # }
+  
+  # averages {
+  #   player {
+  #     first_name
+  #     last_name
+  #   }
+  #   season {
+  #     year
+  #   }
+  #   fantasy_points
+  # }
+  
+  # performances(id_round :[350]){
+  #   id_player
+  #   id_round
+  #   fantasy_points
+  # }
+  
+  # player(id_player: 553) {
+  #   id_player
+  #   first_name
+  #   last_name
+  #   performances(id_round :[350, 351, 352, 353, 354, 355]) {
+  #     id_round
+  #     ...stats
+  #   } 
+  # }
+  
+  # performance(id_player_performance: 616874) {
+  #   id_player_performance
+  #   ...stats
+  #   player {
+  #     id_player
+  #     first_name
+  #     last_name
+  #   }
+  #   round {
+  #     round_number
+  #   }
+  # }
+  
+  # current_season {
+  #   id_season
+  #   year
+  # }
+  
+  # rounds {
+  #   id_round
+  # }
+  
+  # round (id_round: 500){
+  #   id_round
+  #   games {
+  #     id_game
+  #   }
+  # }
+
   # teams_nba {
   #   ...teamNba
   #   players {
