@@ -1,6 +1,7 @@
 import UserType from './user';
 import PlayerType from './player';
 import DivisionType from './division';
+import TeamSeasonType from './team-season';
 import TeamSl from '../../model/team-sl';
 
 
@@ -11,6 +12,7 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
+  GraphQLNonNull,
   GraphQLList
 } =  graphql;
 
@@ -30,7 +32,7 @@ const TeamSlType = new GraphQLObjectType({
       type: GraphQLString
     },
     users: {
-      type: new GraphQLList(UserType), 
+      type: new GraphQLList(UserType),
       resolve: resolver(TeamSl.Users)
     },
     players: {
@@ -40,6 +42,20 @@ const TeamSlType = new GraphQLObjectType({
     division: {
       type: DivisionType,
       resolve: resolver(TeamSl.Division)
+    },
+    record: {
+      type: TeamSeasonType,
+      resolve : resolver(TeamSl.Record),
+      args: {
+        id_season : { type: new GraphQLNonNull(GraphQLInt) }
+      }
+    },
+    records: {
+      type: new GraphQLList(TeamSeasonType),
+      resolve : resolver(TeamSl.Records),
+      args: {
+        id_season : { type : new GraphQLList(GraphQLInt) }
+      }
     }
   })
 });

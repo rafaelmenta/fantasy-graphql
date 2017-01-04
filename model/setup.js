@@ -22,6 +22,7 @@ import TeamStats from './views/team-stats';
 
 import UserTeam from './associations/user-team';
 import TeamPlayer from './associations/team-player';
+import TeamSeason from './associations/team-season';
 import PlayerTrade from './associations/player-trade';
 import PickTrade from './associations/pick-trade';
 import LeagueConfig from './associations/league-config';
@@ -45,6 +46,14 @@ TeamSl.Players = TeamSl.belongsToMany(Player, {
 
 TeamSl.Division = TeamSl.belongsTo(Division, {
   foreignKey : 'id_division'
+});
+
+TeamSl.Record = TeamSl.hasOne(TeamSeason, {
+  foreignKey : 'id_sl'
+});
+
+TeamSl.Records = TeamSl.hasMany(TeamSeason, {
+  foreignKey : 'id_sl'
 });
 
 ////////////// Game NBA Relationships
