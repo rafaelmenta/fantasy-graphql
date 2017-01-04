@@ -39,7 +39,13 @@ const GameType = new GraphQLObjectType({
     },
     away_performance: {
       type: TeamPerformanceType,
-      resolve: Game.AwayPerformance
+      resolve: Game.AwayPerformance,
+      args : {
+        id_sl : {
+          name :'id_sl',
+          type : GraphQLInt
+        }
+      }
     },
   })
 });

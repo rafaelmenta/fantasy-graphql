@@ -18,6 +18,7 @@ import FreeAgencyHistory from './free-agency-history';
 import Trade from './trade';
 
 import PlayerStats from './views/player-stats';
+import TeamStats from './views/team-stats';
 
 import UserTeam from './associations/user-team';
 import TeamPlayer from './associations/team-player';
@@ -104,6 +105,7 @@ Game.HomePerformance = function(game, args) {
 };
 
 Game.AwayPerformance = function(game, args) {
+  console.log(args);
   return Game.GetPerformance(game.away_team, game.id_round)
 };
 
@@ -130,6 +132,16 @@ Season.Current = function() {
     }
   });
 };
+
+////////////// Player Stats Relationships
+
+TeamStats.TeamSl = PlayerStats.belongsTo(TeamSl, {
+  foreignKey : 'id_sl'
+});
+
+TeamStats.Season = PlayerStats.belongsTo(Season, {
+  foreignKey : 'id_season'
+});
 
 ////////////// Player Stats Relationships
 
@@ -443,6 +455,7 @@ export {
   TeamPerformance,
   PlayerTeamPerformance,
   PlayerStats,
+  TeamStats,
   Draft,
   Pick,
   Trade,
