@@ -1,4 +1,4 @@
-import TeamSlType from './team-sl';
+import UserTeamType from './user-team';
 import User from '../../model/user';
 
 const graphql = require('graphql'),
@@ -23,11 +23,10 @@ const UserType = new GraphQLObjectType({
     },
     nickname: {
       type: GraphQLString,
-    }
-    ,
+    },
     teams: {
-      type: new GraphQLList(TeamSlType),
-      resolve: resolver(User.Teams)
+      type: new GraphQLList(UserTeamType),
+      resolve: resolver(User.UserTeams)
     }
   })
 });

@@ -19,7 +19,8 @@ const UserTeam = Conn.define('user_team', {
       model: 'user',
       key: 'id_user'
     }
-  }
+  },
+  default_team: Sequelize.BOOLEAN
 }, {
   freezeTableName : true,
   updatedAt: false,

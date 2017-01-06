@@ -333,6 +333,10 @@ Draft.Picks = Draft.hasMany(Pick, {
 
 ////////////// User Relationships
 
+User.UserTeams = User.hasMany(UserTeam, {
+  foreignKey: 'id_user'
+});
+
 User.Teams = User.belongsToMany(TeamSl, {
   through: UserTeam,
   foreignKey: 'id_user'
@@ -489,6 +493,7 @@ export {
   TeamPerformance,
   PlayerTeamPerformance,
   PlayerStats,
+  UserTeam,
   TeamStats,
   Draft,
   Pick,
