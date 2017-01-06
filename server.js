@@ -21,7 +21,6 @@ const {
   GraphQLSchema,
 } =  graphql;
 
-const client = graphql.graphql;
 const Schema = new GraphQLSchema({
   query: Query
 });
@@ -31,6 +30,8 @@ app.use('/graphql', graphqlHTTP({
   schema: Schema,
   graphiql: true,
 }));
+
+const client = graphql.graphql;
 
 app.listen(4000);
 console.log('Running a GraphQL API server at localhost:4000/graphql');

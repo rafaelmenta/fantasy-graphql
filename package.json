@@ -2,7 +2,7 @@
   "name": "fantasy-graphql",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "dependencies": {
     "babel-cli": "^6.18.0",
     "babel-preset-node6": "^11.0.0",
@@ -21,6 +21,7 @@
   },
   "scripts": {
     "babel-node": "nodemon --exec babel-node --presets=es2015  -- server.js",
+    "build": "babel ./ --ignore node_modules,dist --presets babel-preset-es2015 --out-dir dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
