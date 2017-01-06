@@ -1,5 +1,6 @@
-import Player from '../../model/player';
+import {Player} from '../../model/setup';
 import TeamNbaType from './team-nba';
+import TeamPlayerType from './team-player';
 import PlayerPerformanceType from './player-performance';
 import PlayerStatsType from './player-stats';
 
@@ -11,6 +12,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLFloat,
+  GraphQLNonNull,
   GraphQLBoolean,
   GraphQLList
 } =  graphql;
@@ -21,19 +23,11 @@ const PlayerType = new GraphQLObjectType({
     id_player: {
       type: GraphQLInt,
     },
-    login: {
-      type: GraphQLString,
-    },
-    nickname: {
-      type: GraphQLString,
-    },
     first_name: { type: GraphQLString },
     last_name: { type: GraphQLString },
     id_nba: { type: GraphQLInt },
     default_primary: { type: GraphQLString },
     default_secondary: { type: GraphQLString },
-    primary_position: { type: GraphQLString },
-    secondary_position: { type: GraphQLString },
     player_slug: { type: GraphQLString },
     retired: { type: GraphQLBoolean },
     rookie: { type: GraphQLBoolean },
@@ -41,10 +35,16 @@ const PlayerType = new GraphQLObjectType({
     contract_salary: { type: GraphQLFloat },
     contract_years: { type: GraphQLInt },
     
+    team_info : {
+      type: TeamPlayerType,
+      resolve: Player.Team,
+    },
+    
     team_nba : {
       type : TeamNbaType,
       resolve : resolver(Player.TeamNba)
     },
+    
     performances : {
       type : new GraphQLList(PlayerPerformanceType),
       resolve : resolver(Player.Performances),
@@ -55,6 +55,7 @@ const PlayerType = new GraphQLObjectType({
         }
       }
     },
+    
     stats : {
       type : new GraphQLList(PlayerStatsType),
       resolve : resolver(Player.Stats),

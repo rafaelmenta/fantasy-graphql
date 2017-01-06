@@ -41,7 +41,6 @@ TeamSl.Users = TeamSl.belongsToMany(User, {
 TeamSl.Players = TeamSl.belongsToMany(Player, {
   through : TeamPlayer,
   foreignKey : 'id_sl',
-  constraints : false
 });
 
 TeamSl.Division = TeamSl.belongsTo(Division, {
@@ -219,6 +218,10 @@ Division.Conference = Division.belongsTo(Conference, {
 });
 
 ////////////// Conference Relationships
+
+Conference.League = Conference.belongsTo(League, {
+  foreignKey : 'id_league'
+});
 
 Conference.Divisions = Conference.hasMany(Division, {
   foreignKey : 'id_conference'
@@ -442,6 +445,28 @@ Player.Trades = Player.belongsToMany(Trade, {
   foreignKey : 'id_player',
 });
 
+Player.TeamPlayers = Player.hasMany(TeamPlayer, {
+  foreignKey : 'id_player'
+});
+
+TeamPlayer.Player = TeamPlayer.belongsTo(Player, {
+  foreignKey : 'id_player'
+});
+
+Player.Team = function(player) {
+
+  if (!player.team_players) return;
+  // If you find a better way to get attribute from a parent element on query let me know :)
+  const id_sl = player.team_players[0].dataValues.id_sl;
+
+  return TeamPlayer.findOne({
+    where : {
+      id_player : player.id_player,
+      id_sl : id_sl
+    }
+  })
+};
+
 ////////////// Team NBA Relationships
 
 TeamNba.Players = TeamNba.hasMany(Player, {
@@ -468,5 +493,6 @@ export {
   Draft,
   Pick,
   Trade,
-  FreeAgencyHistory
+  FreeAgencyHistory,
+  TeamPlayer
 };

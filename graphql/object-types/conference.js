@@ -1,5 +1,6 @@
 import TeamSlType from './team-sl';
 import DivisionType from './division';
+import LeagueType from './league';
 import { Conference, Division } from '../../model/Setup';
 
 const graphql = require('graphql'),
@@ -32,6 +33,10 @@ const ConferenceType = new GraphQLObjectType({
     teams: {
       type: new GraphQLList(TeamSlType),
       resolve: Conference.Teams
+    },
+    league: {
+      type: LeagueType,
+      resolve: resolver(Conference.League)
     }
   })
 });

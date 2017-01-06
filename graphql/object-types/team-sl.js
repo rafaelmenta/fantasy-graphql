@@ -2,7 +2,7 @@ import UserType from './user';
 import PlayerType from './player';
 import DivisionType from './division';
 import TeamSeasonType from './team-season';
-import TeamSl from '../../model/team-sl';
+import {TeamSl} from '../../model/setup';
 
 
 const graphql = require('graphql'),
@@ -19,18 +19,10 @@ const {
 const TeamSlType = new GraphQLObjectType({
   name: 'TeamSl',
   fields: () => ({
-    id_sl: {
-      type: GraphQLInt
-    },
-    city: {
-      type: GraphQLString
-    },
-    nickname: {
-      type: GraphQLString
-    },
-    slug: {
-      type: GraphQLString
-    },
+    id_sl: { type: GraphQLInt },
+    city: { type: GraphQLString },
+    nickname: { type: GraphQLString },
+    slug: { type: GraphQLString },
     users: {
       type: new GraphQLList(UserType),
       resolve: resolver(TeamSl.Users)

@@ -1,5 +1,6 @@
 import TeamSlType from './team-sl';
-import Division from '../../model/division';
+import ConferenceType from './conference';
+import {Division} from '../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -26,6 +27,10 @@ const DivisionType = new GraphQLObjectType({
     teams: {
       type: new GraphQLList(TeamSlType),
       resolve: resolver(Division.Teams)
+    },
+    conference: {
+      type: ConferenceType,
+      resolve: resolver(Division.Conference)
     }
   })
 });

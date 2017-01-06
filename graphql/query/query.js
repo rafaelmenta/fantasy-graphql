@@ -1,5 +1,5 @@
 import UserQuery from './user-query';
-import TeamSlQuery from './team-sl-query';
+import TeamSlQuery from './team-sl';
 import TeamNbaQuery from './team-nba';
 import PlayerQuery from './player';
 import DivisionQuery from './division';
