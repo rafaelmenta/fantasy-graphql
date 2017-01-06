@@ -141,13 +141,13 @@ Season.Current = function() {
   });
 };
 
-////////////// Player Stats Relationships
+////////////// Team Stats Relationships
 
-TeamStats.TeamSl = PlayerStats.belongsTo(TeamSl, {
+TeamStats.TeamSl = TeamStats.belongsTo(TeamSl, {
   foreignKey : 'id_sl'
 });
 
-TeamStats.Season = PlayerStats.belongsTo(Season, {
+TeamStats.Season = TeamStats.belongsTo(Season, {
   foreignKey : 'id_season'
 });
 
