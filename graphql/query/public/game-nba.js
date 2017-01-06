@@ -1,5 +1,5 @@
-import GameNbaType from '../object-types/game-nba';
-import {GameNba} from '../../model/setup';
+import GameNbaType from '../../object-types/game-nba';
+import {GameNba} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

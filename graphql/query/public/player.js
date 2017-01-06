@@ -1,5 +1,5 @@
-import PlayerType from '../object-types/player';
-import {Player} from '../../model/setup';
+import PlayerType from '../../object-types/player';
+import {Player} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

@@ -1,5 +1,5 @@
-import DraftType from '../object-types/draft';
-import {Draft} from '../../model/setup';
+import DraftType from '../../object-types/draft';
+import {Draft} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

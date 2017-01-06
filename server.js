@@ -3,7 +3,8 @@ import graphqlHTTP from 'express-graphql';
 import Sequelize from 'sequelize';
 import graphqlSequelize from 'graphql-sequelize';
 import Conn from './database/connection';
-import Query from './graphql/query/query';
+import PublicQuery from './graphql/query/public';
+import CombinedQuery from './graphql/query/combined';
 
 const graphql = require('graphql');
 const resolver = graphqlSequelize.resolver;
@@ -22,7 +23,7 @@ const {
 } =  graphql;
 
 const Schema = new GraphQLSchema({
-  query: Query
+  query: CombinedQuery,
 });
 
 const app = express();
@@ -30,8 +31,6 @@ app.use('/graphql', graphqlHTTP({
   schema: Schema,
   graphiql: true,
 }));
-
-const client = graphql.graphql;
 
 app.listen(4000);
 console.log('Running a GraphQL API server at localhost:4000/graphql');

@@ -1,5 +1,5 @@
-import PlayerStatsType from '../object-types/player-stats';
-import {PlayerStats} from '../../model/setup';
+import PlayerStatsType from '../../object-types/player-stats';
+import {PlayerStats} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

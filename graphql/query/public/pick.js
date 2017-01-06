@@ -1,5 +1,5 @@
-import PickType from '../object-types/draft';
-import {Pick} from '../../model/setup';
+import PickType from '../../object-types/draft';
+import {Pick} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

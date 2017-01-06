@@ -1,5 +1,5 @@
-import SeasonType from '../object-types/season';
-import {Season} from '../../model/setup';
+import SeasonType from '../../object-types/season';
+import {Season} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

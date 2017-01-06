@@ -1,5 +1,5 @@
-import RoundType from '../object-types/round';
-import {Round} from '../../model/setup';
+import RoundType from '../../object-types/round';
+import {Round} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

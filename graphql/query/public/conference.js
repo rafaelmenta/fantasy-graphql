@@ -1,5 +1,5 @@
-import ConferenceType from '../object-types/conference';
-import {Conference} from '../../model/setup';
+import ConferenceType from '../../object-types/conference';
+import {Conference} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

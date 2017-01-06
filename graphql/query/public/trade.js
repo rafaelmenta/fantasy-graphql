@@ -1,5 +1,5 @@
-import TradeType from '../object-types/trade';
-import {Trade} from '../../model/setup';
+import TradeType from '../../object-types/trade';
+import {Trade} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

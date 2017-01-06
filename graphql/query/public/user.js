@@ -1,5 +1,5 @@
-import UserType from '../object-types/user';
-import {User} from '../../model/setup';
+import UserType from '../../object-types/user';
+import {User} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

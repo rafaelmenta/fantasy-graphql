@@ -1,5 +1,5 @@
-import FreeAgencyHistoryType from '../object-types/free-agency-history';
-import {FreeAgencyHistory} from '../../model/setup';
+import FreeAgencyHistoryType from '../../object-types/free-agency-history';
+import {FreeAgencyHistory} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

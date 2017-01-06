@@ -1,5 +1,5 @@
-import LeagueType from '../object-types/league';
-import {League} from '../../model/setup';
+import LeagueType from '../../object-types/league';
+import {League} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

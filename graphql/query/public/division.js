@@ -1,5 +1,5 @@
-import DivisionType from '../object-types/division';
-import {Division} from '../../model/setup';
+import DivisionType from '../../object-types/division';
+import {Division} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

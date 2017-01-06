@@ -1,7 +1,7 @@
-import GameType from '../object-types/game';
-import {Game} from '../../model/setup';
+import GameType from '../../object-types/game';
+import {Game} from '../../../model/setup';
 
-import GameTypeEnum from '../object-types/enum/game-type';
+import GameTypeEnum from '../../object-types/enum/game-type';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

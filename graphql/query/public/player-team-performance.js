@@ -1,5 +1,5 @@
-import PlayerTeamPerformanceType from '../object-types/player-team-performance';
-import {PlayerTeamPerformance} from '../../model/setup';
+import PlayerTeamPerformanceType from '../../object-types/player-team-performance';
+import {PlayerTeamPerformance} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

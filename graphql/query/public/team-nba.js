@@ -1,5 +1,5 @@
-import TeamNbaType from '../object-types/team-nba';
-import {TeamNba} from '../../model/setup';
+import TeamNbaType from '../../object-types/team-nba';
+import {TeamNba} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

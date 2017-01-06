@@ -1,5 +1,5 @@
-import TeamSlType from '../object-types/team-sl';
-import {TeamSl} from '../../model/setup';
+import TeamSlType from '../../object-types/team-sl';
+import {TeamSl} from '../../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
