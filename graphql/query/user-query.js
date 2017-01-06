@@ -7,6 +7,7 @@ const graphql = require('graphql'),
 const {
   GraphQLInt,
   GraphQLList,
+  GraphQLString,
   GraphQLNonNull
 } =  graphql;
 
@@ -18,7 +19,11 @@ const UserQuery = {
     args: {
       id_user: {
         name : 'id_user',
-        type : new GraphQLNonNull(GraphQLInt)
+        type : GraphQLInt
+      },
+      login: {
+        name: 'login',
+        type : GraphQLString
       }
     }
   },
