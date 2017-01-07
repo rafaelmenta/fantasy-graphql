@@ -32,6 +32,11 @@ const PlayerStatsType = new GraphQLObjectType({
     turnovers : { type : GraphQLInt },
     personal_fouls : { type : GraphQLInt },
     fantasy_points : { type : GraphQLFloat },
+
+    games :{
+      type: GraphQLInt,
+      resolve: PlayerStats.GamesPlayed
+    },
     
     player : {
       type : PlayerType,
