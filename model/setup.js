@@ -153,10 +153,7 @@ TeamStats.Season = TeamStats.belongsTo(Season, {
 
 ////////////// Player Stats Relationships
 
-var players = [];
 PlayerStats.GamesPlayed = function(playerStat) {
-  players.push(playerStat.id_player);
-  console.log('players is now', players);
   return PlayerPerformance.count({
     include: [{
       model : Round,

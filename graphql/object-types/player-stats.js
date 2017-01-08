@@ -37,7 +37,7 @@ const PlayerStatsType = new GraphQLObjectType({
       type: GraphQLInt,
       resolve: PlayerStats.GamesPlayed
     },
-    
+
     player : {
       type : PlayerType,
       resolve : resolver(PlayerStats.Player)
