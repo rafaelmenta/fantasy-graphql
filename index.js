@@ -13,7 +13,7 @@ const PublicSchema = new GraphQLSchema({
 });
 
 const PrivateSchema = new GraphQLSchema({
-  query: PublicQuery
+  query: PrivateQuery
 });
 
 const client = graphql.graphql;
