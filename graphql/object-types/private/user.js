@@ -1,4 +1,5 @@
 import UserTeamType from '../user-team';
+import PermissionType from '../enum/permission';
 import {User} from '../../../model/setup';
 
 const graphql = require('graphql'),
@@ -19,6 +20,7 @@ const UserType = new GraphQLObjectType({
     login: { type: GraphQLString, },
     password: { type: GraphQLString, },
     nickname: { type: GraphQLString, },
+    id_permission: { type: GraphQLInt },
     teams: {
       type: new GraphQLList(UserTeamType),
       resolve: resolver(User.UserTeams)
