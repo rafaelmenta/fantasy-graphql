@@ -51,9 +51,22 @@ TeamSl.Record = TeamSl.hasOne(TeamSeason, {
   foreignKey : 'id_sl'
 });
 
+TeamSl.Stats = TeamSl.hasMany(TeamStats, {
+  foreignKey : 'id_sl'
+});
+
 TeamSl.Records = TeamSl.hasMany(TeamSeason, {
   foreignKey : 'id_sl'
 });
+
+TeamSl.Picks = function(team) {
+  return Pick.findAll({
+    where : {
+      id_owner : team.id_sl,
+      is_used : false
+    }
+  });
+};
 
 ////////////// Game NBA Relationships
 
