@@ -31,6 +31,15 @@ import LeagueConfig from './associations/league-config';
 const DEFAULT_LIMIT = 20;
 // end todo
 
+// @TODO extrat to constant
+const LIMIT_GAMES = 5;
+const GAME_TYPE = {
+  LEAGUE : 1,
+  PLAYOFF : 2,
+  FRIENDLY : 3
+};
+// end todo
+
 ////////////// Team SL Relationships
 
 TeamSl.Users = TeamSl.belongsToMany(User, {
@@ -65,6 +74,43 @@ TeamSl.Picks = function(team) {
       id_owner : team.id_sl,
       is_used : false
     }
+  });
+};
+
+TeamSl.GetGames = function({id, type, processed, order, limit}) {
+  return Game.findAll({
+    where : {
+      id_type : type,
+      $or : [{ home_team : id}, { away_team : id }]
+    },
+    include: {
+      model : Round,
+      where : {
+        processed : processed
+      }
+    },
+    order : [['id_round', order]],
+    limit : limit
+  });
+}
+
+TeamSl.RecentGames = function(team) {
+  return TeamSl.GetGames({
+    id : team.id_sl,
+    type : GAME_TYPE.LEAGUE,
+    processed : true,
+    order : 'DESC',
+    limit : LIMIT_GAMES
+  });
+};
+
+TeamSl.NextGames = function(team) {
+  return TeamSl.GetGames({
+    id : team.id_sl,
+    type : GAME_TYPE.LEAGUE,
+    processed : false,
+    order : 'ASC',
+    limit : LIMIT_GAMES
   });
 };
 
@@ -110,6 +156,10 @@ Game.HomeTeam = Game.belongsTo(TeamSl, {
 Game.AwayTeam = Game.belongsTo(TeamSl, {
   as : 'away',
   foreignKey : 'away_team'
+});
+
+Game.Round = Game.belongsTo(Round, {
+  foreignKey : 'id_round'
 });
 
 Game.GetPerformance = function(idSl, idRound) {

@@ -4,7 +4,9 @@ import DivisionType from './division';
 import PickType from './pick';
 import TeamStatsType from './team-stats';
 import TeamSeasonType from './team-season';
+import GameType from './game';
 import {TeamSl} from '../../model/setup';
+
 
 
 const graphql = require('graphql'),
@@ -28,6 +30,7 @@ const TeamSlType = new GraphQLObjectType({
     primary_color: { type: GraphQLString },
     secondary_color: { type: GraphQLString },
     slug: { type: GraphQLString },
+
     users: {
       type: new GraphQLList(UserType),
       resolve: resolver(TeamSl.Users)
@@ -57,6 +60,14 @@ const TeamSlType = new GraphQLObjectType({
       args: {
         id_season : { type: new GraphQLNonNull(GraphQLInt) }
       }
+    },
+    recent_games: {
+      type: new GraphQLList(GameType),
+      resolve: TeamSl.RecentGames
+    },
+    next_games: {
+      type: new GraphQLList(GameType),
+      resolve: TeamSl.NextGames
     },
     records: {
       type: new GraphQLList(TeamSeasonType),
