@@ -1,4 +1,5 @@
 import TeamSlType from './team-sl';
+import RoundType from './round';
 import TeamPerformanceType from './team-performance';
 
 import {Game} from '../../model/setup';
@@ -16,14 +17,13 @@ const {
 const GameType = new GraphQLObjectType({
   name: 'Game',
   fields: () => ({
-    id_game: {
-      type: GraphQLInt,
-    },
-    id_type: {
-      type: GraphQLInt,
-    },
-    id_round: {
-      type: GraphQLInt,
+    id_game: { type: GraphQLInt, },
+    id_type: { type: GraphQLInt, },
+    id_round: { type: GraphQLInt, },
+
+    round: {
+      type: RoundType,
+      resolve: resolver(Game.Round)
     },
     home_team: {
       type: TeamSlType,
