@@ -34,17 +34,17 @@ const PlayerType = new GraphQLObjectType({
     birthdate: { type: GraphQLString },
     contract_salary: { type: GraphQLFloat },
     contract_years: { type: GraphQLInt },
-    
+
     team_info : {
       type: TeamPlayerType,
       resolve: Player.Team,
     },
-    
+
     team_nba : {
       type : TeamNbaType,
       resolve : resolver(Player.TeamNba)
     },
-    
+
     performances : {
       type : new GraphQLList(PlayerPerformanceType),
       resolve : resolver(Player.Performances),
@@ -55,14 +55,15 @@ const PlayerType = new GraphQLObjectType({
         }
       }
     },
-    
+
     stats : {
       type : new GraphQLList(PlayerStatsType),
-      resolve : resolver(Player.Stats),
+      resolve : Player.Stats,
       args : {
         id_season : {
           name :'id_season',
-          type : new GraphQLList(GraphQLInt)
+          type : new GraphQLList(GraphQLInt),
+          defaultValue : 'CURRENT'
         }
       }
     }

@@ -27,17 +27,16 @@ import PlayerTrade from './associations/player-trade';
 import PickTrade from './associations/pick-trade';
 import LeagueConfig from './associations/league-config';
 
-// @TODO extract to config
+// @TODO extract to constant
 const DEFAULT_LIMIT = 20;
-// end todo
-
-// @TODO extrat to constant
 const LIMIT_GAMES = 5;
 const GAME_TYPE = {
   LEAGUE : 1,
   PLAYOFF : 2,
   FRIENDLY : 3
 };
+const CURRENT_SEASON = 'CURRENT';
+
 // end todo
 
 ////////////// Team SL Relationships
@@ -56,11 +55,76 @@ TeamSl.Division = TeamSl.belongsTo(Division, {
   foreignKey : 'id_division'
 });
 
-TeamSl.Record = TeamSl.hasOne(TeamSeason, {
+TeamSl.GetCurrentRecord = function(id) {
+  return TeamSeason.findOne({
+    include: [{
+      model: Season,
+      foreignKey: 'id_season',
+      where: {
+        current: true
+      }
+    }],
+    where: {
+      id_sl: id
+    }
+  });
+};
+
+TeamSl.GetRecord = function(idSl, idSeason) {
+  return TeamSeason.findOne({
+    where: {
+      id_sl: idSl,
+      id_season: idSeason
+    }
+  });
+}
+
+TeamSl.Record = function(team, args) {
+
+  if (args.id_season === CURRENT_SEASON) {
+    return TeamSl.GetCurrentRecord(team.id_sl)
+  }
+  return TeamSl.GetRecord(team.id_sl, args.id_season)
+
+};
+
+TeamSl.hasOne(TeamSeason, {
   foreignKey : 'id_sl'
 });
 
-TeamSl.Stats = TeamSl.hasMany(TeamStats, {
+TeamSl.GetCurrentStats = function(id) {
+  return TeamStats.findOne({
+    where: {
+      id_sl : id
+    },
+    include: [{
+      model: Season,
+      foreignKey: 'id_season',
+      where: {
+        current: true
+      }
+    }]
+  })
+};
+
+TeamSl.GetStats = function(idSl, idSeason) {
+  return TeamStats.findOne({
+    where: {
+      id_sl: idSl,
+      id_season: idSeason
+    }
+  })
+};
+
+TeamSl.Stats = function(team, args) {
+
+  if (args.id_season === CURRENT_SEASON) {
+    return TeamSl.GetCurrentStats(team.id_sl);
+  }
+  return TeamSl.GetStats(team.id_sl, args.id_season);
+}
+
+TeamSl.hasMany(TeamStats, {
   foreignKey : 'id_sl'
 });
 
@@ -195,6 +259,14 @@ Round.Season = Round.belongsTo(Season, {
 Season.Rounds = Season.hasMany(Round, {
   foreignKey : 'id_season'
 });
+
+Season.TeamSeason = Season.hasMany(TeamSeason, {
+  foreignKey : 'id_season'
+});
+
+TeamSeason.Season = TeamSeason.belongsTo(Season, {
+  foreignKey : 'id_season'
+})
 
 Season.Current = function() {
   return Season.findOne({
@@ -521,7 +593,39 @@ Player.Performances = Player.hasMany(PlayerPerformance, {
   foreignKey : 'id_player'
 });
 
-Player.Stats = Player.hasMany(PlayerStats, {
+Player.GetCurrentStats = function(id) {
+  return PlayerStats.findAll({
+    where: {
+      id_player: id
+    },
+    include: [{
+      model: Season,
+      foreignKey: 'id_season',
+      where: {
+        current : true
+      }
+    }]
+  });
+}
+
+Player.GetStats = function(idPlayer, idSeason) {
+  return PlayerStats.findAll({
+    where: {
+      id_player: idPlayer,
+      id_season: idSeason
+    }
+  })
+};
+
+Player.Stats = function(player, args) {
+
+  if (args.id_season === CURRENT_SEASON) {
+    return Player.GetCurrentStats(player.id_player)
+  }
+  return Player.GetStats(player.id_player, args.id_season)
+};
+
+Player.hasMany(PlayerStats, {
   foreignKey : 'id_player'
 });
 

@@ -44,10 +44,13 @@ const TeamSlType = new GraphQLObjectType({
       resolve: resolver(TeamSl.Division)
     },
     stats : {
-      type: new GraphQLList(TeamStatsType),
-      resolve: resolver(TeamSl.Stats),
+      type: TeamStatsType,
+      resolve: TeamSl.Stats,
       args: {
-        id_season: { type: new GraphQLNonNull(GraphQLInt) }
+        id_season: {
+          type: GraphQLInt,
+          defaultValue: 'CURRENT'
+        }
       }
     },
     picks : {
@@ -56,9 +59,12 @@ const TeamSlType = new GraphQLObjectType({
     },
     record: {
       type: TeamSeasonType,
-      resolve : resolver(TeamSl.Record),
+      resolve : TeamSl.Record,
       args: {
-        id_season : { type: new GraphQLNonNull(GraphQLInt) }
+        id_season : {
+          type: GraphQLInt,
+          defaultValue: 'CURRENT'
+        }
       }
     },
     recent_games: {
