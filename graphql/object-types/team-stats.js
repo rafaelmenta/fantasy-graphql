@@ -20,11 +20,11 @@ const TeamStatsType = new GraphQLObjectType({
 
     id_sl : { type : GraphQLInt },
     id_season : { type : GraphQLInt },
-    minutes_pg : { type : GraphQLInt },
-    minutes_sg : { type : GraphQLInt },
-    minutes_sf : { type : GraphQLInt },
-    minutes_pf : { type : GraphQLInt },
-    minutes_c : { type : GraphQLInt },
+    minutes_pg : { type : GraphQLFloat },
+    minutes_sg : { type : GraphQLFloat },
+    minutes_sf : { type : GraphQLFloat },
+    minutes_pf : { type : GraphQLFloat },
+    minutes_c : { type : GraphQLFloat },
     fantasy_points : { type : GraphQLFloat },
 
     team_sl : {
