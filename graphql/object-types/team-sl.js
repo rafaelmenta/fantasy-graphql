@@ -2,12 +2,13 @@ import UserType from './user';
 import PlayerType from './player';
 import DivisionType from './division';
 import PickType from './pick';
+import TradeType from './trade';
 import TeamStatsType from './team-stats';
 import TeamSeasonType from './team-season';
 import GameType from './game';
 import {TeamSl} from '../../model/setup';
 
-
+import TradeStatus from './enum/trade-status';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -64,6 +65,28 @@ const TeamSlType = new GraphQLObjectType({
         id_season : {
           type: GraphQLInt,
           defaultValue: 'CURRENT'
+        }
+      }
+    },
+    sent_trades : {
+      type: new GraphQLList(TradeType),
+      resolve: resolver(TeamSl.SentTrades),
+      args: {
+        status_trade : {
+          name: 'status_trade',
+          type: new GraphQLList(GraphQLInt),
+          defaultValue: TradeStatus.parseValue('PENDING')
+        }
+      }
+    },
+    received_trades : {
+      type: new GraphQLList(TradeType),
+      resolve: resolver(TeamSl.ReceivedTrades),
+      args: {
+        status_trade : {
+          name: 'status_trade',
+          type: new GraphQLList(GraphQLInt),
+          defaultValue: TradeStatus.parseValue('PENDING')
         }
       }
     },

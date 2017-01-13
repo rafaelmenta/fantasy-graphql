@@ -178,6 +178,14 @@ TeamSl.NextGames = function(team) {
   });
 };
 
+TeamSl.SentTrades = TeamSl.hasMany(Trade, {
+  foreignKey: 'id_sender'
+});
+
+TeamSl.ReceivedTrades = TeamSl.hasMany(Trade, {
+  foreignKey: 'id_receiver'
+});
+
 ////////////// Game NBA Relationships
 
 GameNba.HomeTeam = GameNba.belongsTo(TeamNba, {
