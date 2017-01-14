@@ -40,6 +40,11 @@ const PlayerType = new GraphQLObjectType({
     team_info : {
       type: TeamPlayerType,
       resolve: Player.Team,
+      args: {
+        id_league: {
+          type: GraphQLInt
+        }
+      }
     },
 
     team_nba : {

@@ -51,6 +51,14 @@ TeamSl.Players = TeamSl.belongsToMany(Player, {
   foreignKey : 'id_sl',
 });
 
+TeamSl.TeamPlayer = TeamSl.hasMany(TeamPlayer, {
+  foreignKey : 'id_sl'
+});
+
+TeamPlayer.TeamSl = TeamPlayer.belongsTo(TeamSl, {
+  foreignKey : 'id_sl'
+});
+
 TeamSl.Division = TeamSl.belongsTo(Division, {
   foreignKey : 'id_division'
 });
@@ -618,17 +626,41 @@ TeamPlayer.Player = TeamPlayer.belongsTo(Player, {
   foreignKey : 'id_player'
 });
 
-Player.Team = function(player) {
+Player.Team = function(player, args) {
+  const where = {
+    id_player : player.id_player
+  };
+  let include;
 
-  if (!player.team_players) return;
-  // If you find a better way to get attribute from a parent element on query let me know :)
-  const id_sl = player.team_players[0].dataValues.id_sl;
+  if (!player.team_players && !args.id_league) return;
+
+  if (player.team_players) {
+    // If you find a better way to get attribute from a parent element on query let me know :)
+    const id_sl = player.team_players[0].dataValues.id_sl;
+    where.id_sl = id_sl;
+  }
+
+  if (args.id_league) {
+    include = [{
+      model: TeamSl,
+      foreignKey: 'id_sl',
+      include : [{
+        model: Division,
+        foreignKey: 'id_division',
+        include: [{
+          model: Conference,
+          foreignKey: 'id_conference',
+          where: {
+            id_league: args.id_league
+          }
+        }]
+      }]
+    }];
+  }
 
   return TeamPlayer.findOne({
-    where : {
-      id_player : player.id_player,
-      id_sl : id_sl
-    }
+    where : where,
+    include : include
   })
 };
 

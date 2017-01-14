@@ -1,5 +1,7 @@
 import {TeamPlayer} from '../../model/setup';
 
+import TeamType from './team-sl'
+
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
 
@@ -20,6 +22,11 @@ const TeamPlayerType = new GraphQLObjectType({
     order: { type: GraphQLInt, },
     primary_position: { type: GraphQLString, },
     secondary_position : { type : GraphQLString },
+
+    team: {
+      type : TeamType,
+      resolve: resolver(TeamPlayer.TeamSl)
+    }
   })
 });
 
