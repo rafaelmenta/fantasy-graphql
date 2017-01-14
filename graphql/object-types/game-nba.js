@@ -29,7 +29,7 @@ const GameNbaType = new GraphQLObjectType({
     },
     round_away: {
       type: RoundType,
-      resolve: resolver(GameNba.HomeRound)
+      resolve: resolver(GameNba.AwayRound)
     },
     round_home: {
       type: RoundType,
