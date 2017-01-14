@@ -665,6 +665,7 @@ Player.Team = function(player, args) {
 };
 
 Player.NextGames = function(player, args) {
+  console.log('args', args);
   return GameNba.findAll({
     where : {
       $or : {
@@ -675,7 +676,7 @@ Player.NextGames = function(player, args) {
         $gte : new Date()
       },
     },
-    limit : LIMIT_GAMES
+    limit : args.limit
   })
 };
 
