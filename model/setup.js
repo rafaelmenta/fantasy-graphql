@@ -664,6 +664,21 @@ Player.Team = function(player, args) {
   })
 };
 
+Player.NextGames = function(player, args) {
+  return GameNba.findAll({
+    where : {
+      $or : {
+        id_home : player.id_nba,
+        id_away : player.id_nba
+      },
+      game_time : {
+        $gte : new Date()
+      },
+    },
+    limit : LIMIT_GAMES
+  })
+};
+
 ////////////// Team NBA Relationships
 
 TeamNba.Players = TeamNba.hasMany(Player, {

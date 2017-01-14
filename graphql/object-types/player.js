@@ -3,6 +3,8 @@ import TeamNbaType from './team-nba';
 import TeamPlayerType from './team-player';
 import PlayerPerformanceType from './player-performance';
 import PlayerStatsType from './player-stats';
+import GameNbaType from './game-nba';
+import {LIMIT_GAMES} from '../../config/constant';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -50,6 +52,17 @@ const PlayerType = new GraphQLObjectType({
     team_nba : {
       type : TeamNbaType,
       resolve : resolver(Player.TeamNba)
+    },
+
+    next_games: {
+      type: new GraphQLList(GameNbaType),
+      resolve: Player.NextGames,
+      args: {
+        limit : {
+          type: GraphQLInt,
+          defaultValue: LIMIT_GAMES
+        }
+      }
     },
 
     performances : {
