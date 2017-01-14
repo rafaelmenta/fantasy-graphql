@@ -7,6 +7,8 @@ import PlayerStatsType from './player-stats';
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
 
+import TradeStatus from './enum/trade-status';
+
 const {
   GraphQLObjectType,
   GraphQLString,
@@ -58,12 +60,11 @@ const PlayerType = new GraphQLObjectType({
 
     stats : {
       type : new GraphQLList(PlayerStatsType),
-      resolve : Player.Stats,
+      resolve : resolver(Player.Stats),
       args : {
         id_season : {
           name :'id_season',
-          type : new GraphQLList(GraphQLInt),
-          defaultValue : 'CURRENT'
+          type : new GraphQLList(GraphQLInt)
         }
       }
     }

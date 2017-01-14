@@ -44,7 +44,12 @@ const PlayerStatsType = new GraphQLObjectType({
     },
     season : {
       type : SeasonType,
-      resolve : resolver(PlayerStats.Season)
+      resolve : resolver(PlayerStats.Season),
+      args : {
+        id_season : {
+          type: new GraphQLList(GraphQLInt)
+        }
+      }
     }
   })
 });

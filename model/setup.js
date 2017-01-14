@@ -601,40 +601,8 @@ Player.Performances = Player.hasMany(PlayerPerformance, {
   foreignKey : 'id_player'
 });
 
-Player.GetCurrentStats = function(id) {
-  return PlayerStats.findAll({
-    where: {
-      id_player: id
-    },
-    include: [{
-      model: Season,
-      foreignKey: 'id_season',
-      where: {
-        current : true
-      }
-    }]
-  });
-}
-
-Player.GetStats = function(idPlayer, idSeason) {
-  return PlayerStats.findAll({
-    where: {
-      id_player: idPlayer,
-      id_season: idSeason
-    }
-  })
-};
-
-Player.Stats = function(player, args) {
-
-  if (args.id_season === CURRENT_SEASON) {
-    return Player.GetCurrentStats(player.id_player)
-  }
-  return Player.GetStats(player.id_player, args.id_season)
-};
-
-Player.hasMany(PlayerStats, {
-  foreignKey : 'id_player'
+Player.Stats = Player.hasMany(PlayerStats, {
+  foreignKey : 'id_player',
 });
 
 Player.Trades = Player.belongsToMany(Trade, {
