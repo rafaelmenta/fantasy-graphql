@@ -14,14 +14,14 @@ const {
 
 const GameNbaQuery = {
   game_nba : {
-    type : GameNbaType, 
+    type : GameNbaType,
     resolve : resolver(GameNba),
     args: {
       id_game_nba : {
         name : 'id_game_nba',
         type : new GraphQLNonNull(GraphQLInt)
 
-      } 
+      }
     }
   },
   date_games_nba : {
@@ -29,6 +29,20 @@ const GameNbaQuery = {
     resolve : GameNba.DateGames,
     args : {
       date : {
+        description: 'Format YYYY/MM/DD',
+        type : GraphQLString
+      }
+    }
+  },
+  ranged_date_games_nba : {
+    type : new GraphQLList(GameNbaType),
+    resolve : GameNba.RangedDateGames,
+    args : {
+      start_date : {
+        description: 'Format YYYY/MM/DD',
+        type : GraphQLString
+      },
+      end_date : {
         description: 'Format YYYY/MM/DD',
         type : GraphQLString
       }

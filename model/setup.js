@@ -226,6 +226,19 @@ GameNba.DateGames = function(root, args) {
   });
 };
 
+GameNba.RangedDateGames = function(root, args) {
+  return GameNba.findAll({
+    attributes: {
+      include: [[GameNba.sequelize.fn('DATE', GameNba.sequelize.col('game_time')), 'game_date']]
+     }, having : {
+      'game_date' : {
+        $gte : args.start_date,
+        $lte : args.end_date
+      }
+     }
+  });
+};
+
 ////////////// Game Relationships
 
 Game.HomeTeam = Game.belongsTo(TeamSl, {

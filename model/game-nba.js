@@ -35,7 +35,7 @@ const GameNba = Conn.define('game_nba', {
     }
   },
   game_time : {
-    type : Sequelize.INTEGER
+    type : Sequelize.DATE
   },
   is_finished : Sequelize.BOOLEAN,
   external_id : Sequelize.STRING
