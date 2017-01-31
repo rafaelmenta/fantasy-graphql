@@ -23,8 +23,14 @@ const RoundQuery = {
     }
   },
   rounds: {
-   type: new GraphQLList(RoundType),
-    resolve: resolver(Round)
+    type: new GraphQLList(RoundType),
+    resolve: resolver(Round),
+    args: {
+      id_season: {
+        name: 'id_season',
+        type: new GraphQLList(GraphQLInt)
+      }
+    }
   }
 };
 
