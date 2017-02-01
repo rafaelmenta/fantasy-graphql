@@ -524,6 +524,10 @@ User.Teams = User.belongsToMany(TeamSl, {
   foreignKey: 'id_user'
 });
 
+UserTeam.Team = UserTeam.belongsTo(TeamSl, {
+  foreignKey: 'id_sl'
+});
+
 ////////////// Trade Relationships
 
 Trade.Sender = Trade.belongsTo(TeamSl, {

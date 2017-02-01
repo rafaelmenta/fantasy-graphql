@@ -1,5 +1,5 @@
 import TeamSlType from './team-sl';
-import {TeamSl} from '../../model/setup'
+import {UserTeam} from '../../model/setup'
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -21,7 +21,7 @@ const UserTeamType = new GraphQLObjectType({
     default_team: { type: GraphQLBoolean, },
     team: {
       type: TeamSlType,
-      resolve: resolver(TeamSl)
+      resolve: resolver(UserTeam.Team)
     }
   })
 });
