@@ -622,9 +622,30 @@ Player.TeamSl = Player.belongsToMany(TeamSl, {
   foreignKey : 'id_player'
 });
 
-Player.Performances = Player.hasMany(PlayerPerformance, {
+Player.PerformancesRel = Player.hasMany(PlayerPerformance, {
   foreignKey : 'id_player'
 });
+
+Player.Performances = function(player, args) {
+
+  let round, season;
+
+  if (args.id_season) {
+    season = { id_season : args.id_season };
+  }
+
+  if (args.id_round) {
+    round = { id_round : args.id_round };
+  }
+
+  return PlayerPerformance.findAll({
+    include: {
+      model: Round,
+      where: season
+    },
+    where: Object.assign({id_player: player.id_player}, round)
+  })
+}
 
 Player.Stats = Player.hasMany(PlayerStats, {
   foreignKey : 'id_player',

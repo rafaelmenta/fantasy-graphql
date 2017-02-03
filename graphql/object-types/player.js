@@ -5,6 +5,7 @@ import PlayerPerformanceType from './player-performance';
 import PlayerStatsType from './player-stats';
 import GameNbaType from './game-nba';
 import {LIMIT_GAMES} from '../../config/constant';
+import GraphQLDate from 'graphql-date';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -35,7 +36,7 @@ const PlayerType = new GraphQLObjectType({
     player_slug: { type: GraphQLString },
     retired: { type: GraphQLBoolean },
     rookie: { type: GraphQLBoolean },
-    birthdate: { type: GraphQLString },
+    birthdate: { type: GraphQLDate },
     contract_salary: { type: GraphQLFloat },
     contract_years: { type: GraphQLInt },
 
@@ -67,11 +68,15 @@ const PlayerType = new GraphQLObjectType({
 
     performances : {
       type : new GraphQLList(PlayerPerformanceType),
-      resolve : resolver(Player.Performances),
+      resolve : Player.Performances,
       args : {
         id_round : {
           name : 'id_round',
           type : new GraphQLList(GraphQLInt)
+        },
+        id_season: {
+          name: 'id_season',
+          type: GraphQLInt
         }
       }
     },

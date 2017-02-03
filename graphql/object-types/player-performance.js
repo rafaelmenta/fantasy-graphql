@@ -34,14 +34,20 @@ const PlayerPerformanceType = new GraphQLObjectType({
     personal_fouls : { type : GraphQLInt },
     win_loss : { type : GraphQLInt },
     fantasy_points : { type : GraphQLFloat },
-    
+
     player : {
       type : PlayerType,
       resolve : resolver(PlayerPerformance.Player)
     },
     round : {
       type : RoundType,
-      resolve : resolver(PlayerPerformance.Round)
+      resolve : resolver(PlayerPerformance.Round),
+      args: {
+        id_season: {
+          name: 'id_season',
+          type: GraphQLInt
+        }
+      }
     }
   })
 });
