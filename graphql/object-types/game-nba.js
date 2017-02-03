@@ -1,6 +1,7 @@
 import TeamNbaType from './team-nba';
 import RoundType from './round';
 import {GameNba} from '../../model/setup';
+import GraphQLDate from 'graphql-date';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -35,7 +36,7 @@ const GameNbaType = new GraphQLObjectType({
       type: RoundType,
       resolve: resolver(GameNba.HomeRound)
     },
-    game_time : { type : GraphQLString },
+    game_time : { type : GraphQLDate },
     is_finished : { type : GraphQLBoolean },
     external_id : { type : GraphQLString }
   })

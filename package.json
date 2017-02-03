@@ -9,6 +9,7 @@
     "express": "^4.14.0",
     "express-graphql": "^0.6.1",
     "graphql": "^0.8.2",
+    "graphql-date": "^1.0.2",
     "graphql-relay": "^0.4.4",
     "graphql-sequelize": "^4.0.5",
     "mysql": "^2.12.0",
