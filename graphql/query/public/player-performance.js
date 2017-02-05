@@ -21,6 +21,16 @@ const PlayerPerformanceQuery = {
       }
     }
   },
+  round_averages: {
+    type: new GraphQLList(PlayerPerformanceType),
+    resolve: PlayerPerformance.RoundAverages,
+    args: {
+      id_season: {
+        name: 'id_season',
+        type: new GraphQLNonNull(GraphQLInt)
+      }
+    }
+  },
   performances: {
     type: new GraphQLList(PlayerPerformanceType),
     resolve: resolver(PlayerPerformance),
@@ -30,7 +40,7 @@ const PlayerPerformanceQuery = {
         type : new GraphQLList(GraphQLInt)
       },
       id_player : {
-        name : 'id_player', 
+        name : 'id_player',
         type : new GraphQLList(GraphQLInt)
       }
     }

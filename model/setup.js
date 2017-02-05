@@ -353,6 +353,37 @@ PlayerPerformance.Round = PlayerPerformance.belongsTo(Round, {
   foreignKey : 'id_round'
 });
 
+PlayerPerformance.RoundAverages = function(obj, args) {
+  return PlayerPerformance.findAll({
+    attributes: [
+      'id_round',
+      [PlayerPerformance.sequelize.fn('AVG', PlayerPerformance.sequelize.col('fantasy_points')), 'fantasy_points']
+    ],
+    group: 'id_round',
+    where: {
+      fantasy_points : {
+        $ne : 0
+      },
+    },
+    having: {
+      fantasy_points : {
+        $ne : null
+      }
+    },
+    include: {
+      model: Round,
+      foreignKey: 'id_round',
+      include: {
+        model: Season,
+        foreignKey: 'id_season',
+        where: {
+          id_season: args.id_season
+        }
+      }
+    }
+  });
+};
+
 ////////////// Team Performance Relationships
 
 TeamPerformance.Team = TeamPerformance.belongsTo(TeamSl, {

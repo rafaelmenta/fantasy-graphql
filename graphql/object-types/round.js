@@ -1,4 +1,5 @@
 import GameType from './game';
+import PlayerPerformance from './player-performance';
 import {Round} from '../../model/setup';
 
 const graphql = require('graphql'),
