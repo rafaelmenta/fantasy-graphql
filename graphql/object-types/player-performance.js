@@ -34,6 +34,7 @@ const PlayerPerformanceType = new GraphQLObjectType({
     personal_fouls : { type : GraphQLInt },
     win_loss : { type : GraphQLInt },
     fantasy_points : { type : GraphQLFloat },
+    max_fantasy_points : { type : GraphQLFloat, resolve: (dataset) => dataset.dataValues.max_fantasy_points },
 
     player : {
       type : PlayerType,

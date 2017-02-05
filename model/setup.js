@@ -357,7 +357,8 @@ PlayerPerformance.RoundAverages = function(obj, args) {
   return PlayerPerformance.findAll({
     attributes: [
       'id_round',
-      [PlayerPerformance.sequelize.fn('AVG', PlayerPerformance.sequelize.col('fantasy_points')), 'fantasy_points']
+      [PlayerPerformance.sequelize.fn('AVG', PlayerPerformance.sequelize.col('fantasy_points')), 'fantasy_points'],
+      [PlayerPerformance.sequelize.fn('MAX', PlayerPerformance.sequelize.col('fantasy_points')), 'max_fantasy_points']
     ],
     group: 'id_round',
     where: {
