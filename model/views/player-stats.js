@@ -2,7 +2,7 @@ import Sequelize from 'Sequelize';
 import Conn from '../../database/connection';
 
 const PlayerStats = Conn.define('player_stats', {
-  
+
   id_player : {
     type: Sequelize.INTEGER,
     primaryKey : true,
@@ -19,6 +19,7 @@ const PlayerStats = Conn.define('player_stats', {
       key : 'id_season'
     }
   },
+  games : Sequelize.INTEGER,
   minutes : Sequelize.INTEGER,
   field_goal_attempts : Sequelize.INTEGER,
   free_throw_attempts : Sequelize.INTEGER,

@@ -187,10 +187,12 @@ TeamSl.NextGames = function(team) {
 };
 
 TeamSl.SentTrades = TeamSl.hasMany(Trade, {
+  as: 'sent_trades',
   foreignKey: 'id_sender'
 });
 
 TeamSl.ReceivedTrades = TeamSl.hasMany(Trade, {
+  as: 'received_trades',
   foreignKey: 'id_receiver'
 });
 

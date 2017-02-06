@@ -20,6 +20,7 @@ const PlayerStatsType = new GraphQLObjectType({
 
     id_player : { type : GraphQLInt },
     id_round : { type : GraphQLInt },
+    games : { type : GraphQLInt },
     minutes : { type : GraphQLFloat },
     field_goal_attempts : { type : GraphQLFloat },
     free_throw_attempts : { type : GraphQLFloat },
