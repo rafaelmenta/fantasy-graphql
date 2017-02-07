@@ -7,6 +7,7 @@ const graphql = require('graphql'),
 const {
   GraphQLInt,
   GraphQLList,
+  GraphQLString,
   GraphQLNonNull
 } =  graphql;
 
@@ -18,7 +19,11 @@ const TeamSLQuery = {
     args: {
       id_sl: {
         name: 'id_sl',
-        type: new GraphQLNonNull(GraphQLInt) 
+        type: GraphQLInt
+      },
+      slug: {
+        name: 'slug',
+        type: GraphQLString
       }
     }
   },
@@ -28,7 +33,7 @@ const TeamSLQuery = {
     args: {
       id_sl: {
         name: 'id_sl',
-        type: new GraphQLList(GraphQLInt) 
+        type: new GraphQLList(GraphQLInt)
       }
     }
   },
