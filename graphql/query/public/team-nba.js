@@ -7,14 +7,25 @@ const graphql = require('graphql'),
 const {
   GraphQLInt,
   GraphQLList,
+  GraphQLString,
   GraphQLNonNull
 } =  graphql;
 
 
 const TeamNbaQuery = {
   teams_nba: {
-   type: new GraphQLList(TeamNbaType),
+    type: new GraphQLList(TeamNbaType),
     resolve: resolver(TeamNba)
+  },
+  team_nba: {
+    type: TeamNbaType,
+    resolve: resolver(TeamNba),
+    args: {
+      slug: {
+        name: 'slug',
+        type: GraphQLString
+      }
+    }
   }
 };
 
