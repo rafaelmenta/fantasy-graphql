@@ -30,6 +30,8 @@ const TeamNbaType = new GraphQLObjectType({
     slug: {
       type: GraphQLString
     },
+    primary_color: { type: GraphQLString },
+    secondary_color: { type: GraphQLString },
     players: {
       type: new GraphQLList(PlayerType),
       resolve: resolver(TeamNba.Players)

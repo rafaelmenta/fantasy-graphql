@@ -98,6 +98,16 @@ const TeamSlType = new GraphQLObjectType({
       type: new GraphQLList(GameType),
       resolve: TeamSl.NextGames
     },
+    all_games: {
+      type: new GraphQLList(GameType),
+      resolve: TeamSl.AllGames,
+      args: {
+        id_season: {
+          name: 'id_season',
+          type: GraphQLInt
+        }
+      }
+    },
     records: {
       type: new GraphQLList(TeamSeasonType),
       resolve : resolver(TeamSl.Records),

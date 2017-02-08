@@ -149,7 +149,15 @@ TeamSl.Picks = function(team) {
   });
 };
 
-TeamSl.GetGames = function({id, type, processed, order, limit}) {
+TeamSl.GetGames = function({id, type, processed, order, limit, season}) {
+  let seasonFilter;
+
+  if (season) {
+    seasonFilter = {
+      id_season: season
+    }
+  }
+
   return Game.findAll({
     where : {
       id_type : type,
@@ -157,14 +165,24 @@ TeamSl.GetGames = function({id, type, processed, order, limit}) {
     },
     include: {
       model : Round,
-      where : {
+      where : Object.assign({}, seasonFilter, {
         processed : processed
-      }
+      })
     },
     order : [['id_round', order]],
     limit : limit
   });
-}
+};
+
+TeamSl.AllGames = function(team, args) {
+  return TeamSl.GetGames({
+    id: team.id_sl,
+    processed: [true, false],
+    type: GAME_TYPE.LEAGUE,
+    season: args.id_season,
+    order: 'ASC'
+  })
+};
 
 TeamSl.RecentGames = function(team) {
   return TeamSl.GetGames({
