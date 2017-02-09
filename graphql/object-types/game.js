@@ -1,5 +1,6 @@
 import TeamSlType from './team-sl';
 import RoundType from './round';
+import PlayerTeamPerformance from './player-team-performance';
 import TeamPerformanceType from './team-performance';
 
 import {Game} from '../../model/setup';
@@ -32,6 +33,14 @@ const GameType = new GraphQLObjectType({
     away_team: {
       type: TeamSlType,
       resolve: resolver(Game.AwayTeam)
+    },
+    home_players: {
+      type: new GraphQLList(PlayerTeamPerformance),
+      resolve: Game.HomePlayers
+    },
+    away_players: {
+      type: new GraphQLList(PlayerTeamPerformance),
+      resolve: Game.AwayPlayers
     },
     home_performance: {
       type: TeamPerformanceType,

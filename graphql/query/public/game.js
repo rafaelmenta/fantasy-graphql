@@ -39,6 +39,16 @@ const GameQuery = {
         type : new GraphQLList(GraphQLInt)
       },
     }
+  },
+  game: {
+    type: GameType,
+    resolve: resolver(Game),
+    args: {
+      id_game: {
+        name: 'id_game',
+        type: new GraphQLNonNull(GraphQLInt)
+      }
+    }
   }
 };
 

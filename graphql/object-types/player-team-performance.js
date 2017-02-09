@@ -2,6 +2,7 @@ import {PlayerTeamPerformance} from '../../model/setup';
 import PlayerType from './player';
 import TeamSlType from './team-sl';
 import RoundType from './round';
+import PlayerPerformanceType from './player-performance';
 
 
 const graphql = require('graphql'),
@@ -40,6 +41,10 @@ const PlayerTeamPerformanceType = new GraphQLObjectType({
     team_sl : {
       type : TeamSlType,
       resolve: resolver(PlayerTeamPerformance.TeamSl)
+    },
+    performance: {
+      type: PlayerPerformanceType,
+      resolve: PlayerTeamPerformance.PlayerPerformance
     }
   })
 });

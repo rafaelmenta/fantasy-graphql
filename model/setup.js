@@ -289,8 +289,30 @@ Game.HomePerformance = function(game, args) {
 };
 
 Game.AwayPerformance = function(game, args) {
-  console.log(args);
   return Game.GetPerformance(game.away_team, game.id_round)
+};
+
+Game.GetPlayersPerformance = function({idRound, idSl}) {
+  return PlayerTeamPerformance.findAll({
+    where: {
+      id_round: idRound,
+      id_sl: idSl
+    }
+  })
+};
+
+Game.HomePlayers = function(game) {
+  return Game.GetPlayersPerformance({
+    idRound: game.id_round,
+    idSl: game.home_team
+  })
+};
+
+Game.AwayPlayers = function(game) {
+  return Game.GetPlayersPerformance({
+    idRound: game.id_round,
+    idSl: game.away_team
+  })
 };
 
 ////////////// Round Relationships
@@ -440,6 +462,13 @@ TeamSl.PlayerPerformances = TeamSl.hasMany(PlayerTeamPerformance, {
 Round.Performances = TeamSl.hasMany(PlayerTeamPerformance, {
   foreignKey : 'id_round'
 });
+
+PlayerTeamPerformance.PlayerPerformance = function(playerTeam) {
+  return PlayerPerformance.findOne({
+    id_player: playerTeam.id_player,
+    id_round: playerTeam.id_round
+  })
+};
 
 ////////////// Division Relationships
 
