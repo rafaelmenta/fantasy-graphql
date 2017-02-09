@@ -1,6 +1,7 @@
 import GameType from './game';
 import PlayerPerformance from './player-performance';
 import {Round} from '../../model/setup';
+import GraphQLDate from 'graphql-date';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -29,10 +30,10 @@ const RoundType = new GraphQLObjectType({
       type: GraphQLInt
     },
     open_date : {
-      type: GraphQLString
+      type: GraphQLDate
     },
     close_date : {
-      type : GraphQLString
+      type : GraphQLDate
     },
     processed : {
       type : GraphQLBoolean
