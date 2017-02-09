@@ -465,8 +465,10 @@ Round.Performances = TeamSl.hasMany(PlayerTeamPerformance, {
 
 PlayerTeamPerformance.PlayerPerformance = function(playerTeam) {
   return PlayerPerformance.findOne({
-    id_player: playerTeam.id_player,
-    id_round: playerTeam.id_round
+    where: {
+      id_player: playerTeam.id_player,
+      id_round: playerTeam.id_round
+    }
   })
 };
 
