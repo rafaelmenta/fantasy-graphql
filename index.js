@@ -1,6 +1,7 @@
 import Conn from './database/connection';
 import PublicQuery from './graphql/query/public';
 import PrivateQuery from './graphql/query/private';
+import RootMutationType from './graphql/mutation/root';
 
 const graphql = require('graphql');
 
@@ -13,7 +14,8 @@ const PublicSchema = new GraphQLSchema({
 });
 
 const PrivateSchema = new GraphQLSchema({
-  query: PrivateQuery
+  query: PrivateQuery,
+  mutation: RootMutationType
 });
 
 const client = graphql.graphql;

@@ -5,8 +5,9 @@ import TeamSl from './team-sl';
 
 const User = Conn.define('user', {
   id_user : {
-    type :Sequelize.INTEGER,
-    primaryKey : true
+    autoIncrement: true,
+    type: Sequelize.INTEGER,
+    primaryKey: true
   },
   first_name : Sequelize.STRING,
   last_name : Sequelize.STRING,

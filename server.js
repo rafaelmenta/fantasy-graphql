@@ -5,6 +5,7 @@ import graphqlSequelize from 'graphql-sequelize';
 import Conn from './database/connection';
 import PublicQuery from './graphql/query/public';
 import CombinedQuery from './graphql/query/combined';
+import RootMutationType from './graphql/mutation/root';
 
 const graphql = require('graphql');
 const resolver = graphqlSequelize.resolver;
@@ -20,10 +21,20 @@ Conn
 
 const {
   GraphQLSchema,
+  GraphQLObjectType,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLEnumType,
+  GraphQLInterfaceType,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLInputObjectType
+
 } =  graphql;
 
 const Schema = new GraphQLSchema({
   query: CombinedQuery,
+  mutation: RootMutationType
 });
 
 const app = express();
