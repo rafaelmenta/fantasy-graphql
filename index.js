@@ -10,7 +10,8 @@ const {
 } =  graphql;
 
 const PublicSchema = new GraphQLSchema({
-  query: PublicQuery
+  query: PublicQuery,
+  mutation: RootMutationType
 });
 
 const PrivateSchema = new GraphQLSchema({

@@ -3,6 +3,7 @@ import Sequelize from 'sequelize';
 
 const TeamPlayer = Conn.define('team_player', {
   tp_code : {
+    autoIncrement: true,
     type : Sequelize.INTEGER,
     primaryKey : true
   },
