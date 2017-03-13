@@ -7,6 +7,8 @@ const {
   GraphQLList,
   GraphQLInputObjectType,
   GraphQLInt,
+  GraphQLString,
+  GraphQLBoolean,
   GraphQLNonNull
 
 } =  graphql;
@@ -15,7 +17,10 @@ const input = new GraphQLInputObjectType({
   name: 'TeamInfoInput',
   fields: () => ({
     id_sl: { type: new GraphQLNonNull(GraphQLInt) },
-    id_player: { type: new GraphQLNonNull(GraphQLInt) }
+    id_player: { type: new GraphQLNonNull(GraphQLInt) },
+    primary_position: { type: GraphQLString },
+    secondary_position: { type: GraphQLString },
+    order: { type: GraphQLInt },
   })
 });
 
@@ -42,6 +47,27 @@ const TeamMutation = {
     resolve: (root, {team_info}) => TeamPlayer.destroy({
       where: team_info
     })
+  },
+  saveRoster: {
+    description: 'Returns',
+    type: GraphQLBoolean,
+    args: {
+      roster: { type: new GraphQLList(input) }
+    },
+    resolve: (root, {roster}) => {
+      let promises = roster.map(teamPlayer => TeamPlayer.update({
+        primary_position: teamPlayer.primary_position,
+        secondary_position: teamPlayer.secondary_position,
+        order: teamPlayer.order
+      }, { where : {
+        id_player: teamPlayer.id_player,
+        id_sl: teamPlayer.id_sl
+      }}));
+
+      return Promise.all(promises).then(results => {
+        return results && results.length > 0
+      })
+    }
   },
   recruitPlayer: {
     description: 'Returns player',

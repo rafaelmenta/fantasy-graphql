@@ -829,5 +829,7 @@ export {
   Pick,
   Trade,
   FreeAgencyHistory,
-  TeamPlayer
+  TeamPlayer,
+  PlayerTrade,
+  PickTrade
 };

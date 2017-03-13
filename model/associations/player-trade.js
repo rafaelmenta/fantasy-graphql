@@ -3,6 +3,7 @@ import Sequelize from 'sequelize';
 
 const PlayerTrade = Conn.define('player_trade', {
   ptr_code : {
+    autoIncrement: true,
     type : Sequelize.INTEGER,
     primaryKey : true
   },

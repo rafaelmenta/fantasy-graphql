@@ -3,6 +3,7 @@ import Conn from '../database/connection';
 
 const Trade = Conn.define('trade', {
   id_trade : {
+    autoIncrement: true,
     type :Sequelize.INTEGER,
     primaryKey : true
   },
