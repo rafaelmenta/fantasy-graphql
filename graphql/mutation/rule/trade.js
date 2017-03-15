@@ -188,7 +188,13 @@ const TradeMutation = {
           where: notCurrentTrade
         }).then(cancelTrades)
 
-        return Promise.all([...playersUpdate, ...picksUpdate, relatedPickTrades, relatedPlayerTrades]);
+        return Promise.all([...playersUpdate, ...picksUpdate, relatedPickTrades, relatedPlayerTrades]).then(data => Trade.update({
+          status_trade: TradeStatus.parseValue('ACCEPTED')
+        }, {
+          where: {
+            id_trade: trade.id_trade
+          }
+        }));
       });
 
     }))
