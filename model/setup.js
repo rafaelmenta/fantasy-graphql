@@ -640,6 +640,15 @@ Trade.Picks = Trade.belongsToMany(Pick, {
 PlayerTrade.belongsTo(Player, {
   foreignKey : 'id_player'
 });
+
+PlayerTrade.belongsTo(Trade, {
+  foreignKey: 'id_trade'
+});
+
+Trade.hasMany(PlayerTrade, {
+  foreignKey: 'id_trade'
+});
+
 Player.hasMany(PlayerTrade, {
   foreignKey : 'id_player'
 });
@@ -668,6 +677,15 @@ Trade.ReceiverPlayers = function(trade) {
 PickTrade.belongsTo(Pick, {
   foreignKey : 'id_pick'
 });
+
+Trade.hasMany(PickTrade, {
+  foreignKey: 'id_trade'
+});
+
+PickTrade.belongsTo(Trade, {
+  foreignKey : 'id_trade'
+});
+
 Pick.hasMany(PickTrade, {
   foreignKey : 'id_pick'
 });
