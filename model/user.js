@@ -1,4 +1,4 @@
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 import Conn from '../database/connection';
 import UserTeam  from'./associations/user-team';
 import TeamSl from './team-sl';

@@ -1,4 +1,4 @@
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 import Conn from '../database/connection';
 
 const Trade = Conn.define('trade', {
