@@ -26,6 +26,7 @@ import TeamSeason from './associations/team-season';
 import PlayerTrade from './associations/player-trade';
 import PickTrade from './associations/pick-trade';
 import LeagueConfig from './associations/league-config';
+import Conn from '../database/connection';
 
 // @TODO extract to constant
 const DEFAULT_LIMIT = 20;
@@ -765,23 +766,72 @@ TeamPlayer.Player = TeamPlayer.belongsTo(Player, {
   foreignKey : 'id_player'
 });
 
+League.FreeAgents = function(league) {
+  if (!league.id_league) return;
+
+  return Conn.query(`
+    SELECT p.*, p.primary_position as default_primary, p.secondary_position as default_secondary
+    FROM player p
+    LEFT JOIN team_player tp ON p.id_player = tp.id_player
+    LEFT JOIN team_sl t ON t.id_sl = tp.id_sl
+    LEFT JOIN division d ON d.id_division = t.id_division
+    LEFT JOIN conference c ON c.id_conference = d.id_conference AND id_league = ${league.id_league}
+    WHERE tp.tp_code IS null AND p.retired = false;
+  `, { model: Player });
+}
+
+Player.PlayerSearch = function(search, args) {
+  const query = args.query;
+
+  return Conn.query(`
+    SELECT *
+    FROM player
+    WHERE
+      LOWER(first_name) LIKE "%${query}%" OR
+      LOWER(last_name) LIKE "%${query}%" OR
+      LOWER( CONCAT( first_name,  ' ', last_name ) ) LIKE "%${query}%"
+    LIMIT 0,3;
+  `, {model: Player});
+}
+
+TeamSl.TeamSearch = function(search, args) {
+  const id = args.id_league;
+  const query = args.query;
+
+  return Conn.query(`
+    SELECT t.*
+    FROM team_sl t
+    JOIN division d ON t.id_division = d.id_division
+    JOIN conference c ON d.id_conference=c.id_conference
+    WHERE
+      c.id_league = ${id} AND
+      (LOWER(t.city) LIKE "%${query}%" OR
+      LOWER(t.nickname) LIKE "%${query}%")
+    LIMIT 0,3;
+  `, { model: TeamSl });
+}
+
 Player.Team = function(player, args) {
   const where = {
     id_player : player.id_player
   };
   let include;
 
-  if (!player.team_players && !args.id_league) return;
+  if (!args.id_sl && !args.slug && !args.id_league) return;
 
-  if (player.team_players) {
-    // If you find a better way to get attribute from a parent element on query let me know :)
-    const id_sl = player.team_players[0].dataValues.id_sl;
-    where.id_sl = id_sl;
+  if (args.id_sl) {
+    where.id_sl = args.id_sl;
+  }
+
+  let teamWhere = {};
+  if (args.slug) {
+    teamWhere.slug = args.slug;
   }
 
   if (args.id_league) {
     include = [{
       model: TeamSl,
+      where: teamWhere,
       foreignKey: 'id_sl',
       include : [{
         model: Division,
@@ -804,7 +854,6 @@ Player.Team = function(player, args) {
 };
 
 Player.NextGames = function(player, args) {
-  console.log('args', args);
   return GameNba.findAll({
     where : {
       $or : {

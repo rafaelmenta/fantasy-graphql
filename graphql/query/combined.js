@@ -19,6 +19,7 @@ import DraftQuery from './public/draft';
 import PickQuery from './public/pick';
 import TradeQuery from './public/trade';
 import FreeAgencyHistoryQuery from './public/free-agency-history'
+import SearchQuery from './public/search';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -50,7 +51,8 @@ const Query = new GraphQLObjectType({
     DraftQuery,
     PickQuery,
     TradeQuery,
-    FreeAgencyHistoryQuery
+    FreeAgencyHistoryQuery,
+    SearchQuery,
   ))
 });
 

@@ -3,7 +3,8 @@ import UserType from './user';
 import ConferenceType from './conference';
 import LeagueConfigtype from './league-config';
 import FreeAgencyHistoryType from './free-agency-history';
-import { League, Conference, FreeAgencyHistory } from '../../model/Setup';
+import { League, Conference, FreeAgencyHistory, Player } from '../../model/Setup';
+import PlayerType from './player';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -12,6 +13,7 @@ const {
   GraphQLObjectType,
   GraphQLString,
   GraphQLInt,
+  GraphQLNonNull,
   GraphQLList
 } =  graphql;
 
@@ -49,7 +51,11 @@ const LeagueType = new GraphQLObjectType({
     free_agency_history: {
       type: new GraphQLList(FreeAgencyHistoryType),
       resolve: FreeAgencyHistory.ByLeague
-    }
+    },
+    free_agents: {
+      type: new GraphQLList(PlayerType),
+      resolve: League.FreeAgents,
+    },
   })
 });
 

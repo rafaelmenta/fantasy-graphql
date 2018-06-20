@@ -28,8 +28,12 @@ const PlayerStatsQuery = {
       id_season: {
         name : 'id_season',
         type : new GraphQLNonNull(GraphQLInt)
+      },
+      limit: {
+        name: 'limit',
+        type: GraphQLInt,
       }
-    }
+    },
   },
   averages: {
     type: new GraphQLList(PlayerStatsType),
@@ -40,7 +44,7 @@ const PlayerStatsQuery = {
         type : new GraphQLList(GraphQLInt)
       },
       id_player : {
-        name : 'id_player', 
+        name : 'id_player',
         type : new GraphQLList(GraphQLInt)
       }
     }

@@ -46,8 +46,14 @@ const PlayerType = new GraphQLObjectType({
       args: {
         id_league: {
           type: GraphQLInt
-        }
-      }
+        },
+        id_sl: {
+          type: GraphQLInt,
+        },
+        slug: {
+          type: GraphQLString,
+        },
+      },
     },
 
     team_nba : {
