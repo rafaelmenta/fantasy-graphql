@@ -33,7 +33,10 @@ var timezone = now.dst() ? '-4:00' : '-5:00';
 var Conn = new _sequelize2.default(config.database.name, config.database.login, config.database.password, {
   host: config.database.host,
   dialect: config.database.dialect,
-  timezone: timezone
+  timezone: timezone,
+  dialectOptions: {
+    socketPath: '/var/run/mysqld/mysqld.sock'
+  }
 });
 
 exports.default = Conn;
