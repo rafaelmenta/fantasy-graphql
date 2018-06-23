@@ -1,4 +1,4 @@
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 import Conn from '../../../database/connection';
 import TradeType from '../../object-types/trade';
 import TradeStatus from '../../object-types/enum/trade-status';

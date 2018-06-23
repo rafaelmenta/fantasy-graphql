@@ -1,8 +1,8 @@
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 import Conn from '../database/connection';
 
 const PlayerPerformance = Conn.define('player_performance', {
-  
+
   id_player_performance : {
     type: Sequelize.INTEGER,
     primaryKey : true

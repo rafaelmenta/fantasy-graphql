@@ -1,4 +1,4 @@
-import Sequelize from 'Sequelize';
+import Sequelize from 'sequelize';
 import Conn from '../../database/connection';
 
 const PlayerStats = Conn.define('player_stats', {

@@ -1,7 +1,7 @@
 import TeamSlType from './team-sl';
 import DivisionType from './division';
 import LeagueType from './league';
-import { Conference, Division } from '../../model/Setup';
+import { Conference, Division } from '../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

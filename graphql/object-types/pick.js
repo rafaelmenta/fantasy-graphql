@@ -1,6 +1,6 @@
 import DraftType from './draft';
 import TeamSlType from './team-sl';
-import { Pick } from '../../model/Setup';
+import { Pick } from '../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

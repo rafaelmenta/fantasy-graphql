@@ -1,7 +1,7 @@
 import PickType from './pick';
 import SeasonType from './pick';
 import LeagueType from './league';
-import { Draft } from '../../model/Setup';
+import { Draft } from '../../model/setup';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
