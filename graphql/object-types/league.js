@@ -3,8 +3,9 @@ import UserType from './user';
 import ConferenceType from './conference';
 import LeagueConfigtype from './league-config';
 import FreeAgencyHistoryType from './free-agency-history';
-import { League, Conference, FreeAgencyHistory, Player } from '../../model/Setup';
+import { League, Conference, FreeAgencyHistory, Player, Trade } from '../../model/Setup';
 import PlayerType from './player';
+import TradeType from './trade';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -56,6 +57,10 @@ const LeagueType = new GraphQLObjectType({
       type: new GraphQLList(PlayerType),
       resolve: League.FreeAgents,
     },
+    trade_history: {
+      type: new GraphQLList(TradeType),
+      resolve: Trade.History,
+    }
   })
 });
 

@@ -27,6 +27,7 @@ import PlayerTrade from './associations/player-trade';
 import PickTrade from './associations/pick-trade';
 import LeagueConfig from './associations/league-config';
 import Conn from '../database/connection';
+import TradeStatus from '../graphql/object-types/enum/trade-status';
 
 // @TODO extract to constant
 const DEFAULT_LIMIT = 20;
@@ -633,6 +634,20 @@ Trade.Picks = Trade.belongsToMany(Pick, {
   through : PickTrade,
   foreignKey : 'id_pick'
 })
+
+Trade.History = function (league) {
+
+  return Conn.query(`
+    SELECT t.*
+    FROM trade t
+    JOIN team_sl s ON s.id_sl=t.id_sender
+    JOIN division d ON s.id_division=d.id_division
+    JOIN conference c ON d.id_conference=c.id_conference AND c.id_league = ${league.id_league}
+    WHERE t.status_trade=${TradeStatus.parseValue('ACCEPTED')}
+    ORDER BY t.last_change DESC, t.id_trade DESC
+	 	LIMIT 0,10
+  `, { model: Trade });
+}
 
 // Note to future self:
 //   In order to make queries using through models you need to define relationships (not only belongsToMany)
