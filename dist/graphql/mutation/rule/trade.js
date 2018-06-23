@@ -128,7 +128,8 @@ var TradeMutation = {
       var id_trade = _ref2.id_trade,
           status_trade = _ref2.status_trade;
       return _setup.Trade.update({
-        status_trade: status_trade
+        status_trade: status_trade,
+        last_change: Date.now()
       }, {
         where: {
           id_trade: id_trade
@@ -196,7 +197,8 @@ var TradeMutation = {
 
             var cancelTrades = function cancelTrades(trades) {
               return trades.length > 0 && _setup.Trade.update({
-                status_trade: _tradeStatus2.default.parseValue('CANCELLED')
+                status_trade: _tradeStatus2.default.parseValue('CANCELLED'),
+                last_change: Date.now()
               }, {
                 where: {
                   id_trade: trades.map(function (trade) {
@@ -235,7 +237,8 @@ var TradeMutation = {
 
             return Promise.all([].concat(_toConsumableArray(playersUpdate), _toConsumableArray(picksUpdate), [relatedPickTrades, relatedPlayerTrades])).then(function (data) {
               return _setup.Trade.update({
-                status_trade: _tradeStatus2.default.parseValue('ACCEPTED')
+                status_trade: _tradeStatus2.default.parseValue('ACCEPTED'),
+                last_change: Date.now()
               }, {
                 where: {
                   id_trade: trade.id_trade

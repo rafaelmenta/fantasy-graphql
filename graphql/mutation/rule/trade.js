@@ -99,7 +99,8 @@ const TradeMutation = {
       status_trade: { type: GraphQLInt }
     },
     resolve: (root, {id_trade, status_trade}) => Trade.update({
-      status_trade: status_trade
+      status_trade: status_trade,
+      last_change: Date.now(),
     }, {
       where: {
         id_trade: id_trade
@@ -158,7 +159,8 @@ const TradeMutation = {
         };
 
         let cancelTrades = trades => trades.length > 0 && Trade.update({
-          status_trade: TradeStatus.parseValue('CANCELLED')
+          status_trade: TradeStatus.parseValue('CANCELLED'),
+          last_change: Date.now(),
         },{
           where: {
             id_trade: trades.map(trade => trade.id_trade)
@@ -189,7 +191,8 @@ const TradeMutation = {
         }).then(cancelTrades)
 
         return Promise.all([...playersUpdate, ...picksUpdate, relatedPickTrades, relatedPlayerTrades]).then(data => Trade.update({
-          status_trade: TradeStatus.parseValue('ACCEPTED')
+          status_trade: TradeStatus.parseValue('ACCEPTED'),
+          last_change: Date.now(),
         }, {
           where: {
             id_trade: trade.id_trade

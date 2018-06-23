@@ -787,12 +787,15 @@ League.FreeAgents = function(league) {
   return Conn.query(`
     SELECT p.*, p.primary_position as default_primary, p.secondary_position as default_secondary
     FROM player p
-    LEFT JOIN team_player tp ON p.id_player = tp.id_player
-    LEFT JOIN team_sl t ON t.id_sl = tp.id_sl
-    LEFT JOIN division d ON d.id_division = t.id_division
-    LEFT JOIN conference c ON c.id_conference = d.id_conference AND id_league = ${league.id_league}
-    WHERE tp.tp_code IS null AND p.retired = false;
-  `, { model: Player });
+    WHERE
+       p.retired = false AND
+       NOT EXISTS (
+          SELECT 1 FROM team_player tp
+          JOIN team_sl t ON t.id_sl = tp.id_sl
+          JOIN division d ON d.id_division = t.id_division
+          JOIN conference c ON c.id_conference = d.id_conference AND c.id_league=${league.id_league}
+          WHERE p.id_player=tp.id_player
+       )`, { model: Player });
 }
 
 Player.PlayerSearch = function(search, args) {

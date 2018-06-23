@@ -1,5 +1,7 @@
 import PlayerType from '../../object-types/player';
-import {TeamPlayer, Player} from '../../../model/setup';
+import {TeamPlayer, Player, Division, FreeAgencyHistory} from '../../../model/setup';
+import TeamSl from '../../../model/team-sl';
+import Conference from '../../../model/conference';
 
 const graphql = require('graphql');
 
@@ -44,9 +46,19 @@ const TeamMutation = {
     args: {
       team_info: { type: input }
     },
-    resolve: (root, {team_info}) => TeamPlayer.destroy({
-      where: team_info
-    })
+    resolve: (root, {team_info}) => {
+
+      FreeAgencyHistory.create({
+        action: 'DROP',
+        id_sl: team_info.id_sl,
+        event_date: Date.now(),
+        id_player: team_info.id_player,
+      });
+
+      return TeamPlayer.destroy({
+        where: team_info,
+      })
+    }
   },
   saveRoster: {
     description: 'Returns',
@@ -73,12 +85,39 @@ const TeamMutation = {
     description: 'Returns player',
     type: PlayerType,
     args: {
-      team_info: { type: input }
+      team_info: { type: input },
+      id_league: { type: new GraphQLNonNull(GraphQLInt) },
     },
-    resolve: (root, {team_info}) => Player.findOne({
-        where: { id_player: team_info.id_player }
+    resolve: (root, {team_info, id_league}) => TeamPlayer.findOne({
+      where: { id_player: team_info.id_player },
+      include: [{
+        model: TeamSl,
+        foreignKey: 'id_sl',
+        include: [{
+          model: Division,
+          foreignKey: 'id_division',
+          include: [{
+            model: Conference,
+            foreignKey: 'id_conference',
+            where: { id_league }
+          }]
+        }]
+      }]
+    }).then(teamPlayer =>  {
+      if (teamPlayer && teamPlayer.id_sl !== 0) return null;
+
+      return Player.findOne({
+        where: { id_player: team_info.id_player },
+      });
     }).then(player => {
       if (!player) return null;
+
+      FreeAgencyHistory.create({
+        action: 'PICK',
+        event_date: Date.now(),
+        id_sl: team_info.id_sl,
+        id_player: player.id_player,
+      });
 
       TeamPlayer.create({
         id_sl: team_info.id_sl,

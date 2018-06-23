@@ -870,7 +870,7 @@ _teamPlayer2.default.Player = _teamPlayer2.default.belongsTo(_player2.default, {
 _league2.default.FreeAgents = function (league) {
   if (!league.id_league) return;
 
-  return _connection2.default.query('\n    SELECT p.*, p.primary_position as default_primary, p.secondary_position as default_secondary\n    FROM player p\n    LEFT JOIN team_player tp ON p.id_player = tp.id_player\n    LEFT JOIN team_sl t ON t.id_sl = tp.id_sl\n    LEFT JOIN division d ON d.id_division = t.id_division\n    LEFT JOIN conference c ON c.id_conference = d.id_conference AND id_league = ' + league.id_league + '\n    WHERE tp.tp_code IS null AND p.retired = false;\n  ', { model: _player2.default });
+  return _connection2.default.query('\n    SELECT p.*, p.primary_position as default_primary, p.secondary_position as default_secondary\n    FROM player p\n    WHERE\n       p.retired = false AND\n       NOT EXISTS (\n          SELECT 1 FROM team_player tp\n          JOIN team_sl t ON t.id_sl = tp.id_sl\n          JOIN division d ON d.id_division = t.id_division\n          JOIN conference c ON c.id_conference = d.id_conference AND c.id_league=' + league.id_league + '\n          WHERE p.id_player=tp.id_player\n       )', { model: _player2.default });
 };
 
 _player2.default.PlayerSearch = function (search, args) {

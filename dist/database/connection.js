@@ -35,7 +35,7 @@ var Conn = new _sequelize2.default(config.database.name, config.database.login, 
   dialect: config.database.dialect,
   timezone: timezone,
   dialectOptions: {
-    socketPath: '/var/run/mysqld/mysqld.sock'
+    socketPath: config.database.socketPath
   }
 });
 

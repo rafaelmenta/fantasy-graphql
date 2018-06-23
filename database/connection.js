@@ -26,7 +26,7 @@ const Conn = new Sequelize(
     dialect: config.database.dialect,
     timezone: timezone,
     dialectOptions: {
-      socketPath: '/var/run/mysqld/mysqld.sock',
+      socketPath: config.database.socketPath,
     }
   }
 );

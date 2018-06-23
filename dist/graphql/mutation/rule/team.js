@@ -10,6 +10,14 @@ var _player2 = _interopRequireDefault(_player);
 
 var _setup = require('../../../model/setup');
 
+var _teamSl = require('../../../model/team-sl');
+
+var _teamSl2 = _interopRequireDefault(_teamSl);
+
+var _conference = require('../../../model/conference');
+
+var _conference2 = _interopRequireDefault(_conference);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql');
@@ -62,6 +70,15 @@ var TeamMutation = {
     },
     resolve: function resolve(root, _ref2) {
       var team_info = _ref2.team_info;
+
+
+      _setup.FreeAgencyHistory.create({
+        action: 'DROP',
+        id_sl: team_info.id_sl,
+        event_date: Date.now(),
+        id_player: team_info.id_player
+      });
+
       return _setup.TeamPlayer.destroy({
         where: team_info
       });
@@ -96,14 +113,42 @@ var TeamMutation = {
     description: 'Returns player',
     type: _player2.default,
     args: {
-      team_info: { type: input }
+      team_info: { type: input },
+      id_league: { type: new GraphQLNonNull(GraphQLInt) }
     },
     resolve: function resolve(root, _ref4) {
-      var team_info = _ref4.team_info;
-      return _setup.Player.findOne({
-        where: { id_player: team_info.id_player }
+      var team_info = _ref4.team_info,
+          id_league = _ref4.id_league;
+      return _setup.TeamPlayer.findOne({
+        where: { id_player: team_info.id_player },
+        include: [{
+          model: _teamSl2.default,
+          foreignKey: 'id_sl',
+          include: [{
+            model: _setup.Division,
+            foreignKey: 'id_division',
+            include: [{
+              model: _conference2.default,
+              foreignKey: 'id_conference',
+              where: { id_league: id_league }
+            }]
+          }]
+        }]
+      }).then(function (teamPlayer) {
+        if (teamPlayer && teamPlayer.id_sl !== 0) return null;
+
+        return _setup.Player.findOne({
+          where: { id_player: team_info.id_player }
+        });
       }).then(function (player) {
         if (!player) return null;
+
+        _setup.FreeAgencyHistory.create({
+          action: 'PICK',
+          event_date: Date.now(),
+          id_sl: team_info.id_sl,
+          id_player: player.id_player
+        });
 
         _setup.TeamPlayer.create({
           id_sl: team_info.id_sl,
