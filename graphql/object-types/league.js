@@ -3,7 +3,7 @@ import UserType from './user';
 import ConferenceType from './conference';
 import LeagueConfigtype from './league-config';
 import FreeAgencyHistoryType from './free-agency-history';
-import { League, Conference, FreeAgencyHistory, Player, Trade } from '../../model/Setup';
+import { League, Conference, FreeAgencyHistory, Player, Trade } from '../../model/setup';
 import PlayerType from './player';
 import TradeType from './trade';
 

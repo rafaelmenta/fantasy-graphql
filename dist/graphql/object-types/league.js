@@ -24,7 +24,7 @@ var _freeAgencyHistory = require('./free-agency-history');
 
 var _freeAgencyHistory2 = _interopRequireDefault(_freeAgencyHistory);
 
-var _Setup = require('../../model/Setup');
+var _setup = require('../../model/setup');
 
 var _player = require('./player');
 
@@ -64,31 +64,31 @@ var LeagueType = new GraphQLObjectType({
       },
       owner: {
         type: _user2.default,
-        resolve: resolver(_Setup.League.Owner)
+        resolve: resolver(_setup.League.Owner)
       },
       conferences: {
         type: new GraphQLList(_conference2.default),
-        resolve: resolver(_Setup.League.Conferences)
+        resolve: resolver(_setup.League.Conferences)
       },
       teams: {
         type: new GraphQLList(_teamSl2.default),
-        resolve: _Setup.League.Teams
+        resolve: _setup.League.Teams
       },
       configs: {
         type: new GraphQLList(_leagueConfig2.default),
-        resolve: resolver(_Setup.League.Configs)
+        resolve: resolver(_setup.League.Configs)
       },
       free_agency_history: {
         type: new GraphQLList(_freeAgencyHistory2.default),
-        resolve: _Setup.FreeAgencyHistory.ByLeague
+        resolve: _setup.FreeAgencyHistory.ByLeague
       },
       free_agents: {
         type: new GraphQLList(_player2.default),
-        resolve: _Setup.League.FreeAgents
+        resolve: _setup.League.FreeAgents
       },
       trade_history: {
         type: new GraphQLList(_trade2.default),
-        resolve: _Setup.Trade.History
+        resolve: _setup.Trade.History
       }
     };
   }
