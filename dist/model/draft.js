@@ -34,7 +34,8 @@ var Draft = _connection2.default.define('draft', {
     }
   },
   year_draft: _sequelize2.default.INTEGER,
-  status_draft: _sequelize2.default.INTEGER
+  status_draft: _sequelize2.default.INTEGER,
+  draft_type: _sequelize2.default.INTEGER
 }, {
   updatedAt: false,
   createdAt: false,

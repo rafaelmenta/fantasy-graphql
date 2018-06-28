@@ -10,7 +10,7 @@ const {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean,
-  GraphQLList
+  GraphQLList,
 } =  graphql;
 
 const PickType = new GraphQLObjectType({
@@ -35,13 +35,13 @@ const PickType = new GraphQLObjectType({
       type: GraphQLInt,
     },
     deadline : {
-      type : GraphQLInt
+      type : GraphQLString,
     },
     is_used : {
-      type : GraphQLBoolean
+      type : GraphQLBoolean,
     },
     id_player : {
-      type : GraphQLInt
+      type : GraphQLInt,
     },
     draft: {
       type: DraftType,

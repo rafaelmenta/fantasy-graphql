@@ -37,6 +37,12 @@ const GAME_TYPE = {
   PLAYOFF : 2,
   FRIENDLY : 3
 };
+
+const DRAFT_TYPE = {
+  GENERAL: 1,
+  ROOKIES: 2,
+};
+
 const CURRENT_SEASON = 'CURRENT';
 
 // end todo
@@ -533,6 +539,20 @@ League.Configs = League.hasMany(LeagueConfig, {
   foreignKey : 'id_league'
 });
 
+League.MostRecentDraft = function(league) {
+  return Draft.findOne({
+    include: [{
+      model: Season,
+      where: {
+        current: true,
+      }
+    }],
+    where: {
+      id_league: league.id_league,
+    },
+  });
+};
+
 ////////////// Free Agency History Relationships
 
 FreeAgencyHistory.Player = FreeAgencyHistory.belongsTo(Player, {
@@ -597,6 +617,24 @@ Draft.League = Draft.belongsTo(League, {
 Draft.Picks = Draft.hasMany(Pick, {
   foreignKey : 'id_draft'
 });
+
+Draft.AvailablePlayers = function(draft) {
+  if (!draft.id_league) return;
+
+  return Conn.query(`
+  SELECT p.*, p.primary_position as default_primary, p.secondary_position as default_secondary
+  FROM player p
+  WHERE
+    p.retired = false AND
+    ${draft.draft_type === DRAFT_TYPE.ROOKIES ? 'p.rookie = TRUE AND' : ''}
+      NOT EXISTS (
+        SELECT 1 FROM team_player tp
+        JOIN team_sl t ON t.id_sl = tp.id_sl
+        JOIN division d ON d.id_division = t.id_division
+        JOIN conference c ON c.id_conference = d.id_conference AND c.id_league=${draft.id_league}
+        WHERE p.id_player=tp.id_player
+      )`, { model: Player });
+}
 
 ////////////// User Relationships
 

@@ -22,6 +22,7 @@ const Draft = Conn.define('draft', {
   },
   year_draft : Sequelize.INTEGER,
   status_draft : Sequelize.INTEGER,
+  draft_type: Sequelize.INTEGER,
 }, {
   updatedAt : false,
   createdAt : false,

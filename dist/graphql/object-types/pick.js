@@ -49,7 +49,7 @@ var PickType = new GraphQLObjectType({
         type: GraphQLInt
       },
       deadline: {
-        type: GraphQLInt
+        type: GraphQLString
       },
       is_used: {
         type: GraphQLBoolean

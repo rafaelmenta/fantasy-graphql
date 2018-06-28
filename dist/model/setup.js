@@ -127,6 +127,12 @@ var GAME_TYPE = {
   PLAYOFF: 2,
   FRIENDLY: 3
 };
+
+var DRAFT_TYPE = {
+  GENERAL: 1,
+  ROOKIES: 2
+};
+
 var CURRENT_SEASON = 'CURRENT';
 
 // end todo
@@ -628,6 +634,20 @@ _league2.default.Configs = _league2.default.hasMany(_leagueConfig2.default, {
   foreignKey: 'id_league'
 });
 
+_league2.default.MostRecentDraft = function (league) {
+  return _draft2.default.findOne({
+    include: [{
+      model: _season2.default,
+      where: {
+        current: true
+      }
+    }],
+    where: {
+      id_league: league.id_league
+    }
+  });
+};
+
 ////////////// Free Agency History Relationships
 
 _freeAgencyHistory2.default.Player = _freeAgencyHistory2.default.belongsTo(_player2.default, {
@@ -692,6 +712,12 @@ _draft2.default.League = _draft2.default.belongsTo(_league2.default, {
 _draft2.default.Picks = _draft2.default.hasMany(_pick2.default, {
   foreignKey: 'id_draft'
 });
+
+_draft2.default.AvailablePlayers = function (draft) {
+  if (!draft.id_league) return;
+
+  return _connection2.default.query('\n  SELECT p.*, p.primary_position as default_primary, p.secondary_position as default_secondary\n  FROM player p\n  WHERE\n    p.retired = false AND\n    ' + (draft.draft_type === DRAFT_TYPE.ROOKIES ? 'p.rookie = TRUE AND' : '') + '\n      NOT EXISTS (\n        SELECT 1 FROM team_player tp\n        JOIN team_sl t ON t.id_sl = tp.id_sl\n        JOIN division d ON d.id_division = t.id_division\n        JOIN conference c ON c.id_conference = d.id_conference AND c.id_league=' + draft.id_league + '\n        WHERE p.id_player=tp.id_player\n      )', { model: _player2.default });
+};
 
 ////////////// User Relationships
 
