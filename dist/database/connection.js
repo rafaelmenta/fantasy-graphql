@@ -31,6 +31,7 @@ var now = new Date();
 var timezone = now.dst() ? '-4:00' : '-5:00';
 
 var Conn = new _sequelize2.default(config.database.name, config.database.login, config.database.password, {
+  logging: false,
   host: config.database.host,
   dialect: config.database.dialect,
   timezone: timezone,

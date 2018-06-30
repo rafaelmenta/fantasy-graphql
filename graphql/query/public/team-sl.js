@@ -1,5 +1,6 @@
 import TeamSlType from '../../object-types/team-sl';
 import {TeamSl} from '../../../model/setup';
+import { ManualTeamOverviewQuery } from '../../object-types/manual/team-overview';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -37,6 +38,7 @@ const TeamSLQuery = {
       }
     }
   },
+  team_overview: ManualTeamOverviewQuery,
 };
 
 export default TeamSLQuery;

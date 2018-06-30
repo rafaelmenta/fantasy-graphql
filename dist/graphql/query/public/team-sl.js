@@ -10,6 +10,8 @@ var _teamSl2 = _interopRequireDefault(_teamSl);
 
 var _setup = require('../../../model/setup');
 
+var _teamOverview = require('../../object-types/manual/team-overview');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql'),
@@ -45,7 +47,8 @@ var TeamSLQuery = {
         type: new GraphQLList(GraphQLInt)
       }
     }
-  }
+  },
+  team_overview: _teamOverview.ManualTeamOverviewQuery
 };
 
 exports.default = TeamSLQuery;

@@ -734,6 +734,10 @@ _userTeam2.default.Team = _userTeam2.default.belongsTo(_teamSl2.default, {
   foreignKey: 'id_sl'
 });
 
+_userTeam2.default.User = _userTeam2.default.belongsTo(_user2.default, {
+  foreignKey: 'id_user'
+});
+
 ////////////// Trade Relationships
 
 _trade2.default.Sender = _trade2.default.belongsTo(_teamSl2.default, {

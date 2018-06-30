@@ -22,6 +22,7 @@ const Conn = new Sequelize(
   config.database.login,
   config.database.password,
   {
+    logging: false,
     host: config.database.host,
     dialect: config.database.dialect,
     timezone: timezone,

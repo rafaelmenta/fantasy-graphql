@@ -651,6 +651,10 @@ UserTeam.Team = UserTeam.belongsTo(TeamSl, {
   foreignKey: 'id_sl'
 });
 
+UserTeam.User = UserTeam.belongsTo(User, {
+  foreignKey: 'id_user',
+});
+
 ////////////// Trade Relationships
 
 Trade.Sender = Trade.belongsTo(TeamSl, {
