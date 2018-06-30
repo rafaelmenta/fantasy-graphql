@@ -101,7 +101,7 @@ const LeagueOverview = (root, args) => {
       },
       { model: TeamSeason, include: [{ model: Season, where: { current: true } }] },
       { model: UserTeam, include: [{ model: User }] },
-      { model: TeamStats, include: [{model: Season, where: { current: true } }] },
+      { model: TeamStats, required: false, include: [{model: Season, where: { current: true }, required: false }], },
     ]
   }).then(teams => {
 
