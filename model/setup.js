@@ -647,6 +647,10 @@ User.Teams = User.belongsToMany(TeamSl, {
   foreignKey: 'id_user'
 });
 
+TeamSl.UserTeams = TeamSl.hasMany(UserTeam, {
+  foreignKey: 'id_sl',
+});
+
 UserTeam.Team = UserTeam.belongsTo(TeamSl, {
   foreignKey: 'id_sl'
 });

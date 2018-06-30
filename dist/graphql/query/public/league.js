@@ -10,6 +10,8 @@ var _league2 = _interopRequireDefault(_league);
 
 var _setup = require('../../../model/setup');
 
+var _leagueOverview = require('../../object-types/manual/league-overview');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql'),
@@ -34,7 +36,8 @@ var LeagueQuery = {
         name: 'id_league'
       }
     }
-  }
+  },
+  league_overview: _leagueOverview.ManualLeagueOverviewQuery
 };
 
 exports.default = LeagueQuery;

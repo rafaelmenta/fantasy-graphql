@@ -12,7 +12,6 @@ const {
   GraphQLNonNull
 } =  graphql;
 
-
 const TeamSLQuery = {
   team: {
     type: TeamSlType,

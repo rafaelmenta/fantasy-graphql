@@ -242,6 +242,8 @@ var ManualTeamOverview = new _graphql.GraphQLObjectType({
   }
 });
 
+// Queries -----------------------------------------------------------------------------------------
+
 var ManualTeamOverviewResolve = function ManualTeamOverviewResolve(root, args) {
   if (args.id_sl) {
     return ManualTeamOverviewById(args);
@@ -253,17 +255,6 @@ var ManualTeamOverviewResolve = function ManualTeamOverviewResolve(root, args) {
     return ManualTeamOverviewById({ team: team });
   });
 };
-
-var ManualTeamOverviewQuery = exports.ManualTeamOverviewQuery = {
-  type: ManualTeamOverview,
-  args: {
-    id_sl: { name: 'id_sl', type: _graphql.GraphQLInt },
-    slug: { name: 'slug', type: _graphql.GraphQLString }
-  },
-  resolve: ManualTeamOverviewResolve
-};
-
-// Queries -----------------------------------------------------------------------------------------
 
 var ManualTeamOverviewById = function ManualTeamOverviewById(args) {
   var team = args.team;
@@ -347,4 +338,15 @@ var ManualTeamOverviewById = function ManualTeamOverviewById(args) {
       return results[0];
     });
   });
+};
+
+// Export query ------------------------------------------------------------------------------------
+
+var ManualTeamOverviewQuery = exports.ManualTeamOverviewQuery = {
+  type: ManualTeamOverview,
+  args: {
+    id_sl: { name: 'id_sl', type: _graphql.GraphQLInt },
+    slug: { name: 'slug', type: _graphql.GraphQLString }
+  },
+  resolve: ManualTeamOverviewResolve
 };

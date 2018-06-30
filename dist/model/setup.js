@@ -730,6 +730,10 @@ _user2.default.Teams = _user2.default.belongsToMany(_teamSl2.default, {
   foreignKey: 'id_user'
 });
 
+_teamSl2.default.UserTeams = _teamSl2.default.hasMany(_userTeam2.default, {
+  foreignKey: 'id_sl'
+});
+
 _userTeam2.default.Team = _userTeam2.default.belongsTo(_teamSl2.default, {
   foreignKey: 'id_sl'
 });

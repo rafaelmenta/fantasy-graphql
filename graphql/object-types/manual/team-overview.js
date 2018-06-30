@@ -176,6 +176,8 @@ const ManualTeamOverview = new GraphQLObjectType({
   }),
 });
 
+// Queries -----------------------------------------------------------------------------------------
+
 const ManualTeamOverviewResolve = (root, args) => {
   if (args.id_sl) {
     return ManualTeamOverviewById(args);
@@ -186,19 +188,8 @@ const ManualTeamOverviewResolve = (root, args) => {
       { model: TeamSeason, include: [{ model: Season, where: { current: true } }] }
     ],
     where: { slug: args.slug },
-  }).then(team => ManualTeamOverviewById({team}) );
+  }).then(team => ManualTeamOverviewById({ team }));
 };
-
-export const ManualTeamOverviewQuery = {
-  type: ManualTeamOverview,
-  args: {
-    id_sl: {name: 'id_sl', type: GraphQLInt },
-    slug: {name: 'slug', type: GraphQLString },
-  },
-  resolve: ManualTeamOverviewResolve,
-};
-
-// Queries -----------------------------------------------------------------------------------------
 
 const ManualTeamOverviewById = args => {
   const team = args.team;
@@ -291,4 +282,15 @@ const ManualTeamOverviewById = args => {
     return Promise.all([team, teamsQuery]).then(results => results[0]);
   })
 
+};
+
+// Export query ------------------------------------------------------------------------------------
+
+export const ManualTeamOverviewQuery = {
+  type: ManualTeamOverview,
+  args: {
+    id_sl: { name: 'id_sl', type: GraphQLInt },
+    slug: { name: 'slug', type: GraphQLString },
+  },
+  resolve: ManualTeamOverviewResolve,
 };

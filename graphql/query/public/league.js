@@ -1,5 +1,6 @@
 import LeagueType from '../../object-types/league';
 import {League} from '../../../model/setup';
+import { ManualLeagueOverviewQuery } from '../../object-types/manual/league-overview';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -25,7 +26,8 @@ const LeagueQuery = {
         name: 'id_league'
       }
     }
-  }
+  },
+  league_overview: ManualLeagueOverviewQuery,
 };
 
 export default LeagueQuery;
