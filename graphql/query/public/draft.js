@@ -3,6 +3,7 @@ import {Draft, Pick, Division, Conference, Season} from '../../../model/setup';
 import SeasonType from '../../object-types/season';
 import TeamSl from '../../../model/team-sl';
 import PlayerType from '../../object-types/player';
+import Player from '../../../model/player';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;

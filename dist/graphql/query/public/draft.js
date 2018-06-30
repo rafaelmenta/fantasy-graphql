@@ -22,6 +22,10 @@ var _player = require('../../object-types/player');
 
 var _player2 = _interopRequireDefault(_player);
 
+var _player3 = require('../../../model/player');
+
+var _player4 = _interopRequireDefault(_player3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql'),
@@ -81,7 +85,7 @@ var ManualPicks = {
         player: {
           type: _player2.default,
           resolve: function resolve(pick) {
-            return pick.id_player && Player.findOne({ where: { id_player: pick.id_player } });
+            return pick.id_player && _player4.default.findOne({ where: { id_player: pick.id_player } });
           }
         },
         owner: ManualTeam('id_owner'),
