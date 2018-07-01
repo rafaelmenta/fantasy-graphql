@@ -12,6 +12,8 @@ var _setup = require('../../../model/setup');
 
 var _teamOverview = require('../../object-types/manual/team-overview');
 
+var _teamRoster = require('../../object-types/manual/team-roster');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql'),
@@ -48,7 +50,8 @@ var TeamSLQuery = {
       }
     }
   },
-  team_overview: _teamOverview.ManualTeamOverviewQuery
+  team_overview: _teamOverview.ManualTeamOverviewQuery,
+  team_roster: _teamRoster.ManualTeamRosterQuery
 };
 
 exports.default = TeamSLQuery;
