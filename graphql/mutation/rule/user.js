@@ -1,6 +1,7 @@
 import UserType from '../../object-types/private/user';
 import UserInputType from '../../object-types/input/user';
-import {User} from '../../../model/setup';
+import {User, UserTeam} from '../../../model/setup';
+import Conn from '../../../database/connection';
 
 const graphql = require('graphql');
 
@@ -41,7 +42,23 @@ const UserMutation = {
       where : {
         id_user: user.id_user
       }
-    })
+    }),
+  },
+  updateDefaultTeam: {
+    type: new GraphQLList(GraphQLInt),
+    description: 'Return [update_count]',
+    args: {
+      id_user: { type: new GraphQLNonNull(GraphQLInt) },
+      id_sl: { type: new GraphQLNonNull(GraphQLInt) },
+    },
+    resolve: (root, args) => Conn.transaction(t =>
+      UserTeam.update({ default_team: false }, { where: {id_user: args.id_user}, transaction: t })
+        .then(() => UserTeam.update(
+          { default_team: true },
+          { where: {id_user: args.id_user, id_sl: args.id_sl}, transaction: t }
+        )
+      )
+    ),
   }
 };
 

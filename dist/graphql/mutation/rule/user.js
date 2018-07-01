@@ -14,6 +14,10 @@ var _user4 = _interopRequireDefault(_user3);
 
 var _setup = require('../../../model/setup');
 
+var _connection = require('../../../database/connection');
+
+var _connection2 = _interopRequireDefault(_connection);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql');
@@ -60,6 +64,21 @@ var UserMutation = {
         where: {
           id_user: user.id_user
         }
+      });
+    }
+  },
+  updateDefaultTeam: {
+    type: new GraphQLList(GraphQLInt),
+    description: 'Return [update_count]',
+    args: {
+      id_user: { type: new GraphQLNonNull(GraphQLInt) },
+      id_sl: { type: new GraphQLNonNull(GraphQLInt) }
+    },
+    resolve: function resolve(root, args) {
+      return _connection2.default.transaction(function (t) {
+        return _setup.UserTeam.update({ default_team: false }, { where: { id_user: args.id_user }, transaction: t }).then(function () {
+          return _setup.UserTeam.update({ default_team: true }, { where: { id_user: args.id_user, id_sl: args.id_sl }, transaction: t });
+        });
       });
     }
   }
