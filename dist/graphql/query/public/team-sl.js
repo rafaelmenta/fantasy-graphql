@@ -14,6 +14,14 @@ var _teamOverview = require('../../object-types/manual/team-overview');
 
 var _teamRoster = require('../../object-types/manual/team-roster');
 
+var _trade = require('../../../model/trade');
+
+var _trade2 = _interopRequireDefault(_trade);
+
+var _tradeStatus = require('../../object-types/enum/trade-status');
+
+var _tradeStatus2 = _interopRequireDefault(_tradeStatus);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql'),
@@ -51,7 +59,24 @@ var TeamSLQuery = {
     }
   },
   team_overview: _teamOverview.ManualTeamOverviewQuery,
-  team_roster: _teamRoster.ManualTeamRosterQuery
+  team_roster: _teamRoster.ManualTeamRosterQuery,
+  team_trades: {
+    type: GraphQLInt,
+    args: {
+      id_sl: {
+        name: 'id_sl',
+        type: GraphQLInt
+      }
+    },
+    resolve: function resolve(root, args) {
+      return _trade2.default.count({
+        where: {
+          id_receiver: args.id_sl,
+          status_trade: _tradeStatus2.default.parseValue('PENDING')
+        }
+      });
+    }
+  }
 };
 
 exports.default = TeamSLQuery;
