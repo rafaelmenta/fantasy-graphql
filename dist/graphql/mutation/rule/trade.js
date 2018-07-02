@@ -137,14 +137,25 @@ var TradeMutation = {
       });
     }
   },
+  updateViewCount: {
+    type: new GraphQLList(GraphQLInt),
+    description: 'Returns update_count',
+    args: {
+      id_trade: { type: GraphQLInt }
+    },
+    resolve: function resolve(root, _ref3) {
+      var id_trade = _ref3.id_trade;
+      return _setup.Trade.update({ views: _sequelize2.default.literal('views + 1') }, { where: { id_trade: id_trade } });
+    }
+  },
   acceptTrade: {
     type: new GraphQLList(GraphQLInt),
     description: 'Returns [update_count]',
     args: {
       id_trade: { type: GraphQLInt }
     },
-    resolve: function resolve(root, _ref3) {
-      var id_trade = _ref3.id_trade;
+    resolve: function resolve(root, _ref4) {
+      var id_trade = _ref4.id_trade;
       return _connection2.default.transaction(function (t) {
         return _setup.Trade.findOne({
           where: {

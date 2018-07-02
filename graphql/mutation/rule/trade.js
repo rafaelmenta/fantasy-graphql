@@ -107,6 +107,15 @@ const TradeMutation = {
       }
     })
   },
+  updateViewCount: {
+    type: new GraphQLList(GraphQLInt),
+    description: 'Returns update_count',
+    args: {
+      id_trade: { type: GraphQLInt },
+    },
+    resolve: (root, {id_trade}) =>
+      Trade.update({ views: Sequelize.literal('views + 1') }, { where: { id_trade } })
+  },
   acceptTrade: {
     type: new GraphQLList(GraphQLInt),
     description: 'Returns [update_count]',
