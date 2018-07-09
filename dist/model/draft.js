@@ -17,7 +17,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Draft = _connection2.default.define('draft', {
   id_draft: {
     type: _sequelize2.default.INTEGER,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true
   },
   id_season: {
     type: _sequelize2.default.INTEGER,

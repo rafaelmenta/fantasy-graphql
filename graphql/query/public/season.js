@@ -1,5 +1,6 @@
 import SeasonType from '../../object-types/season';
 import {Season} from '../../../model/setup';
+import Conn from '../../../database/connection';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -28,7 +29,18 @@ const SeasonQuery = {
   },
   seasons: {
    type: new GraphQLList(SeasonType),
-    resolve: resolver(Season)
+   resolve: resolver(Season)
+  },
+  available_seasons: {
+    type: new GraphQLList(SeasonType),
+    resolve: () => Conn.query(`
+      SELECT *
+      FROM season a
+      WHERE a.id_season >= (
+        SELECT id_season
+        FROM season b
+        WHERE b.current = true)
+    `, {model: Season}),
   }
 };
 

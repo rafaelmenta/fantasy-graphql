@@ -9,6 +9,7 @@ const TeamSl = Conn.define('team_sl', {
     type :Sequelize.INTEGER,
     primaryKey : true
   },
+  league_id: Sequelize.INTEGER,
   city : Sequelize.STRING,
   nickname : Sequelize.STRING,
   symbol : Sequelize.STRING,

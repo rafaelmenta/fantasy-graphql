@@ -27,29 +27,145 @@ var _connection = require("../../../database/connection");
 
 var _connection2 = _interopRequireDefault(_connection);
 
+var _draft3 = require("../../object-types/draft");
+
+var _draft4 = _interopRequireDefault(_draft3);
+
+var _graphql = require("graphql");
+
+var _graphqlSequelize = require("graphql-sequelize");
+
+var _pick = require("../../object-types/pick");
+
+var _pick2 = _interopRequireDefault(_pick);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var graphql = require('graphql');
+var DraftInput = new _graphql.GraphQLInputObjectType({
+  name: 'DraftInput',
+  fields: function fields() {
+    return {
+      id_season: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      id_league: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      draft_type: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      year_draft: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+      status_draft: { type: _graphql.GraphQLInt, defaultValue: _draftStatus2.default.parseValue('STATUS_CLOSED') }
+    };
+  }
+});
 
-var GraphQLNonNull = graphql.GraphQLNonNull,
-    GraphQLInt = graphql.GraphQLInt;
 var DraftMutation = exports.DraftMutation = {
+  createDraft: {
+    description: 'Create a draft',
+    type: _draft4.default,
+    args: {
+      draft: { type: DraftInput }
+    },
+    resolve: function resolve(root, _ref) {
+      var draft = _ref.draft;
+      return _draft2.default.create(draft);
+    }
+  },
+  deleteDraft: {
+    description: 'Delete a draft',
+    type: _graphql.GraphQLInt,
+    args: {
+      id_draft: { type: _graphql.GraphQLInt }
+    },
+    resolve: function resolve(root, _ref2) {
+      var id_draft = _ref2.id_draft;
+      return _draft2.default.destroy({ where: { id_draft: id_draft } });
+    }
+  },
+  updateDraftStatus: {
+    description: 'Update draft status',
+    type: new _graphql.GraphQLList(_graphql.GraphQLInt),
+    args: {
+      id_draft: { type: _graphql.GraphQLInt },
+      status_draft: { type: _graphql.GraphQLInt }
+    },
+    resolve: function resolve(root, _ref3) {
+      var id_draft = _ref3.id_draft,
+          status_draft = _ref3.status_draft;
+      return _draft2.default.update({ status_draft: status_draft }, { where: { id_draft: id_draft } });
+    }
+  },
+  createRound: {
+    description: 'Create picks for a Draft',
+    type: new _graphql.GraphQLList(_pick2.default),
+    args: {
+      id_draft: { type: _graphql.GraphQLInt },
+      id_league: { type: _graphql.GraphQLInt },
+      round: { type: _graphql.GraphQLInt }
+    },
+    resolve: function resolve(root, _ref4) {
+      var id_draft = _ref4.id_draft,
+          id_league = _ref4.id_league,
+          round = _ref4.round;
+      return _connection2.default.transaction(function (t) {
+        return _teamSl2.default.findAll({ where: { league_id: id_league } }).then(function (teams) {
+          var creates = teams.map(function (team, index) {
+            return _setup.Pick.create({
+              id_draft: id_draft,
+              round: round,
+              order: index + 1,
+              id_owner: team.id_sl,
+              id_sl_original: team.id_sl,
+              is_used: false
+            }, { transaction: t });
+          });
+
+          return Promise.all(creates);
+        });
+      });
+    }
+  },
+  deleteRound: {
+    description: 'Delete picks of a round',
+    type: _graphql.GraphQLInt,
+    args: {
+      id_draft: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      round: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) }
+    },
+    resolve: function resolve(root, _ref5) {
+      var id_draft = _ref5.id_draft,
+          round = _ref5.round;
+      return _setup.Pick.destroy({ where: { id_draft: id_draft, round: round } });
+    }
+  },
+  savePick: {
+    description: 'Update a pick',
+    type: new _graphql.GraphQLList(_graphql.GraphQLInt),
+    args: {
+      id_pick: { type: _graphql.GraphQLInt },
+      id_owner: { type: _graphql.GraphQLInt },
+      deadline: { type: _graphql.GraphQLString },
+      order: { type: _graphql.GraphQLInt }
+    },
+    resolve: function resolve(root, _ref6) {
+      var id_pick = _ref6.id_pick,
+          id_owner = _ref6.id_owner,
+          deadline = _ref6.deadline,
+          order = _ref6.order;
+      return _setup.Pick.update({ id_owner: id_owner, deadline: deadline, order: order }, { where: { id_pick: id_pick } });
+    }
+  },
   draftPlayer: {
     description: 'Returns drafted player',
     type: _player2.default,
     args: {
-      id_draft: { type: new GraphQLNonNull(GraphQLInt) },
-      id_pick: { type: new GraphQLNonNull(GraphQLInt) },
-      id_league: { type: new GraphQLNonNull(GraphQLInt) },
-      id_sl: { type: new GraphQLNonNull(GraphQLInt) },
-      id_player: { type: new GraphQLNonNull(GraphQLInt) }
+      id_draft: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      id_pick: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      id_league: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      id_sl: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      id_player: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) }
     },
-    resolve: function resolve(root, _ref) {
-      var id_draft = _ref.id_draft,
-          id_league = _ref.id_league,
-          id_pick = _ref.id_pick,
-          id_sl = _ref.id_sl,
-          id_player = _ref.id_player;
+    resolve: function resolve(root, _ref7) {
+      var id_draft = _ref7.id_draft,
+          id_league = _ref7.id_league,
+          id_pick = _ref7.id_pick,
+          id_sl = _ref7.id_sl,
+          id_player = _ref7.id_player;
 
       var draft = _draft2.default.findOne({ where: { id_draft: id_draft } });
       var player = _setup.Player.findOne({ where: { id_player: id_player } });

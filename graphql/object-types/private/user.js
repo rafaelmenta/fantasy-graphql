@@ -1,6 +1,7 @@
 import UserTeamType from '../user-team';
 import PermissionType from '../enum/permission';
 import {User} from '../../../model/setup';
+import League from '../../../model/league';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -27,7 +28,13 @@ const UserType = new GraphQLObjectType({
     teams: {
       type: new GraphQLList(UserTeamType),
       resolve: resolver(User.UserTeams)
-    }
+    },
+    leagues_owned: {
+      type: new GraphQLList(GraphQLInt),
+      resolve: user =>
+        League.findAll({attributes: ['id_league'], where: {id_owner: user.id_user}})
+          .then(leagues => leagues.map(league => league.id_league)),
+    },
   })
 });
 

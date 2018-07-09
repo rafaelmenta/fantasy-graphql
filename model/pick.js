@@ -4,7 +4,8 @@ import Conn from '../database/connection';
 const Pick = Conn.define('pick', {
   id_pick : {
     type :Sequelize.INTEGER,
-    primaryKey : true
+    primaryKey : true,
+    autoIncrement: true,
   },
   id_sl_original : {
     type : Sequelize.INTEGER,

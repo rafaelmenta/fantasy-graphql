@@ -25,6 +25,8 @@ const TeamSlType = new GraphQLObjectType({
   name: 'TeamSl',
   fields: () => ({
     id_sl: { type: GraphQLInt },
+    id_division: { type: GraphQLInt },
+    league_id: { type: GraphQLInt },
     city: { type: GraphQLString },
     nickname: { type: GraphQLString },
     symbol: { type: GraphQLString },

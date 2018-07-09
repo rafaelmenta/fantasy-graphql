@@ -6,15 +6,93 @@ import { TeamPlayer, Division, Conference, Pick, Player } from "../../../model/s
 import TeamSl from "../../../model/team-sl";
 import DraftStatus from "../../object-types/enum/draft-status";
 import Conn from "../../../database/connection";
+import DraftType from "../../object-types/draft";
+import { GraphQLNonNull, GraphQLInt, GraphQLString, GraphQLInputObjectType, GraphQLList } from 'graphql';
+import { resolver } from 'graphql-sequelize';
+import PickType from "../../object-types/pick";
 
-const graphql = require('graphql');
-
-const {
-  GraphQLNonNull,
-  GraphQLInt,
-} = graphql;
+const DraftInput = new GraphQLInputObjectType({
+  name: 'DraftInput',
+  fields: () => ({
+    id_season: { type: new GraphQLNonNull(GraphQLInt) },
+    id_league: { type: new GraphQLNonNull(GraphQLInt) },
+    draft_type: { type: new GraphQLNonNull(GraphQLInt) },
+    year_draft: { type: new GraphQLNonNull(GraphQLString) },
+    status_draft: { type: GraphQLInt, defaultValue: DraftStatus.parseValue('STATUS_CLOSED')},
+  }),
+});
 
 export const DraftMutation = {
+  createDraft: {
+    description: 'Create a draft',
+    type: DraftType,
+    args: {
+      draft: {type: DraftInput},
+    },
+    resolve: (root, { draft }) => Draft.create(draft),
+  },
+  deleteDraft: {
+    description: 'Delete a draft',
+    type: GraphQLInt,
+    args: {
+      id_draft: { type: GraphQLInt },
+    },
+    resolve: (root, { id_draft }) => Draft.destroy({ where: { id_draft } }),
+  },
+  updateDraftStatus: {
+    description: 'Update draft status',
+    type: new GraphQLList(GraphQLInt),
+    args: {
+      id_draft: { type: GraphQLInt },
+      status_draft: { type: GraphQLInt },
+    },
+    resolve: (root, { id_draft, status_draft }) => Draft.update({status_draft}, {where: {id_draft} }),
+  },
+  createRound: {
+    description: 'Create picks for a Draft',
+    type: new GraphQLList(PickType),
+    args: {
+      id_draft: {type: GraphQLInt},
+      id_league: {type: GraphQLInt},
+      round: {type: GraphQLInt},
+    },
+    resolve: (root, {id_draft, id_league, round}) => Conn.transaction(t => {
+      return TeamSl.findAll({where: {league_id: id_league}}).then(teams => {
+        const creates = teams.map((team, index) => Pick.create({
+            id_draft,
+            round,
+            order: index + 1,
+            id_owner: team.id_sl,
+            id_sl_original: team.id_sl,
+            is_used: false,
+          }, {transaction: t}
+        ));
+
+        return Promise.all(creates);
+      });
+    }),
+  },
+  deleteRound: {
+    description: 'Delete picks of a round',
+    type: GraphQLInt,
+    args: {
+      id_draft: {type: new GraphQLNonNull(GraphQLInt)},
+      round: {type: new GraphQLNonNull(GraphQLInt)},
+    },
+    resolve: (root, {id_draft, round}) => Pick.destroy({where: {id_draft, round}}),
+  },
+  savePick: {
+    description: 'Update a pick',
+    type: new GraphQLList(GraphQLInt),
+    args: {
+      id_pick: {type: GraphQLInt},
+      id_owner: {type: GraphQLInt},
+      deadline: {type: GraphQLString},
+      order: {type: GraphQLInt},
+    },
+    resolve: (root, {id_pick, id_owner, deadline, order}) =>
+      Pick.update({id_owner, deadline, order}, {where: {id_pick}}),
+  },
   draftPlayer: {
     description: 'Returns drafted player',
     type: PlayerType,

@@ -1,5 +1,5 @@
 import PlayerType from '../../object-types/player';
-import {Player} from '../../../model/setup';
+import Player from '../../../model/player';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -29,7 +29,9 @@ const PlayerQuery = {
   ,
   players: {
       type: new GraphQLList(PlayerType),
-      resolve: resolver(Player)
+      resolve: () => Player.findAll({
+        where: { retired: false },
+      })
   }
 }
 

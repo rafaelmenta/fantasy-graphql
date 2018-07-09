@@ -4,7 +4,8 @@ import Conn from '../database/connection';
 const Draft = Conn.define('draft', {
   id_draft : {
     type :Sequelize.INTEGER,
-    primaryKey : true
+    primaryKey : true,
+    autoIncrement: true,
   },
   id_season : {
     type : Sequelize.INTEGER,

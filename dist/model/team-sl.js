@@ -27,6 +27,7 @@ var TeamSl = _connection2.default.define('team_sl', {
     type: _sequelize2.default.INTEGER,
     primaryKey: true
   },
+  league_id: _sequelize2.default.INTEGER,
   city: _sequelize2.default.STRING,
   nickname: _sequelize2.default.STRING,
   symbol: _sequelize2.default.STRING,
