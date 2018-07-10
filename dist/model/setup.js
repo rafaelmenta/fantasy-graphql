@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PickTrade = exports.PlayerTrade = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
+exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
 
 var _user = require('./user');
 
@@ -108,6 +108,8 @@ var _pickTrade2 = _interopRequireDefault(_pickTrade);
 var _leagueConfig = require('./associations/league-config');
 
 var _leagueConfig2 = _interopRequireDefault(_leagueConfig);
+
+var _taxonomy = require('./associations/taxonomy');
 
 var _connection = require('../database/connection');
 
@@ -983,6 +985,24 @@ _teamNba2.default.Players = _teamNba2.default.hasMany(_player2.default, {
   foreignKey: 'id_nba'
 });
 
+////////////// Taxonomy Relationships
+
+_taxonomy.Taxonomy.Team = _taxonomy.Taxonomy.belongsTo(_teamSl2.default, {
+  foreignKey: 'slug'
+});
+
+_teamSl2.default.Slugs = _teamSl2.default.hasMany(_taxonomy.Taxonomy, {
+  foreignKey: 'slug'
+});
+
+_taxonomy.Taxonomy.Player = _taxonomy.Taxonomy.belongsTo(_player2.default, {
+  foreignKey: 'slug'
+});
+
+_player2.default.Slugs = _taxonomy.Taxonomy.hasMany(_taxonomy.Taxonomy, {
+  foreignKey: 'player_slug'
+});
+
 exports.User = _user2.default;
 exports.TeamSl = _teamSl2.default;
 exports.Player = _player2.default;
@@ -1007,3 +1027,4 @@ exports.FreeAgencyHistory = _freeAgencyHistory2.default;
 exports.TeamPlayer = _teamPlayer2.default;
 exports.PlayerTrade = _playerTrade2.default;
 exports.PickTrade = _pickTrade2.default;
+exports.Taxonomy = _taxonomy.Taxonomy;

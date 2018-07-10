@@ -20,6 +20,7 @@ import TradeQuery from './public/trade';
 import FreeAgencyHistoryQuery from './public/free-agency-history'
 import SearchQuery from './public/search';
 import { ArchiveQuery } from './public/archive';
+import { SystemQuery } from './public/system';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -53,6 +54,7 @@ const Query = new GraphQLObjectType({
     FreeAgencyHistoryQuery,
     SearchQuery,
     ArchiveQuery,
+    SystemQuery,
   ))
 });
 

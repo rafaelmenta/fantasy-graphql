@@ -26,6 +26,7 @@ import TeamSeason from './associations/team-season';
 import PlayerTrade from './associations/player-trade';
 import PickTrade from './associations/pick-trade';
 import LeagueConfig from './associations/league-config';
+import {Taxonomy} from './associations/taxonomy';
 import Conn from '../database/connection';
 import TradeStatus from '../graphql/object-types/enum/trade-status';
 
@@ -938,6 +939,24 @@ TeamNba.Players = TeamNba.hasMany(Player, {
   foreignKey : 'id_nba'
 });
 
+////////////// Taxonomy Relationships
+
+Taxonomy.Team = Taxonomy.belongsTo(TeamSl, {
+  foreignKey: 'slug',
+});
+
+TeamSl.Slugs = TeamSl.hasMany(Taxonomy, {
+  foreignKey: 'slug'
+});
+
+Taxonomy.Player = Taxonomy.belongsTo(Player, {
+  foreignKey: 'slug',
+});
+
+Player.Slugs = Taxonomy.hasMany(Taxonomy, {
+  foreignKey: 'player_slug',
+});
+
 export {
   User,
   TeamSl,
@@ -962,5 +981,6 @@ export {
   FreeAgencyHistory,
   TeamPlayer,
   PlayerTrade,
-  PickTrade
+  PickTrade,
+  Taxonomy,
 };
