@@ -1,7 +1,8 @@
 import PlayerType from '../../object-types/player';
-import {TeamPlayer, Player, Division, FreeAgencyHistory} from '../../../model/setup';
+import {TeamPlayer, Player, Division, FreeAgencyHistory, UserTeam, Taxonomy} from '../../../model/setup';
 import TeamSl from '../../../model/team-sl';
 import Conference from '../../../model/conference';
+import Conn from '../../../database/connection';
 
 const graphql = require('graphql');
 
@@ -80,6 +81,53 @@ const TeamMutation = {
         return results && results.length > 0
       })
     }
+  },
+  updateTeamInfo: {
+    description: 'Update team info',
+    type: new GraphQLList(GraphQLInt),
+    args: {
+      id_sl: { type: new GraphQLNonNull(GraphQLInt) },
+      city: { type: GraphQLString },
+      nickname: { type: GraphQLString },
+      slug: { type: GraphQLString },
+      id_division: { type: GraphQLInt },
+      id_user: { type: GraphQLInt },
+    },
+    resolve: (root, {id_sl, city, nickname, slug, id_division, id_user}) =>
+    Conn.transaction(t => TeamSl.findOne({where: {id_sl}}).then(team => {
+      const update = {};
+      if (city) {
+        update.city = city;
+      }
+
+      if (nickname) {
+        update.nickname = nickname;
+      }
+
+      let slugQuery;
+      if (slug) {
+        update.slug = slug;
+        slugQuery = Taxonomy.update({slug}, {where: {slug: team.slug}, transaction: t});
+      }
+
+      if (id_division) {
+        update.id_division = id_division
+      }
+
+      const updateInfoQuery = TeamSl.update(update, {where: {id_sl}, transaction: t});
+      const updates = [updateInfoQuery];
+
+      if (slugQuery) {
+        updates.push(slugQuery);
+      }
+
+      if (id_user) {
+        const userTeamQuery = UserTeam.update({id_user}, {where: {id_sl}, transaction: t});
+        updates.push(userTeamQuery);
+      }
+
+      return Promise.all(updates).then(results => results[0]);
+    })),
   },
   recruitPlayer: {
     description: 'Returns player',

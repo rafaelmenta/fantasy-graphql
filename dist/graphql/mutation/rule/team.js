@@ -18,6 +18,10 @@ var _conference = require('../../../model/conference');
 
 var _conference2 = _interopRequireDefault(_conference);
 
+var _connection = require('../../../database/connection');
+
+var _connection2 = _interopRequireDefault(_connection);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql');
@@ -109,6 +113,64 @@ var TeamMutation = {
       });
     }
   },
+  updateTeamInfo: {
+    description: 'Update team info',
+    type: new GraphQLList(GraphQLInt),
+    args: {
+      id_sl: { type: new GraphQLNonNull(GraphQLInt) },
+      city: { type: GraphQLString },
+      nickname: { type: GraphQLString },
+      slug: { type: GraphQLString },
+      id_division: { type: GraphQLInt },
+      id_user: { type: GraphQLInt }
+    },
+    resolve: function resolve(root, _ref4) {
+      var id_sl = _ref4.id_sl,
+          city = _ref4.city,
+          nickname = _ref4.nickname,
+          slug = _ref4.slug,
+          id_division = _ref4.id_division,
+          id_user = _ref4.id_user;
+      return _connection2.default.transaction(function (t) {
+        return _teamSl2.default.findOne({ where: { id_sl: id_sl } }).then(function (team) {
+          var update = {};
+          if (city) {
+            update.city = city;
+          }
+
+          if (nickname) {
+            update.nickname = nickname;
+          }
+
+          var slugQuery = void 0;
+          if (slug) {
+            update.slug = slug;
+            slugQuery = _setup.Taxonomy.update({ slug: slug }, { where: { slug: team.slug }, transaction: t });
+          }
+
+          if (id_division) {
+            update.id_division = id_division;
+          }
+
+          var updateInfoQuery = _teamSl2.default.update(update, { where: { id_sl: id_sl }, transaction: t });
+          var updates = [updateInfoQuery];
+
+          if (slugQuery) {
+            updates.push(slugQuery);
+          }
+
+          if (id_user) {
+            var userTeamQuery = _setup.UserTeam.update({ id_user: id_user }, { where: { id_sl: id_sl }, transaction: t });
+            updates.push(userTeamQuery);
+          }
+
+          return Promise.all(updates).then(function (results) {
+            return results[0];
+          });
+        });
+      });
+    }
+  },
   recruitPlayer: {
     description: 'Returns player',
     type: _player2.default,
@@ -116,9 +178,9 @@ var TeamMutation = {
       team_info: { type: input },
       id_league: { type: new GraphQLNonNull(GraphQLInt) }
     },
-    resolve: function resolve(root, _ref4) {
-      var team_info = _ref4.team_info,
-          id_league = _ref4.id_league;
+    resolve: function resolve(root, _ref5) {
+      var team_info = _ref5.team_info,
+          id_league = _ref5.id_league;
       return _setup.TeamPlayer.findOne({
         where: { id_player: team_info.id_player },
         include: [{
