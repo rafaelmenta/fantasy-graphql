@@ -17,7 +17,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Player = _connection2.default.define('player', {
   id_player: {
     type: _sequelize2.default.INTEGER,
-    primaryKey: true
+    primaryKey: true,
+    autoIncrement: true
   },
   first_name: _sequelize2.default.STRING,
   last_name: _sequelize2.default.STRING,

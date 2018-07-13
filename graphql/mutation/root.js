@@ -4,6 +4,7 @@ import TradeMutation from './rule/trade';
 import { DraftMutation } from './rule/draft';
 import { LeagueMutation } from './rule/league';
 import { GameMutation } from './rule/game';
+import { PlayerMutation } from './rule/player';
 
 const graphql = require('graphql');
 
@@ -20,6 +21,7 @@ var RootMutationType = new GraphQLObjectType({
     DraftMutation,
     LeagueMutation,
     GameMutation,
+    PlayerMutation,
   )),
 });
 

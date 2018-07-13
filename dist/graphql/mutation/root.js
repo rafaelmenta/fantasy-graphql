@@ -22,6 +22,8 @@ var _league = require('./rule/league');
 
 var _game = require('./rule/game');
 
+var _player = require('./rule/player');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql');
@@ -32,7 +34,7 @@ var GraphQLObjectType = graphql.GraphQLObjectType;
 var RootMutationType = new GraphQLObjectType({
   name: 'RootMutationType',
   fields: function fields() {
-    return Object.assign({}, _user2.default, _team2.default, _trade2.default, _draft.DraftMutation, _league.LeagueMutation, _game.GameMutation);
+    return Object.assign({}, _user2.default, _team2.default, _trade2.default, _draft.DraftMutation, _league.LeagueMutation, _game.GameMutation, _player.PlayerMutation);
   }
 });
 

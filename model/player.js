@@ -4,7 +4,8 @@ import Conn from '../database/connection';
 const Player = Conn.define('player', {
   id_player : {
     type :Sequelize.INTEGER,
-    primaryKey : true
+    primaryKey : true,
+    autoIncrement: true,
   },
   first_name : Sequelize.STRING,
   last_name : Sequelize.STRING,
