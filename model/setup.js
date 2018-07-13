@@ -852,9 +852,11 @@ Player.PlayerSearch = function(search, args) {
     SELECT *
     FROM player
     WHERE
-      LOWER(first_name) LIKE "%${query}%" OR
-      LOWER(last_name) LIKE "%${query}%" OR
-      LOWER( CONCAT( first_name,  ' ', last_name ) ) LIKE "%${query}%"
+      retired=false AND (
+        LOWER(first_name) LIKE "%${query}%" OR
+        LOWER(last_name) LIKE "%${query}%" OR
+        LOWER( CONCAT( first_name,  ' ', last_name ) ) LIKE "%${query}%"
+      )
     LIMIT 0,3;
   `, {model: Player});
 }

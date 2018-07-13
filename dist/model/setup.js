@@ -912,7 +912,7 @@ _league2.default.FreeAgents = function (league) {
 _player2.default.PlayerSearch = function (search, args) {
   var query = args.query;
 
-  return _connection2.default.query('\n    SELECT *\n    FROM player\n    WHERE\n      LOWER(first_name) LIKE "%' + query + '%" OR\n      LOWER(last_name) LIKE "%' + query + '%" OR\n      LOWER( CONCAT( first_name,  \' \', last_name ) ) LIKE "%' + query + '%"\n    LIMIT 0,3;\n  ', { model: _player2.default });
+  return _connection2.default.query('\n    SELECT *\n    FROM player\n    WHERE\n      retired=false AND (\n        LOWER(first_name) LIKE "%' + query + '%" OR\n        LOWER(last_name) LIKE "%' + query + '%" OR\n        LOWER( CONCAT( first_name,  \' \', last_name ) ) LIKE "%' + query + '%"\n      )\n    LIMIT 0,3;\n  ', { model: _player2.default });
 };
 
 _teamSl2.default.TeamSearch = function (search, args) {
