@@ -10,65 +10,70 @@ var _gameNba2 = _interopRequireDefault(_gameNba);
 
 var _setup = require('../../../model/setup');
 
+var _connection = require('../../../database/connection');
+
+var _connection2 = _interopRequireDefault(_connection);
+
+var _graphql = require('graphql');
+
+var _graphqlSequelize = require('graphql-sequelize');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var graphql = require('graphql'),
-    resolver = require('graphql-sequelize').resolver;
-
-var GraphQLInt = graphql.GraphQLInt,
-    GraphQLList = graphql.GraphQLList,
-    GraphQLString = graphql.GraphQLString,
-    GraphQLNonNull = graphql.GraphQLNonNull;
-
 
 var GameNbaQuery = {
   game_nba: {
     type: _gameNba2.default,
-    resolve: resolver(_setup.GameNba),
+    resolve: (0, _graphqlSequelize.resolver)(_setup.GameNba),
     args: {
       id_game_nba: {
         name: 'id_game_nba',
-        type: new GraphQLNonNull(GraphQLInt)
+        type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt)
 
       }
     }
   },
   date_games_nba: {
-    type: new GraphQLList(_gameNba2.default),
+    type: new _graphql.GraphQLList(_gameNba2.default),
     resolve: _setup.GameNba.DateGames,
     args: {
       date: {
         description: 'Format YYYY/MM/DD',
-        type: GraphQLString
+        type: _graphql.GraphQLString
       }
     }
   },
   ranged_date_games_nba: {
-    type: new GraphQLList(_gameNba2.default),
+    type: new _graphql.GraphQLList(_gameNba2.default),
     resolve: _setup.GameNba.RangedDateGames,
     args: {
       start_date: {
         description: 'Format YYYY/MM/DD',
-        type: GraphQLString
+        type: _graphql.GraphQLString
       },
       end_date: {
         description: 'Format YYYY/MM/DD',
-        type: GraphQLString
+        type: _graphql.GraphQLString
       }
     }
   },
   games_nba: {
-    type: new GraphQLList(_gameNba2.default),
-    resolve: resolver(_setup.GameNba),
+    type: new _graphql.GraphQLList(_gameNba2.default),
+    resolve: (0, _graphqlSequelize.resolver)(_setup.GameNba),
     args: {
       id_home: {
         name: 'id_home',
-        type: new GraphQLList(GraphQLInt)
+        type: new _graphql.GraphQLList(_graphql.GraphQLInt)
       },
       id_away: {
         name: 'id_away',
-        type: new GraphQLList(GraphQLInt)
+        type: new _graphql.GraphQLList(_graphql.GraphQLInt)
       }
+    }
+  },
+  current_games_nba: {
+    type: new _graphql.GraphQLList(_gameNba2.default),
+    resolve: function resolve() {
+      return _connection2.default.query('\n      SELECT g.*,\n        home_round.id_round as \'home_round.id_round\',\n        home_round.round_number as \'home_round.round_number\',\n        away_round.id_round as \'away_round.id_round\',\n        away_round.round_number as \'away_round.round_number\',\n        home.id_nba as \'home.id_nba\',\n        home.city as \'home.city\',\n        home.nickname as \'home.nickname\',\n        home.symbol as \'home.symbol\',\n        away.id_nba as \'away.id_nba\',\n        away.city as \'away.city\',\n        away.nickname as \'away.nickname\',\n        away.symbol as \'away.symbol\'\n      FROM game_nba g\n      JOIN team_nba home ON home.id_nba=g.id_home\n      JOIN team_nba away ON away.id_nba=g.id_away\n      JOIN round home_round ON home_round.id_round=g.id_round_home\n      JOIN round away_round ON away_round.id_round=g.id_round_away\n      JOIN season s on home_round.id_season=s.id_season\n      WHERE s.current=true;\n    ', { model: _setup.GameNba });
     }
   }
 };

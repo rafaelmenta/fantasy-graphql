@@ -4,7 +4,8 @@ import Conn from '../database/connection';
 const GameNba = Conn.define('game_nba', {
   id_game_nba : {
     type :Sequelize.INTEGER,
-    primaryKey : true
+    primaryKey : true,
+    autoIncrement: true,
   },
   id_away : {
     type : Sequelize.INTEGER,

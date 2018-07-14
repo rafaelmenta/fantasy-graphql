@@ -18,6 +18,10 @@ var _graphqlDate = require('graphql-date');
 
 var _graphqlDate2 = _interopRequireDefault(_graphqlDate);
 
+var _dottie = require('dottie');
+
+var _dottie2 = _interopRequireDefault(_dottie);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql'),
@@ -52,6 +56,30 @@ var GameNbaType = new GraphQLObjectType({
       round_home: {
         type: _round2.default,
         resolve: resolver(_setup.GameNba.HomeRound)
+      },
+      manual_home_team: {
+        type: _teamNba2.default,
+        resolve: function resolve(game) {
+          return _dottie2.default.transform(game.dataValues).home;
+        }
+      },
+      manual_away_team: {
+        type: _teamNba2.default,
+        resolve: function resolve(game) {
+          return _dottie2.default.transform(game.dataValues).away;
+        }
+      },
+      manual_round_home: {
+        type: _round2.default,
+        resolve: function resolve(game) {
+          return _dottie2.default.transform(game.dataValues).home_round;
+        }
+      },
+      manual_round_away: {
+        type: _round2.default,
+        resolve: function resolve(game) {
+          return _dottie2.default.transform(game.dataValues).away_round;
+        }
       },
       game_time: { type: _graphqlDate2.default },
       is_finished: { type: GraphQLBoolean },
