@@ -3,6 +3,7 @@ import {TeamPlayer, Player, Division, FreeAgencyHistory, UserTeam, Taxonomy} fro
 import TeamSl from '../../../model/team-sl';
 import Conference from '../../../model/conference';
 import Conn from '../../../database/connection';
+import LeagueConfig from '../../../model/associations/league-config';
 
 const graphql = require('graphql');
 
@@ -136,7 +137,14 @@ const TeamMutation = {
       team_info: { type: input },
       id_league: { type: new GraphQLNonNull(GraphQLInt) },
     },
-    resolve: (root, {team_info, id_league}) => TeamPlayer.findOne({
+    resolve: (root, {team_info, id_league}) => LeagueConfig.findOne(
+      {where: {id_config: 'FREE_AGENCY_LOCKED', id_league}
+    }).then(config => {
+      if (config && config.config_value === '1') {
+        throw new Error('Free agency is locked')
+      }
+      return;
+    }).then(() => TeamPlayer.findOne({
       where: { id_player: team_info.id_player },
       include: [{
         model: TeamSl,
@@ -176,7 +184,7 @@ const TeamMutation = {
 
       return player;
     })
-  }
+  )}
 }
 
 export default TeamMutation;

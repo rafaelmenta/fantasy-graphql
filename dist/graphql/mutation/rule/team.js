@@ -22,6 +22,10 @@ var _connection = require('../../../database/connection');
 
 var _connection2 = _interopRequireDefault(_connection);
 
+var _leagueConfig = require('../../../model/associations/league-config');
+
+var _leagueConfig2 = _interopRequireDefault(_leagueConfig);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql');
@@ -181,48 +185,55 @@ var TeamMutation = {
     resolve: function resolve(root, _ref5) {
       var team_info = _ref5.team_info,
           id_league = _ref5.id_league;
-      return _setup.TeamPlayer.findOne({
-        where: { id_player: team_info.id_player },
-        include: [{
-          model: _teamSl2.default,
-          foreignKey: 'id_sl',
+      return _leagueConfig2.default.findOne({ where: { id_config: 'FREE_AGENCY_LOCKED', id_league: id_league }
+      }).then(function (config) {
+        if (config && config.config_value === '1') {
+          throw new Error('Free agency is locked');
+        }
+        return;
+      }).then(function () {
+        return _setup.TeamPlayer.findOne({
+          where: { id_player: team_info.id_player },
           include: [{
-            model: _setup.Division,
-            foreignKey: 'id_division',
+            model: _teamSl2.default,
+            foreignKey: 'id_sl',
             include: [{
-              model: _conference2.default,
-              foreignKey: 'id_conference',
-              where: { id_league: id_league }
+              model: _setup.Division,
+              foreignKey: 'id_division',
+              include: [{
+                model: _conference2.default,
+                foreignKey: 'id_conference',
+                where: { id_league: id_league }
+              }]
             }]
           }]
-        }]
-      }).then(function (teamPlayer) {
-        if (teamPlayer && teamPlayer.id_sl !== 0) return null;
+        }).then(function (teamPlayer) {
+          if (teamPlayer && teamPlayer.id_sl !== 0) return null;
 
-        return _setup.Player.findOne({
-          where: { id_player: team_info.id_player }
+          return _setup.Player.findOne({
+            where: { id_player: team_info.id_player }
+          });
+        }).then(function (player) {
+          if (!player) return null;
+
+          _setup.FreeAgencyHistory.create({
+            action: 'PICK',
+            event_date: Date.now(),
+            id_sl: team_info.id_sl,
+            id_player: player.id_player
+          });
+
+          _setup.TeamPlayer.create({
+            id_sl: team_info.id_sl,
+            id_player: player.id_player,
+            primary_position: player.default_primary,
+            secondary_position: player.default_secondary
+          });
+
+          return player;
         });
-      }).then(function (player) {
-        if (!player) return null;
-
-        _setup.FreeAgencyHistory.create({
-          action: 'PICK',
-          event_date: Date.now(),
-          id_sl: team_info.id_sl,
-          id_player: player.id_player
-        });
-
-        _setup.TeamPlayer.create({
-          id_sl: team_info.id_sl,
-          id_player: player.id_player,
-          primary_position: player.default_primary,
-          secondary_position: player.default_secondary
-        });
-
-        return player;
       });
-    }
-  }
+    } }
 };
 
 exports.default = TeamMutation;

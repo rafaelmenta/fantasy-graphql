@@ -29,6 +29,10 @@ var _conference2 = _interopRequireDefault(_conference);
 
 var _setup = require('../../../model/setup');
 
+var _leagueConfig3 = require('../../object-types/league-config');
+
+var _leagueConfig4 = _interopRequireDefault(_leagueConfig3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
@@ -68,6 +72,16 @@ var conferenceInfoInput = new _graphql.GraphQLInputObjectType({
   }
 });
 
+var configInput = new _graphql.GraphQLInputObjectType({
+  name: 'ConfigInput',
+  fields: function fields() {
+    return {
+      id_config: { type: _graphql.GraphQLString },
+      config_value: { type: _graphql.GraphQLString }
+    };
+  }
+});
+
 var LeagueMutation = exports.LeagueMutation = {
   saveLeague: {
     description: 'Save league information',
@@ -95,7 +109,6 @@ var LeagueMutation = exports.LeagueMutation = {
     resolve: function resolve(root, _ref2) {
       var conference = _ref2.conference;
       return _connection2.default.transaction(function (t) {
-
         var divisionUpdates = conference.divisions.map(function (division) {
           return _setup.Division.update({
             name: division.name,
@@ -118,6 +131,24 @@ var LeagueMutation = exports.LeagueMutation = {
           return results[0];
         });
       });
+    }
+  },
+  saveConfigs: {
+    description: 'Save league conferences',
+    type: new _graphql.GraphQLList(new _graphql.GraphQLList(_graphql.GraphQLInt)),
+    args: {
+      id_league: { type: _graphql.GraphQLInt },
+      configs: { type: new _graphql.GraphQLList(configInput) }
+    },
+    resolve: function resolve(root, _ref3) {
+      var id_league = _ref3.id_league,
+          configs = _ref3.configs;
+
+      var configUpdates = configs.map(function (config) {
+        return _leagueConfig2.default.update({ config_value: config.config_value }, { where: { id_config: config.id_config, id_league: id_league } });
+      });
+
+      return Promise.all(configUpdates);
     }
   }
 };

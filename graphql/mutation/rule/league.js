@@ -7,6 +7,7 @@ import League from '../../../model/league';
 import LeagueConfig from '../../../model/associations/league-config';
 import ConferenceType from '../../object-types/conference';
 import { Division, Conference } from '../../../model/setup';
+import LeagueConfigType from '../../object-types/league-config';
 
 const leagueInfoInput = new GraphQLInputObjectType({
   name: 'LeagueInfoInput',
@@ -37,6 +38,13 @@ const conferenceInfoInput = new GraphQLInputObjectType({
   }),
 });
 
+const configInput = new GraphQLInputObjectType({
+  name: 'ConfigInput',
+  fields: () => ({
+    id_config: { type: GraphQLString },
+    config_value: { type: GraphQLString },
+  }),
+});
 
 export const LeagueMutation = {
   saveLeague: {
@@ -60,7 +68,6 @@ export const LeagueMutation = {
       conference: {type: conferenceInfoInput},
     },
     resolve: (root, {conference}) => Conn.transaction(t => {
-
       const divisionUpdates = conference.divisions.map(division => Division.update({
         name: division.name,
         symbol: division.symbol,
@@ -79,5 +86,21 @@ export const LeagueMutation = {
 
       return Promise.all([conferenceUpdate, ...divisionUpdates]).then(results => results[0]);
     }),
+  },
+  saveConfigs: {
+    description: 'Save league conferences',
+    type: new GraphQLList(new GraphQLList(GraphQLInt)),
+    args: {
+      id_league: {type: GraphQLInt},
+      configs: {type: new GraphQLList(configInput)}
+    },
+    resolve: (root, {id_league, configs}) => {
+      const configUpdates = configs.map(config => LeagueConfig.update(
+        {config_value: config.config_value},
+        {where: {id_config: config.id_config, id_league}},
+      ));
+
+      return Promise.all(configUpdates);
+    }
   },
 }
