@@ -39,7 +39,7 @@ var TeamPerformance = _connection2.default.define('team_performance', {
   minutes_sf: _sequelize2.default.INTEGER,
   minutes_pf: _sequelize2.default.INTEGER,
   minutes_c: _sequelize2.default.INTEGER,
-  fantasy_points: _sequelize2.default.DECIMAL
+  fantasy_points: _sequelize2.default.FLOAT
 }, {
   updatedAt: false,
   createdAt: false,

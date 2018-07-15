@@ -29,6 +29,7 @@ const Conn = new Sequelize(
     timezone: timezone,
     dialectOptions: {
       socketPath: config.database.socketPath,
+      multipleStatements: true,
     }
   }
 );

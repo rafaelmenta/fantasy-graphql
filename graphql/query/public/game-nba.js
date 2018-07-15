@@ -3,6 +3,7 @@ import {GameNba} from '../../../model/setup';
 import Conn from '../../../database/connection';
 import { GraphQLInt, GraphQLList, GraphQLString, GraphQLNonNull } from 'graphql';
 import { resolver } from 'graphql-sequelize';
+import { ManualGamePerformanceQuery } from '../../object-types/manual/game-performance';
 
 const GameNbaQuery = {
   game_nba : {
@@ -54,6 +55,33 @@ const GameNbaQuery = {
       }
     }
   },
+  active_games_nba: {
+    type: new GraphQLList(GameNbaType),
+    resolve: () => Conn.query(`
+      SELECT g.*,
+        home_round.id_round as 'home_round.id_round',
+        home_round.round_number as 'home_round.round_number',
+        away_round.id_round as 'away_round.id_round',
+        away_round.round_number as 'away_round.round_number',
+        home.id_nba as 'home.id_nba',
+        home.city as 'home.city',
+        home.nickname as 'home.nickname',
+        home.symbol as 'home.symbol',
+        away.id_nba as 'away.id_nba',
+        away.city as 'away.city',
+        away.nickname as 'away.nickname',
+        away.symbol as 'away.symbol'
+      FROM game_nba g
+      JOIN team_nba home ON home.id_nba=g.id_home
+      JOIN team_nba away ON away.id_nba=g.id_away
+      JOIN round home_round ON home_round.id_round=g.id_round_home
+      JOIN round away_round ON away_round.id_round=g.id_round_away
+      JOIN season s on home_round.id_season=s.id_season
+      WHERE s.current=true
+        AND (home_round.opened = true OR away_round.opened= true)
+        AND (home_round.processed = false OR away_round.processed= false);
+    `, { model: GameNba }),
+  },
   current_games_nba: {
     type: new GraphQLList(GameNbaType),
     resolve: () => Conn.query(`
@@ -78,7 +106,8 @@ const GameNbaQuery = {
       JOIN season s on home_round.id_season=s.id_season
       WHERE s.current=true;
     `, {model: GameNba}),
-  }
+  },
+  game_performance: ManualGamePerformanceQuery,
 };
 
 export default GameNbaQuery;

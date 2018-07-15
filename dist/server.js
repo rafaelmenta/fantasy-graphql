@@ -65,5 +65,6 @@ app.use('/graphql', (0, _expressGraphql2.default)({
   graphiql: true
 }));
 
-app.listen(4000);
+var server = app.listen(4000);
+server.setTimeout(10 * 60 * 1000); // 10 minutes timeout
 console.log('Running a GraphQL API server at localhost:4000/graphql');

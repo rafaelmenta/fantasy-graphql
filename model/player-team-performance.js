@@ -28,7 +28,7 @@ const PlayerTeamPerformance = Conn.define('player_team_performance', {
       key : 'id_sl'
     }
   },
-  fantasy_points : Sequelize.DECIMAL,
+  fantasy_points : Sequelize.FLOAT,
   order : Sequelize.INTEGER,
   primary_position : Sequelize.STRING,
   secondary_position : Sequelize.STRING,

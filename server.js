@@ -43,5 +43,6 @@ app.use('/graphql', graphqlHTTP({
   graphiql: true,
 }));
 
-app.listen(4000);
+const server = app.listen(4000);
+server.setTimeout(10 * 60 * 1000); // 10 minutes timeout
 console.log('Running a GraphQL API server at localhost:4000/graphql');

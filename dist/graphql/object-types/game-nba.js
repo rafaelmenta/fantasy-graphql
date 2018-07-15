@@ -22,6 +22,10 @@ var _dottie = require('dottie');
 
 var _dottie2 = _interopRequireDefault(_dottie);
 
+var _connection = require('../../database/connection');
+
+var _connection2 = _interopRequireDefault(_connection);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql'),
@@ -79,6 +83,14 @@ var GameNbaType = new GraphQLObjectType({
         type: _round2.default,
         resolve: function resolve(game) {
           return _dottie2.default.transform(game.dataValues).away_round;
+        }
+      },
+      manual_is_done: {
+        type: GraphQLBoolean,
+        resolve: function resolve(game) {
+          return _connection2.default.query('\n        SELECT count(*) as count\n        FROM player_performance\n        JOIN player ON player_performance.id_player=player.id_player\n        WHERE minutes > 0\n          AND (\n            (id_round=' + game.dataValues['home_round.id_round'] + ' AND id_nba=' + game.dataValues['home.id_nba'] + ')\n            OR\n            (id_round=' + game.dataValues['away_round.id_round'] + ' AND id_nba=' + game.dataValues['away.id_nba'] + ')\n          )\n        ', { raw: true, plain: true }).then(function (result) {
+            return result.count > 0;
+          });
         }
       },
       game_time: { type: _graphqlDate2.default },

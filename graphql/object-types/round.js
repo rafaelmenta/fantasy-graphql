@@ -38,6 +38,9 @@ const RoundType = new GraphQLObjectType({
     processed : {
       type : GraphQLBoolean
     },
+    opened : {
+      type : GraphQLBoolean
+    },
     games: {
       type: new GraphQLList(GameType),
       resolve: resolver(Round.Games)

@@ -30,7 +30,8 @@ var Round = _connection2.default.define('round', {
   },
   open_date: _sequelize2.default.DATE,
   close_date: _sequelize2.default.DATE,
-  processed: _sequelize2.default.BOOLEAN
+  processed: _sequelize2.default.BOOLEAN,
+  opened: _sequelize2.default.BOOLEAN
 }, {
   updatedAt: false,
   createdAt: false,

@@ -26,7 +26,7 @@ const TeamPerformance = Conn.define('team_performance', {
   minutes_sf : Sequelize.INTEGER,
   minutes_pf : Sequelize.INTEGER,
   minutes_c : Sequelize.INTEGER,
-  fantasy_points : Sequelize.DECIMAL
+  fantasy_points : Sequelize.FLOAT
 }, {
   updatedAt : false,
   createdAt : false,

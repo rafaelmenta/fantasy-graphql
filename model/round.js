@@ -17,7 +17,8 @@ const Round = Conn.define('round', {
   },
   open_date : Sequelize.DATE,
   close_date : Sequelize.DATE,
-  processed : Sequelize.BOOLEAN
+  processed : Sequelize.BOOLEAN,
+  opened : Sequelize.BOOLEAN,
 }, {
   updatedAt : false,
   createdAt : false,

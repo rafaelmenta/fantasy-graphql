@@ -41,7 +41,7 @@ var PlayerTeamPerformance = _connection2.default.define('player_team_performance
       key: 'id_sl'
     }
   },
-  fantasy_points: _sequelize2.default.DECIMAL,
+  fantasy_points: _sequelize2.default.FLOAT,
   order: _sequelize2.default.INTEGER,
   primary_position: _sequelize2.default.STRING,
   secondary_position: _sequelize2.default.STRING,
