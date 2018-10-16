@@ -11,6 +11,7 @@ import {
 import { TeamPlayer, Player, PlayerStats, Season, Pick } from '../../../model/setup';
 import Draft from '../../../model/draft';
 import TeamSl from '../../../model/team-sl';
+import {PlayerLeagueSalary} from '../../../model/player-league-salary';
 
 const ManualTeamRosterTeamInfo = new GraphQLObjectType({
   name: 'ManualTeamRosterTeamInfo',
@@ -29,6 +30,15 @@ const ManualTeamRosterPlayerStat = new GraphQLObjectType({
   }),
 });
 
+const ManualRosterPlayerSalary = new GraphQLObjectType({
+  name: 'ManualRosterPlayerSalary',
+  fields: () => ({
+    contract_salary: {type: GraphQLFloat, resolve: salaries => salaries.length > 0 && salaries[0].contract_salary},
+    contract_years: {type: GraphQLInt, resolve: salaries => salaries.length > 0 && salaries[0].contract_years},
+  }),
+});
+
+
 const ManualTeamRosterPlayer = new GraphQLObjectType({
   name: 'ManualTeamRosterPlayer',
   fields: () => ({
@@ -40,6 +50,7 @@ const ManualTeamRosterPlayer = new GraphQLObjectType({
     contract_salary: { type: GraphQLString },
     birthdate: { type: GraphQLString },
     team_info: { type: ManualTeamRosterTeamInfo, resolve: player => player.team_players[0] },
+    salary: { type: ManualRosterPlayerSalary, resolve: PlayerLeagueSalary.TeamPlayerSalary },
     stats: { type: ManualTeamRosterPlayerStat, resolve: player => player.player_stats[0] },
   }),
 });
