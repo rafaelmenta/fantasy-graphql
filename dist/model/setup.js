@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
+exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.PlayerLeagueSalary = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
 
 var _user = require('./user');
 
@@ -76,6 +76,8 @@ var _freeAgencyHistory2 = _interopRequireDefault(_freeAgencyHistory);
 var _trade = require('./trade');
 
 var _trade2 = _interopRequireDefault(_trade);
+
+var _playerLeagueSalary = require('./player-league-salary');
 
 var _playerStats = require('./views/player-stats');
 
@@ -1003,6 +1005,30 @@ _player2.default.Slugs = _taxonomy.Taxonomy.hasMany(_taxonomy.Taxonomy, {
   foreignKey: 'player_slug'
 });
 
+////////////// Player league salary Relationships
+
+_playerLeagueSalary.PlayerLeagueSalary.Player = _playerLeagueSalary.PlayerLeagueSalary.belongsTo(_player2.default, {
+  foreignKey: 'id_player'
+});
+
+_playerLeagueSalary.PlayerLeagueSalary.League = _playerLeagueSalary.PlayerLeagueSalary.belongsTo(_league2.default, {
+  foreignKey: 'id_league'
+});
+
+_league2.default.PlayerSalary = _league2.default.hasMany(_playerLeagueSalary.PlayerLeagueSalary, {
+  foreignKey: 'id_league'
+});
+
+_player2.default.LeagueSalary = _player2.default.hasMany(_playerLeagueSalary.PlayerLeagueSalary, {
+  foreignKey: 'id_player'
+});
+
+_playerLeagueSalary.PlayerLeagueSalary.TeamPlayerSalary = function (player, args) {
+  var idPlayer = player.id_player;
+  var idSl = player.team_players[0].id_sl;
+  return _connection2.default.query('\n    SELECT ps.*\n    FROM player_league_salary ps\n    JOIN player p ON ps.id_player=p.id_player AND p.id_player=' + idPlayer + '\n    JOIN team_sl t ON t.id_sl=' + idSl + '\n    AND ps.id_league = t.league_id\n  ', { model: _playerLeagueSalary.PlayerLeagueSalary });
+};
+
 exports.User = _user2.default;
 exports.TeamSl = _teamSl2.default;
 exports.Player = _player2.default;
@@ -1025,6 +1051,7 @@ exports.Pick = _pick2.default;
 exports.Trade = _trade2.default;
 exports.FreeAgencyHistory = _freeAgencyHistory2.default;
 exports.TeamPlayer = _teamPlayer2.default;
+exports.PlayerLeagueSalary = _playerLeagueSalary.PlayerLeagueSalary;
 exports.PlayerTrade = _playerTrade2.default;
 exports.PickTrade = _pickTrade2.default;
 exports.Taxonomy = _taxonomy.Taxonomy;
