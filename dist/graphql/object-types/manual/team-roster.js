@@ -17,6 +17,8 @@ var _teamSl = require('../../../model/team-sl');
 
 var _teamSl2 = _interopRequireDefault(_teamSl);
 
+var _playerLeagueSalary = require('../../../model/player-league-salary');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ManualTeamRosterTeamInfo = new _graphql.GraphQLObjectType({
@@ -40,6 +42,20 @@ var ManualTeamRosterPlayerStat = new _graphql.GraphQLObjectType({
   }
 });
 
+var ManualRosterPlayerSalary = new _graphql.GraphQLObjectType({
+  name: 'ManualRosterPlayerSalary',
+  fields: function fields() {
+    return {
+      contract_salary: { type: _graphql.GraphQLFloat, resolve: function resolve(salaries) {
+          return salaries.length > 0 && salaries[0].contract_salary;
+        } },
+      contract_years: { type: _graphql.GraphQLInt, resolve: function resolve(salaries) {
+          return salaries.length > 0 && salaries[0].contract_years;
+        } }
+    };
+  }
+});
+
 var ManualTeamRosterPlayer = new _graphql.GraphQLObjectType({
   name: 'ManualTeamRosterPlayer',
   fields: function fields() {
@@ -54,6 +70,7 @@ var ManualTeamRosterPlayer = new _graphql.GraphQLObjectType({
       team_info: { type: ManualTeamRosterTeamInfo, resolve: function resolve(player) {
           return player.team_players[0];
         } },
+      salary: { type: ManualRosterPlayerSalary, resolve: _playerLeagueSalary.PlayerLeagueSalary.TeamPlayerSalary },
       stats: { type: ManualTeamRosterPlayerStat, resolve: function resolve(player) {
           return player.player_stats[0];
         } }
