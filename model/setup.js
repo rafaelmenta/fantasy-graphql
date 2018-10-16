@@ -16,6 +16,7 @@ import TeamPerformance from './team-performance';
 import PlayerTeamPerformance from './player-team-performance';
 import FreeAgencyHistory from './free-agency-history';
 import Trade from './trade';
+import {PlayerLeagueSalary} from './player-league-salary';
 
 import PlayerStats from './views/player-stats';
 import TeamStats from './views/team-stats';
@@ -959,6 +960,36 @@ Player.Slugs = Taxonomy.hasMany(Taxonomy, {
   foreignKey: 'player_slug',
 });
 
+////////////// Player league salary Relationships
+
+PlayerLeagueSalary.Player = PlayerLeagueSalary.belongsTo(Player, {
+  foreignKey: 'id_player',
+});
+
+PlayerLeagueSalary.League = PlayerLeagueSalary.belongsTo(League, {
+  foreignKey: 'id_league',
+});
+
+League.PlayerSalary = League.hasMany(PlayerLeagueSalary, {
+  foreignKey: 'id_league',
+});
+
+Player.LeagueSalary = Player.hasMany(PlayerLeagueSalary, {
+  foreignKey: 'id_player',
+});
+
+PlayerLeagueSalary.TeamPlayerSalary = function (player, args) {
+  const idPlayer = player.id_player;
+  const idSl = player.team_players[0].id_sl;
+  return Conn.query(`
+    SELECT ps.*
+    FROM player_league_salary ps
+    JOIN player p ON ps.id_player=p.id_player AND p.id_player=${idPlayer}
+    JOIN team_sl t ON t.id_sl=${idSl}
+    AND ps.id_league = t.league_id
+  `, { model: PlayerLeagueSalary });
+}
+
 export {
   User,
   TeamSl,
@@ -982,6 +1013,7 @@ export {
   Trade,
   FreeAgencyHistory,
   TeamPlayer,
+  PlayerLeagueSalary,
   PlayerTrade,
   PickTrade,
   Taxonomy,

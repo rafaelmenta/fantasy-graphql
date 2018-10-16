@@ -1,6 +1,9 @@
 'use strict';
 
-import { TeamSl, Division, League, UserTeam, User, TeamPlayer, Player, PlayerStats, Season, TeamStats, Pick, TeamPerformance, Draft, } from '../../../model/setup';
+import {
+  TeamSl, Division, League, UserTeam, User, TeamPlayer, Player, PlayerStats, Season,
+  TeamStats, Pick, TeamPerformance, Draft, PlayerLeagueSalary,
+} from '../../../model/setup';
 
 import {
   GraphQLBoolean,
@@ -59,6 +62,14 @@ const ManualTeamInfo = new GraphQLObjectType({
   }),
 });
 
+const ManualTeamPlayerSalary = new GraphQLObjectType({
+  name: 'ManualTeamPlayerSalary',
+  fields: () => ({
+    contract_salary: {type: GraphQLFloat, resolve: salaries => salaries.length > 0 && salaries[0].contract_salary},
+    contract_years: {type: GraphQLInt, resolve: salaries => salaries.length > 0 && salaries[0].contract_years},
+  }),
+});
+
 const ManualTeamPlayerStat = new GraphQLObjectType({
   name: 'ManualTeamPlayerStat',
   fields: () => ({
@@ -75,6 +86,7 @@ const ManualTeamPlayer = new GraphQLObjectType({
     last_name: { type: GraphQLString },
     player_slug: { type: GraphQLString },
     team_info: { type: ManualTeamInfo, resolve: player => player.team_players[0] },
+    salary: { type: ManualTeamPlayerSalary, resolve: PlayerLeagueSalary.TeamPlayerSalary },
     stats: { type: new GraphQLList(ManualTeamPlayerStat), resolve: player => player.player_stats },
   }),
 });
@@ -167,7 +179,7 @@ const ManualTeamOverview = new GraphQLObjectType({
     slug: { type: GraphQLString },
     division: { type: ManualTeamDivision },
     users: { type: new GraphQLList(ManualTeamUser), resolve: team => team.users },
-    players: { type: new GraphQLList(ManualTeamPlayer), resolve: team => team.players },
+    players: { type: new GraphQLList(ManualTeamPlayer), resolve: team => team ? team.players : [] },
     record: { type: ManualTeamRecord, resolve: team => team.team_season },
     stats: { type: ManualTeamStats, resolve: team => team.stats },
     picks: { type: new GraphQLList(ManualTeamPick), resolve: team => team.picks  },

@@ -75,6 +75,20 @@ var ManualTeamInfo = new _graphql.GraphQLObjectType({
   }
 });
 
+var ManualTeamPlayerSalary = new _graphql.GraphQLObjectType({
+  name: 'ManualTeamPlayerSalary',
+  fields: function fields() {
+    return {
+      contract_salary: { type: _graphql.GraphQLFloat, resolve: function resolve(salaries) {
+          return salaries.length > 0 && salaries[0].contract_salary;
+        } },
+      contract_years: { type: _graphql.GraphQLInt, resolve: function resolve(salaries) {
+          return salaries.length > 0 && salaries[0].contract_years;
+        } }
+    };
+  }
+});
+
 var ManualTeamPlayerStat = new _graphql.GraphQLObjectType({
   name: 'ManualTeamPlayerStat',
   fields: function fields() {
@@ -96,6 +110,7 @@ var ManualTeamPlayer = new _graphql.GraphQLObjectType({
       team_info: { type: ManualTeamInfo, resolve: function resolve(player) {
           return player.team_players[0];
         } },
+      salary: { type: ManualTeamPlayerSalary, resolve: _setup.PlayerLeagueSalary.TeamPlayerSalary },
       stats: { type: new _graphql.GraphQLList(ManualTeamPlayerStat), resolve: function resolve(player) {
           return player.player_stats;
         } }
@@ -223,7 +238,7 @@ var ManualTeamOverview = new _graphql.GraphQLObjectType({
           return team.users;
         } },
       players: { type: new _graphql.GraphQLList(ManualTeamPlayer), resolve: function resolve(team) {
-          return team.players;
+          return team ? team.players : [];
         } },
       record: { type: ManualTeamRecord, resolve: function resolve(team) {
           return team.team_season;
