@@ -227,7 +227,8 @@ var TeamMutation = {
             id_sl: team_info.id_sl,
             id_player: player.id_player,
             primary_position: player.default_primary,
-            secondary_position: player.default_secondary
+            secondary_position: player.default_secondary,
+            order: team_info.order || 999
           });
 
           return player;
