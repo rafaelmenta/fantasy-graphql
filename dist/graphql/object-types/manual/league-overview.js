@@ -131,7 +131,7 @@ var LeagueOverview = function LeagueOverview(root, args) {
           }
         }]
       }]
-    }, { model: _teamSeason2.default, include: [{ model: _setup.Season, where: { current: true } }] }, { model: _setup.UserTeam, include: [{ model: _setup.User }] }, { model: _setup.TeamStats, required: false, include: [{ model: _setup.Season, where: { current: true }, required: false }] }]
+    }, { model: _teamSeason2.default, include: [{ model: _setup.Season, where: { current: true } }] }, { model: _setup.UserTeam, include: [{ model: _setup.User }] }, { model: _setup.TeamStats, required: false, include: [{ model: _setup.Season, where: { current: true } }] }]
   }).then(function (teams) {
 
     var divisionMap = new Map();
