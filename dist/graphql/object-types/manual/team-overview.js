@@ -93,6 +93,7 @@ var ManualTeamPlayerStat = new _graphql.GraphQLObjectType({
   name: 'ManualTeamPlayerStat',
   fields: function fields() {
     return {
+      games: { type: _graphql.GraphQLInt },
       minutes: { type: _graphql.GraphQLFloat },
       fantasy_points: { type: _graphql.GraphQLFloat }
     };

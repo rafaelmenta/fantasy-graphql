@@ -73,6 +73,7 @@ const ManualTeamPlayerSalary = new GraphQLObjectType({
 const ManualTeamPlayerStat = new GraphQLObjectType({
   name: 'ManualTeamPlayerStat',
   fields: () => ({
+    games: { type: GraphQLInt },
     minutes: { type: GraphQLFloat},
     fantasy_points: { type: GraphQLFloat},
   }),
