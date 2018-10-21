@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.PlayerLeagueSalary = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
+exports.TeamSeason = exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.PlayerLeagueSalary = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
 
 var _user = require('./user');
 
@@ -1055,3 +1055,4 @@ exports.PlayerLeagueSalary = _playerLeagueSalary.PlayerLeagueSalary;
 exports.PlayerTrade = _playerTrade2.default;
 exports.PickTrade = _pickTrade2.default;
 exports.Taxonomy = _taxonomy.Taxonomy;
+exports.TeamSeason = _teamSeason2.default;

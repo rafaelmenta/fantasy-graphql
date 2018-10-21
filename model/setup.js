@@ -1017,4 +1017,5 @@ export {
   PlayerTrade,
   PickTrade,
   Taxonomy,
+  TeamSeason,
 };
