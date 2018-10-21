@@ -60,6 +60,11 @@ var TeamPerformanceMutation = exports.TeamPerformanceMutation = {
                     player.fantasy_points = 0;
 
                     var perf = playerPerformanceMap[player.id_player + '_' + player.id_round];
+
+                    if (!perf) {
+                      return '';
+                    }
+
                     var fpm = perf.fantasy_points / perf.minutes;
 
                     // Player has all minutes available on P1
@@ -119,15 +124,15 @@ var TeamPerformanceMutation = exports.TeamPerformanceMutation = {
                     minutes_c: minutes.C,
                     fantasy_points: score.toFixed(3)
                   }, { where: { tpf_code: team.tpf_code }, transaction: t });
-                }).then(function () {
-                  var playerStats = '\n                          UPDATE player_stats ps\n                          JOIN player_stats_view v ON ps.id_player = v.id_player and ps.id_season = v.id_season\n                          JOIN season s ON s.id_season=ps.id_season\n                          SET\n                            ps.games = v.games,\n                            ps.minutes = v.minutes,\n                            ps.points = v.points,\n                            ps.field_goal_attempts = v.field_goal_attempts,\n                            ps.free_throw_attempts = v.free_throw_attempts,\n                            ps.offensive_rebounds = v.offensive_rebounds,\n                            ps.defensive_rebounds = v.defensive_rebounds,\n                            ps.assists = v.assists,\n                            ps.turnovers = v.turnovers,\n                            ps.steals = v.steals,\n                            ps.blocks = v.blocks,\n                            ps.personal_fouls = v.personal_fouls,\n                            ps.fantasy_points_per_minutes = v.fantasy_points_per_minutes,\n                            ps.fantasy_points = v.fantasy_points\n                          WHERE s.current = true;';
-                  return _connection2.default.query(playerStats, { transaction: t });
-                }).then(function () {
-                  var teamStats = '\n                          UPDATE team_stats ts\n                          JOIN team_stats_view v ON ts.id_sl = v.id_sl and ts.id_season=v.id_season\n                          JOIN season s ON s.id_season=ps.id_season\n                          SET\n                            ts.fantasy_points = v.fantasy_points,\n                            ts.minutes_pg = v.minutes_pg,\n                            ts.minutes_sg = v.minutes_sg,\n                            ts.minutes_sf = v.minutes_sf,\n                            ts.minutes_pf = v.minutes_pf,\n                            ts.minutes_c = v.minutes_c\n                          WHERE s.current = true;';
-                  return _connection2.default.query(teamStats, { transaction: t });
                 });
               });
-              return Promise.all(teamsUpdates);
+              return Promise.all(teamsUpdates).then(function () {
+                var playerStats = '\n                          UPDATE player_stats ps\n                          JOIN player_stats_view v ON ps.id_player = v.id_player and ps.id_season = v.id_season\n                          JOIN season s ON s.id_season=ps.id_season\n                          SET\n                            ps.games = v.games,\n                            ps.minutes = v.minutes,\n                            ps.points = v.points,\n                            ps.field_goal_attempts = v.field_goal_attempts,\n                            ps.free_throw_attempts = v.free_throw_attempts,\n                            ps.offensive_rebounds = v.offensive_rebounds,\n                            ps.defensive_rebounds = v.defensive_rebounds,\n                            ps.assists = v.assists,\n                            ps.turnovers = v.turnovers,\n                            ps.steals = v.steals,\n                            ps.blocks = v.blocks,\n                            ps.personal_fouls = v.personal_fouls,\n                            ps.fantasy_points_per_minutes = v.fantasy_points_per_minutes,\n                            ps.fantasy_points = v.fantasy_points\n                          WHERE s.current = true;';
+                return _connection2.default.query(playerStats, { transaction: t });
+              }).then(function () {
+                var teamStats = '\n                          UPDATE team_stats ts\n                          JOIN team_stats_view v ON ts.id_sl = v.id_sl and ts.id_season=v.id_season\n                          JOIN season s ON s.id_season=ts.id_season\n                          SET\n                            ts.fantasy_points = v.fantasy_points,\n                            ts.minutes_pg = v.minutes_pg,\n                            ts.minutes_sg = v.minutes_sg,\n                            ts.minutes_sf = v.minutes_sf,\n                            ts.minutes_pf = v.minutes_pf,\n                            ts.minutes_c = v.minutes_c\n                          WHERE s.current = true;';
+                return _connection2.default.query(teamStats, { transaction: t });
+              });
             });
           });
         });
