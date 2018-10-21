@@ -42,6 +42,11 @@ export const TeamPerformanceMutation = {
                           player.fantasy_points = 0;
 
                           const perf = playerPerformanceMap[`${player.id_player}_${player.id_round}`];
+
+                          if (!perf) {
+                            return '';
+                          }
+
                           const fpm = perf.fantasy_points/perf.minutes;
 
                           // Player has all minutes available on P1
@@ -108,8 +113,10 @@ export const TeamPerformanceMutation = {
                         minutes_c: minutes.C,
                         fantasy_points: score.toFixed(3),
                         }, { where: { tpf_code: team.tpf_code}, transaction: t }))
-                      .then(() => {
-                        const playerStats = `
+                  });
+                  return Promise.all(teamsUpdates)
+                    .then(() => {
+                      const playerStats = `
                           UPDATE player_stats ps
                           JOIN player_stats_view v ON ps.id_player = v.id_player and ps.id_season = v.id_season
                           JOIN season s ON s.id_season=ps.id_season
@@ -129,13 +136,13 @@ export const TeamPerformanceMutation = {
                             ps.fantasy_points_per_minutes = v.fantasy_points_per_minutes,
                             ps.fantasy_points = v.fantasy_points
                           WHERE s.current = true;`;
-                        return Conn.query(playerStats, {transaction: t})
-                      })
-                      .then(() => {
-                        const teamStats = `
+                      return Conn.query(playerStats, { transaction: t })
+                    })
+                    .then(() => {
+                      const teamStats = `
                           UPDATE team_stats ts
                           JOIN team_stats_view v ON ts.id_sl = v.id_sl and ts.id_season=v.id_season
-                          JOIN season s ON s.id_season=ps.id_season
+                          JOIN season s ON s.id_season=ts.id_season
                           SET
                             ts.fantasy_points = v.fantasy_points,
                             ts.minutes_pg = v.minutes_pg,
@@ -144,11 +151,9 @@ export const TeamPerformanceMutation = {
                             ts.minutes_pf = v.minutes_pf,
                             ts.minutes_c = v.minutes_c
                           WHERE s.current = true;`;
-                        return Conn.query(teamStats, {transaction: t})
-                      });
-                  });
-                  return Promise.all(teamsUpdates);
-                 });
+                      return Conn.query(teamStats, { transaction: t })
+                    });
+                });
               });
           });
           return Promise.all(roundUpdates);
