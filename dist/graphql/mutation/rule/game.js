@@ -22,8 +22,8 @@ var GameInput = new _graphql.GraphQLInputObjectType({
   fields: function fields() {
     return {
       home_team: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
-      away_team: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
-      id_type: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLString) },
+      away_team: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
+      id_type: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) },
       id_round: { type: new _graphql.GraphQLNonNull(_graphql.GraphQLInt) }
     };
   }

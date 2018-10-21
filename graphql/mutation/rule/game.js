@@ -8,8 +8,8 @@ const GameInput = new GraphQLInputObjectType({
   name: 'GameInput',
   fields: () => ({
     home_team: { type: new GraphQLNonNull(GraphQLInt) },
-    away_team: { type: new GraphQLNonNull(GraphQLString) },
-    id_type: { type: new GraphQLNonNull(GraphQLString) },
+    away_team: { type: new GraphQLNonNull(GraphQLInt) },
+    id_type: { type: new GraphQLNonNull(GraphQLInt) },
     id_round: { type: new GraphQLNonNull(GraphQLInt) },
   }),
 });
