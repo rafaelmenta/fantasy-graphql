@@ -47,25 +47,28 @@ export const TeamPerformanceMutation = {
                             return '';
                           }
 
-                          const fpm = perf.fantasy_points/perf.minutes;
+                          // Extract to local variables to avoid mutating the performance map.
+                          let playerMin = perf.minutes;
+                          const playerFps = perf.fantasy_points;
+                          const fpm = playerFps/playerMin;
 
                           // Player has all minutes available on P1
-                          if (perf.minutes > 0 && perf.minutes <= minutes[player.primary_position]) {
-                            player.fantasy_points = perf.fantasy_points;
-                            player.minutes_primary = perf.minutes;
-                            minutes[player.primary_position] -= perf.minutes;
+                          if (playerMin > 0 && playerMin <= minutes[player.primary_position]) {
+                            player.fantasy_points = playerFps;
+                            player.minutes_primary = playerMin;
+                            minutes[player.primary_position] -= playerMin;
 
                           // Player exceeded P1 minutes
-                          } else if (perf.minutes > 0 && minutes[player.primary_position] > 0) {
+                          } else if (playerMin > 0 && minutes[player.primary_position] > 0) {
                             player.fantasy_points = fpm * minutes[player.primary_position];
                             player.minutes_primary = minutes[player.primary_position];
-                            perf.minutes -= minutes[player.primary_position];
+                            playerMin -= minutes[player.primary_position];
                             minutes[player.primary_position] = 0;
 
                             // Player fits on P2 minutes
-                            if (perf.minutes < minutes[player.secondary_position]) {
-                              player.minutes_secondary = perf.minutes;
-                              player.fantasy_points = perf.fantasy_points;
+                            if (playerMin < minutes[player.secondary_position]) {
+                              player.minutes_secondary = playerMin;
+                              player.fantasy_points = playerFps;
 
                             // Player doesn't fit on P2 minutes
                             } else {
@@ -75,13 +78,13 @@ export const TeamPerformanceMutation = {
                             }
 
                           // Player has all minutes available on P2
-                          } else if (perf.minutes > 0 && perf.minutes < minutes[player.secondary_position]) {
-                            player.fantasy_points = perf.fantasy_points;
-                            player.minutes_secondary = perf.minutes;
-                            minutes[player.secondary_position] -= perf.minutes;
+                          } else if (playerMin > 0 && playerMin < minutes[player.secondary_position]) {
+                            player.fantasy_points = playerFps;
+                            player.minutes_secondary = playerMin;
+                            minutes[player.secondary_position] -= playerMin;
 
                           // Player exceeded P2 minutes
-                          } else if (perf.minutes > 0 && minutes[player.secondary_position] > 0) {
+                          } else if (playerMin > 0 && minutes[player.secondary_position] > 0) {
                             player.fantasy_points = fpm * minutes[player.secondary_position];
                             player.minutes_secondary = minutes[player.secondary_position];
                             minutes[player.secondary_position] = 0;
@@ -97,11 +100,6 @@ export const TeamPerformanceMutation = {
                               minutes_secondary=${player.minutes_secondary}
                             WHERE
                               ptp_code=${player.ptp_code};`;
-                          // PlayerTeamPerformance.update({
-                          //   fantasy_points: player.fantasy_points.toFixed(3),
-                          //   minutes_primary: player.minutes_primary,
-                          //   minutes_secondary: player.minutes_secondary,
-                          // }, { where: { ptp_code: player.ptp_code }, transaction: t });
                         });
                       })
                       .then(playerUpdates => Conn.query(playerUpdates.join(' '), {transaction: t}))
