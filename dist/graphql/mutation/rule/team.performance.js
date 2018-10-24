@@ -65,6 +65,11 @@ var TeamPerformanceMutation = exports.TeamPerformanceMutation = {
                       return '';
                     }
 
+                    if (player.id_player === 352 && player.id_round === 725) {
+                      console.warn('minutes', minutes);
+                      console.warn('player', player);
+                    }
+
                     // Extract to local variables to avoid mutating the performance map.
                     var playerMin = perf.minutes;
                     var playerFps = perf.fantasy_points;
