@@ -47,11 +47,6 @@ export const TeamPerformanceMutation = {
                             return '';
                           }
 
-                          if (player.id_player === 352 && player.id_round === 725) {
-                            console.warn('minutes', minutes);
-                            console.warn('player', player);
-                          }
-
                           // Extract to local variables to avoid mutating the performance map.
                           let playerMin = perf.minutes;
                           const playerFps = perf.fantasy_points;
@@ -74,6 +69,7 @@ export const TeamPerformanceMutation = {
                             if (playerMin < minutes[player.secondary_position]) {
                               player.minutes_secondary = playerMin;
                               player.fantasy_points = playerFps;
+                              minutes[player.secondary_position] -= playerMin;
 
                             // Player doesn't fit on P2 minutes
                             } else {
