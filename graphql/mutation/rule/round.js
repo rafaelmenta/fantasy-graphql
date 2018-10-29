@@ -80,8 +80,8 @@ function closeRound(root, {id_round}) {
             homeQuery = TeamSeason.update({win: Sequelize.literal('win + 1') }, {where: {id_sl: home.id_sl}, transaction: t});
             awayQuery = TeamSeason.update({loss: Sequelize.literal('loss + 1') }, {where: {id_sl: away.id_sl}, transaction: t});
           } else {
-            awayQuery = TeamSeason.update({loss: Sequelize.literal('win + 1') }, {where: {id_sl: away.id_sl}, transaction: t});
-            homeQuery = TeamSeason.update({win: Sequelize.literal('loss + 1') }, {where: {id_sl: home.id_sl}, transaction: t});
+            awayQuery = TeamSeason.update({win: Sequelize.literal('win + 1') }, {where: {id_sl: away.id_sl}, transaction: t});
+            homeQuery = TeamSeason.update({loss: Sequelize.literal('loss + 1') }, {where: {id_sl: home.id_sl}, transaction: t});
           }
           return Promise.all[homeQuery, awayQuery]
         }

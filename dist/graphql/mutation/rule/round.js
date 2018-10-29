@@ -109,8 +109,8 @@ function closeRound(root, _ref2) {
             homeQuery = _setup.TeamSeason.update({ win: _sequelize2.default.literal('win + 1') }, { where: { id_sl: home.id_sl }, transaction: t });
             awayQuery = _setup.TeamSeason.update({ loss: _sequelize2.default.literal('loss + 1') }, { where: { id_sl: away.id_sl }, transaction: t });
           } else {
-            awayQuery = _setup.TeamSeason.update({ loss: _sequelize2.default.literal('win + 1') }, { where: { id_sl: away.id_sl }, transaction: t });
-            homeQuery = _setup.TeamSeason.update({ win: _sequelize2.default.literal('loss + 1') }, { where: { id_sl: home.id_sl }, transaction: t });
+            awayQuery = _setup.TeamSeason.update({ win: _sequelize2.default.literal('win + 1') }, { where: { id_sl: away.id_sl }, transaction: t });
+            homeQuery = _setup.TeamSeason.update({ loss: _sequelize2.default.literal('loss + 1') }, { where: { id_sl: home.id_sl }, transaction: t });
           }
           return Promise.all[(homeQuery, awayQuery)];
         }
