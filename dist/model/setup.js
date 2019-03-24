@@ -292,6 +292,16 @@ _teamSl2.default.AllGames = function (team, args) {
   });
 };
 
+_teamSl2.default.PlayoffsGames = function (team, args) {
+  return _teamSl2.default.GetGames({
+    id: team.id_sl,
+    processed: [true, false],
+    type: GAME_TYPE.PLAYOFF,
+    season: args.id_season,
+    order: 'ASC'
+  });
+};
+
 _teamSl2.default.RecentGames = function (team) {
   return _teamSl2.default.GetGames({
     id: team.id_sl,

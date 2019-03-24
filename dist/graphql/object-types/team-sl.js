@@ -144,6 +144,16 @@ var TeamSlType = new GraphQLObjectType({
           }
         }
       },
+      playoffs_games: {
+        type: new GraphQLList(_game2.default),
+        resolve: _setup.TeamSl.PlayoffsGames,
+        args: {
+          id_season: {
+            name: 'id_season',
+            type: GraphQLInt
+          }
+        }
+      },
       records: {
         type: new GraphQLList(_teamSeason2.default),
         resolve: resolver(_setup.TeamSl.Records),

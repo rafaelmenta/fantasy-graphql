@@ -110,6 +110,16 @@ const TeamSlType = new GraphQLObjectType({
         }
       }
     },
+    playoffs_games: {
+      type: new GraphQLList(GameType),
+      resolve: TeamSl.PlayoffsGames,
+      args: {
+        id_season: {
+          name: 'id_season',
+          type: GraphQLInt
+        }
+      }
+    },
     records: {
       type: new GraphQLList(TeamSeasonType),
       resolve : resolver(TeamSl.Records),

@@ -194,6 +194,16 @@ TeamSl.AllGames = function(team, args) {
   })
 };
 
+TeamSl.PlayoffsGames = function (team, args) {
+  return TeamSl.GetGames({
+    id: team.id_sl,
+    processed: [true, false],
+    type: GAME_TYPE.PLAYOFF,
+    season: args.id_season,
+    order: 'ASC'
+  })
+};
+
 TeamSl.RecentGames = function(team) {
   return TeamSl.GetGames({
     id : team.id_sl,
