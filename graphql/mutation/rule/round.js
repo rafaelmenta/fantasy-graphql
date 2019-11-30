@@ -48,7 +48,7 @@ function closeRound(root, {id_round}) {
 
   // 1 - Get team performances
   const teams = TeamPerformance.findAll({where: {id_round}})
-    .then(teams => teams.reduce((map, team) => {map[team.id_sl] = team; return map;}), {});
+    .then(teams => teams.reduce((map, team) => {map[team.id_sl] = team; return map;}, {}));
 
   // 2 - Get regular season games
   const games = Game.findAll({where: {id_round, id_type: GameType.parseValue('LEAGUE')}});

@@ -75,8 +75,8 @@ function closeRound(root, _ref2) {
   var teams = _teamPerformance2.default.findAll({ where: { id_round: id_round } }).then(function (teams) {
     return teams.reduce(function (map, team) {
       map[team.id_sl] = team;return map;
-    });
-  }, {});
+    }, {});
+  });
 
   // 2 - Get regular season games
   var games = _game2.default.findAll({ where: { id_round: id_round, id_type: _gameType2.default.parseValue('LEAGUE') } });
