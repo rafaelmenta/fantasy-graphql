@@ -30,8 +30,24 @@ var UserQuery = {
         name: 'id_user',
         type: GraphQLInt
       },
+      id_permission: {
+        name: 'id_permission',
+        type: GraphQLInt
+      },
       login: {
         name: 'login',
+        type: GraphQLString
+      },
+      first_name: {
+        name: 'first_name',
+        type: GraphQLString
+      },
+      last_name: {
+        name: 'last_name',
+        type: GraphQLString
+      },
+      email: {
+        name: 'email',
         type: GraphQLString
       }
     }

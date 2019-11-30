@@ -18,10 +18,22 @@ const UserType = new GraphQLObjectType({
     id_user: {
       type: GraphQLInt,
     },
+    id_permission: {
+      type: GraphQLInt,
+    },
     login: {
       type: GraphQLString,
     },
     nickname: {
+      type: GraphQLString,
+    },
+    email: {
+      type: GraphQLString,
+    },
+    first_name: {
+      type: GraphQLString,
+    },
+    last_name: {
       type: GraphQLString,
     },
     teams: {

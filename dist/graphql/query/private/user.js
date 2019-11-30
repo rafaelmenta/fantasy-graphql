@@ -33,6 +33,18 @@ var UserQuery = {
       login: {
         name: 'login',
         type: GraphQLString
+      },
+      first_name: {
+        name: 'first_name',
+        type: GraphQLString
+      },
+      last_name: {
+        name: 'last_name',
+        type: GraphQLString
+      },
+      email: {
+        name: 'email',
+        type: GraphQLString
       }
     }
   },
