@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TeamSeason = exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.PlayerLeagueSalary = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
+exports.PlayerBid = exports.Auction = exports.TeamSeason = exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.PlayerLeagueSalary = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
 
 var _user = require('./user');
 
@@ -78,6 +78,10 @@ var _trade = require('./trade');
 var _trade2 = _interopRequireDefault(_trade);
 
 var _playerLeagueSalary = require('./player-league-salary');
+
+var _auction = require('./auction');
+
+var _playerBid = require('./player-bid');
 
 var _playerStats = require('./views/player-stats');
 
@@ -1039,6 +1043,32 @@ _playerLeagueSalary.PlayerLeagueSalary.TeamPlayerSalary = function (player, args
   return _connection2.default.query('\n    SELECT ps.*\n    FROM player_league_salary ps\n    JOIN player p ON ps.id_player=p.id_player AND p.id_player=' + idPlayer + '\n    JOIN team_sl t ON t.id_sl=' + idSl + '\n    AND ps.id_league = t.league_id\n  ', { model: _playerLeagueSalary.PlayerLeagueSalary });
 };
 
+////////////// Auction Relationships
+
+_auction.Auction.League = _auction.Auction.belongsTo(_league2.default, {
+  foreignKey: 'id_league'
+});
+
+_league2.default.Auctions = _league2.default.hasMany(_auction.Auction, {
+  foreignKey: 'id_league'
+});
+
+_auction.Auction.Bids = _auction.Auction.hasMany(_playerBid.PlayerBid, {
+  foreignKey: 'id_auction'
+});
+
+_playerBid.PlayerBid.Auction = _playerBid.PlayerBid.belongsTo(_auction.Auction, {
+  foreignKey: 'id_auction'
+});
+
+_playerBid.PlayerBid.Player = _playerBid.PlayerBid.belongsTo(_player2.default, {
+  foreignKey: 'id_player'
+});
+
+_playerBid.PlayerBid.Team = _playerBid.PlayerBid.belongsTo(_teamSl2.default, {
+  foreignKey: 'id_sl'
+});
+
 exports.User = _user2.default;
 exports.TeamSl = _teamSl2.default;
 exports.Player = _player2.default;
@@ -1066,3 +1096,5 @@ exports.PlayerTrade = _playerTrade2.default;
 exports.PickTrade = _pickTrade2.default;
 exports.Taxonomy = _taxonomy.Taxonomy;
 exports.TeamSeason = _teamSeason2.default;
+exports.Auction = _auction.Auction;
+exports.PlayerBid = _playerBid.PlayerBid;

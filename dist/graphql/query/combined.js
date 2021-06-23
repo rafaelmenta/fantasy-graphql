@@ -96,6 +96,8 @@ var _archive = require('./public/archive');
 
 var _system = require('./public/system');
 
+var _auction = require('./public/auction');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql'),
@@ -107,7 +109,7 @@ var GraphQLObjectType = graphql.GraphQLObjectType;
 var Query = new GraphQLObjectType({
   name: 'Query',
   fields: function fields() {
-    return Object.assign({}, _user2.default, _user4.default, _teamSl2.default, _teamNba2.default, _player2.default, _division2.default, _conference2.default, _league2.default, _game2.default, _round2.default, _season2.default, _playerPerformance2.default, _teamPerformance2.default, _playerTeamPerformance2.default, _playerStats2.default, _teamStats2.default, _gameNba2.default, _draft2.default, _pick2.default, _trade2.default, _freeAgencyHistory2.default, _search2.default, _archive.ArchiveQuery, _system.SystemQuery);
+    return Object.assign({}, _user2.default, _user4.default, _teamSl2.default, _teamNba2.default, _player2.default, _division2.default, _conference2.default, _league2.default, _game2.default, _round2.default, _season2.default, _playerPerformance2.default, _teamPerformance2.default, _playerTeamPerformance2.default, _playerStats2.default, _teamStats2.default, _gameNba2.default, _draft2.default, _pick2.default, _trade2.default, _freeAgencyHistory2.default, _search2.default, _archive.ArchiveQuery, _system.SystemQuery, _auction.AuctionQuery);
   }
 });
 

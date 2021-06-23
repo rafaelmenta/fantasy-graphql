@@ -17,6 +17,8 @@ import PlayerTeamPerformance from './player-team-performance';
 import FreeAgencyHistory from './free-agency-history';
 import Trade from './trade';
 import {PlayerLeagueSalary} from './player-league-salary';
+import {Auction} from './auction';
+import {PlayerBid} from './player-bid';
 
 import PlayerStats from './views/player-stats';
 import TeamStats from './views/team-stats';
@@ -1000,6 +1002,32 @@ PlayerLeagueSalary.TeamPlayerSalary = function (player, args) {
   `, { model: PlayerLeagueSalary });
 }
 
+////////////// Auction Relationships
+
+Auction.League = Auction.belongsTo(League, {
+  foreignKey: 'id_league',
+});
+
+League.Auctions = League.hasMany(Auction, {
+  foreignKey: 'id_league',
+});
+
+Auction.Bids = Auction.hasMany(PlayerBid, {
+  foreignKey: 'id_auction',
+});
+
+PlayerBid.Auction = PlayerBid.belongsTo(Auction, {
+  foreignKey: 'id_auction',
+});
+
+PlayerBid.Player = PlayerBid.belongsTo(Player, {
+  foreignKey: 'id_player',
+});
+
+PlayerBid.Team = PlayerBid.belongsTo(TeamSl, {
+  foreignKey: 'id_sl',
+});
+
 export {
   User,
   TeamSl,
@@ -1028,4 +1056,6 @@ export {
   PickTrade,
   Taxonomy,
   TeamSeason,
+  Auction,
+  PlayerBid,
 };
