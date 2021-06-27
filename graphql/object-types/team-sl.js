@@ -126,7 +126,7 @@ const TeamSlType = new GraphQLObjectType({
       args: {
         id_season : { type : new GraphQLList(GraphQLInt) }
       }
-    }
+    },
   })
 });
 

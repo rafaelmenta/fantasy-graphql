@@ -3,23 +3,42 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ArchiveTeamStatsType = undefined;
+exports.ArchiveTeamStatsType = void 0;
 
-var _graphql = require('graphql');
+var _graphql = require("graphql");
 
-var ArchiveTeamStatsType = exports.ArchiveTeamStatsType = new _graphql.GraphQLObjectType({
+var ArchiveTeamStatsType = new _graphql.GraphQLObjectType({
   name: 'ArchiveTeamStats',
   fields: function fields() {
     return {
-      ats_id: { type: _graphql.GraphQLInt },
-      id_season: { type: _graphql.GraphQLInt },
-      id_league: { type: _graphql.GraphQLInt },
-      name: { type: _graphql.GraphQLString },
-      slug: { type: _graphql.GraphQLString },
-      season: { type: _graphql.GraphQLString },
-      win: { type: _graphql.GraphQLInt },
-      loss: { type: _graphql.GraphQLInt },
-      fantasy_points: { type: _graphql.GraphQLFloat }
+      ats_id: {
+        type: _graphql.GraphQLInt
+      },
+      id_season: {
+        type: _graphql.GraphQLInt
+      },
+      id_league: {
+        type: _graphql.GraphQLInt
+      },
+      name: {
+        type: _graphql.GraphQLString
+      },
+      slug: {
+        type: _graphql.GraphQLString
+      },
+      season: {
+        type: _graphql.GraphQLString
+      },
+      win: {
+        type: _graphql.GraphQLInt
+      },
+      loss: {
+        type: _graphql.GraphQLInt
+      },
+      fantasy_points: {
+        type: _graphql.GraphQLFloat
+      }
     };
   }
 });
+exports.ArchiveTeamStatsType = ArchiveTeamStatsType;

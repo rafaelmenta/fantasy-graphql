@@ -1,48 +1,31 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _user = require('./user');
+var _user = _interopRequireDefault(require("./user"));
 
-var _user2 = _interopRequireDefault(_user);
+var _player = _interopRequireDefault(require("./player"));
 
-var _player = require('./player');
+var _division = _interopRequireDefault(require("./division"));
 
-var _player2 = _interopRequireDefault(_player);
+var _pick = _interopRequireDefault(require("./pick"));
 
-var _division = require('./division');
+var _trade = _interopRequireDefault(require("./trade"));
 
-var _division2 = _interopRequireDefault(_division);
+var _teamStats = _interopRequireDefault(require("./team-stats"));
 
-var _pick = require('./pick');
+var _teamSeason = _interopRequireDefault(require("./team-season"));
 
-var _pick2 = _interopRequireDefault(_pick);
+var _game = _interopRequireDefault(require("./game"));
 
-var _trade = require('./trade');
+var _setup = require("../../model/setup");
 
-var _trade2 = _interopRequireDefault(_trade);
+var _tradeStatus = _interopRequireDefault(require("./enum/trade-status"));
 
-var _teamStats = require('./team-stats');
-
-var _teamStats2 = _interopRequireDefault(_teamStats);
-
-var _teamSeason = require('./team-season');
-
-var _teamSeason2 = _interopRequireDefault(_teamSeason);
-
-var _game = require('./game');
-
-var _game2 = _interopRequireDefault(_game);
-
-var _setup = require('../../model/setup');
-
-var _tradeStatus = require('./enum/trade-status');
-
-var _tradeStatus2 = _interopRequireDefault(_tradeStatus);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -52,36 +35,51 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLNonNull = graphql.GraphQLNonNull,
     GraphQLList = graphql.GraphQLList;
-
-
 var TeamSlType = new GraphQLObjectType({
   name: 'TeamSl',
   fields: function fields() {
     return {
-      id_sl: { type: GraphQLInt },
-      id_division: { type: GraphQLInt },
-      league_id: { type: GraphQLInt },
-      city: { type: GraphQLString },
-      nickname: { type: GraphQLString },
-      symbol: { type: GraphQLString },
-      primary_color: { type: GraphQLString },
-      secondary_color: { type: GraphQLString },
-      slug: { type: GraphQLString },
-
+      id_sl: {
+        type: GraphQLInt
+      },
+      id_division: {
+        type: GraphQLInt
+      },
+      league_id: {
+        type: GraphQLInt
+      },
+      city: {
+        type: GraphQLString
+      },
+      nickname: {
+        type: GraphQLString
+      },
+      symbol: {
+        type: GraphQLString
+      },
+      primary_color: {
+        type: GraphQLString
+      },
+      secondary_color: {
+        type: GraphQLString
+      },
+      slug: {
+        type: GraphQLString
+      },
       users: {
-        type: new GraphQLList(_user2.default),
+        type: new GraphQLList(_user["default"]),
         resolve: resolver(_setup.TeamSl.Users)
       },
       players: {
-        type: new GraphQLList(_player2.default),
+        type: new GraphQLList(_player["default"]),
         resolve: resolver(_setup.TeamSl.Players)
       },
       division: {
-        type: _division2.default,
+        type: _division["default"],
         resolve: resolver(_setup.TeamSl.Division)
       },
       stats: {
-        type: _teamStats2.default,
+        type: _teamStats["default"],
         resolve: _setup.TeamSl.Stats,
         args: {
           id_season: {
@@ -91,11 +89,11 @@ var TeamSlType = new GraphQLObjectType({
         }
       },
       picks: {
-        type: new GraphQLList(_pick2.default),
+        type: new GraphQLList(_pick["default"]),
         resolve: _setup.TeamSl.Picks
       },
       record: {
-        type: _teamSeason2.default,
+        type: _teamSeason["default"],
         resolve: _setup.TeamSl.Record,
         args: {
           id_season: {
@@ -105,37 +103,37 @@ var TeamSlType = new GraphQLObjectType({
         }
       },
       sent_trades: {
-        type: new GraphQLList(_trade2.default),
+        type: new GraphQLList(_trade["default"]),
         resolve: resolver(_setup.TeamSl.SentTrades),
         args: {
           status_trade: {
             name: 'status_trade',
             type: new GraphQLList(GraphQLInt),
-            defaultValue: _tradeStatus2.default.parseValue('PENDING')
+            defaultValue: _tradeStatus["default"].parseValue('PENDING')
           }
         }
       },
       received_trades: {
-        type: new GraphQLList(_trade2.default),
+        type: new GraphQLList(_trade["default"]),
         resolve: resolver(_setup.TeamSl.ReceivedTrades),
         args: {
           status_trade: {
             name: 'status_trade',
             type: new GraphQLList(GraphQLInt),
-            defaultValue: _tradeStatus2.default.parseValue('PENDING')
+            defaultValue: _tradeStatus["default"].parseValue('PENDING')
           }
         }
       },
       recent_games: {
-        type: new GraphQLList(_game2.default),
+        type: new GraphQLList(_game["default"]),
         resolve: _setup.TeamSl.RecentGames
       },
       next_games: {
-        type: new GraphQLList(_game2.default),
+        type: new GraphQLList(_game["default"]),
         resolve: _setup.TeamSl.NextGames
       },
       all_games: {
-        type: new GraphQLList(_game2.default),
+        type: new GraphQLList(_game["default"]),
         resolve: _setup.TeamSl.AllGames,
         args: {
           id_season: {
@@ -145,7 +143,7 @@ var TeamSlType = new GraphQLObjectType({
         }
       },
       playoffs_games: {
-        type: new GraphQLList(_game2.default),
+        type: new GraphQLList(_game["default"]),
         resolve: _setup.TeamSl.PlayoffsGames,
         args: {
           id_season: {
@@ -155,14 +153,16 @@ var TeamSlType = new GraphQLObjectType({
         }
       },
       records: {
-        type: new GraphQLList(_teamSeason2.default),
+        type: new GraphQLList(_teamSeason["default"]),
         resolve: resolver(_setup.TeamSl.Records),
         args: {
-          id_season: { type: new GraphQLList(GraphQLInt) }
+          id_season: {
+            type: new GraphQLList(GraphQLInt)
+          }
         }
       }
     };
   }
 });
-
-exports.default = TeamSlType;
+var _default = TeamSlType;
+exports["default"] = _default;

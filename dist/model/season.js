@@ -1,30 +1,28 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _sequelize = require('sequelize');
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _sequelize2 = _interopRequireDefault(_sequelize);
+var _connection = _interopRequireDefault(require("../database/connection"));
 
-var _connection = require('../database/connection');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _connection2 = _interopRequireDefault(_connection);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Season = _connection2.default.define('season', {
+var Season = _connection["default"].define('season', {
   id_season: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     primaryKey: true
   },
-  year: _sequelize2.default.STRING,
-  current: _sequelize2.default.BOOLEAN
+  year: _sequelize["default"].STRING,
+  current: _sequelize["default"].BOOLEAN
 }, {
   updatedAt: false,
   createdAt: false,
   freezeTableName: true
 });
 
-exports.default = Season;
+var _default = Season;
+exports["default"] = _default;

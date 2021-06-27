@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
 var graphql = require('graphql');
+
 var GraphQLEnumType = graphql.GraphQLEnumType;
-
-
 var TradeStatus = new GraphQLEnumType({
   name: 'TradeStatus',
   values: {
@@ -25,5 +25,5 @@ var TradeStatus = new GraphQLEnumType({
     }
   }
 });
-
-exports.default = TradeStatus;
+var _default = TradeStatus;
+exports["default"] = _default;

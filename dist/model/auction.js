@@ -1,38 +1,36 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Auction = undefined;
+exports.Auction = void 0;
 
-var _sequelize = require('sequelize');
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _sequelize2 = _interopRequireDefault(_sequelize);
+var _connection = _interopRequireDefault(require("../database/connection"));
 
-var _connection = require('../database/connection');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _connection2 = _interopRequireDefault(_connection);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Auction = exports.Auction = _connection2.default.define('auction', {
+var Auction = _connection["default"].define('auction', {
   id_auction: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   id_league: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     references: {
       model: 'league',
       key: 'id_league'
     }
   },
-  date_started: _sequelize2.default.DATE,
-  date_ended: _sequelize2.default.DATE,
-  status: _sequelize2.default.INTEGER
+  date_started: _sequelize["default"].DATE,
+  date_ended: _sequelize["default"].DATE,
+  status: _sequelize["default"].INTEGER
 }, {
   updatedAt: false,
   createdAt: false,
   freezeTableName: true
 });
+
+exports.Auction = Auction;

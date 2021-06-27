@@ -1,84 +1,144 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ManualGamePerformanceQuery = exports.ManualGamePerformance = undefined;
+exports.ManualGamePerformanceQuery = exports.ManualGamePerformance = void 0;
 
-var _graphql = require('graphql');
+var _graphql = require("graphql");
 
-var _player = require('../player');
+var _player = _interopRequireDefault(require("../player"));
 
-var _player2 = _interopRequireDefault(_player);
+var _setup = require("../../../model/setup");
 
-var _setup = require('../../../model/setup');
+var _gameNba = _interopRequireDefault(require("../../../model/game-nba"));
 
-var _gameNba = require('../../../model/game-nba');
+var _teamNba = _interopRequireDefault(require("../team-nba"));
 
-var _gameNba2 = _interopRequireDefault(_gameNba);
-
-var _teamNba = require('../team-nba');
-
-var _teamNba2 = _interopRequireDefault(_teamNba);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var ManualPlayerGamePerformance = new _graphql.GraphQLObjectType({
   name: 'ManualPlayerGamePerformance',
   fields: function fields() {
     return {
-      player: { type: _player2.default },
-      id_player_performance: { type: _graphql.GraphQLInt },
-      minutes: { type: _graphql.GraphQLInt },
-      field_goal_attempts: { type: _graphql.GraphQLInt },
-      free_throw_attempts: { type: _graphql.GraphQLInt },
-      points: { type: _graphql.GraphQLInt },
-      defensive_rebounds: { type: _graphql.GraphQLInt },
-      offensive_rebounds: { type: _graphql.GraphQLInt },
-      assists: { type: _graphql.GraphQLInt },
-      steals: { type: _graphql.GraphQLInt },
-      blocks: { type: _graphql.GraphQLInt },
-      turnovers: { type: _graphql.GraphQLInt },
-      personal_fouls: { type: _graphql.GraphQLInt },
-      win_loss: { type: _graphql.GraphQLInt }
+      player: {
+        type: _player["default"]
+      },
+      id_player_performance: {
+        type: _graphql.GraphQLInt
+      },
+      minutes: {
+        type: _graphql.GraphQLInt
+      },
+      field_goal_attempts: {
+        type: _graphql.GraphQLInt
+      },
+      free_throw_attempts: {
+        type: _graphql.GraphQLInt
+      },
+      points: {
+        type: _graphql.GraphQLInt
+      },
+      defensive_rebounds: {
+        type: _graphql.GraphQLInt
+      },
+      offensive_rebounds: {
+        type: _graphql.GraphQLInt
+      },
+      assists: {
+        type: _graphql.GraphQLInt
+      },
+      steals: {
+        type: _graphql.GraphQLInt
+      },
+      blocks: {
+        type: _graphql.GraphQLInt
+      },
+      turnovers: {
+        type: _graphql.GraphQLInt
+      },
+      personal_fouls: {
+        type: _graphql.GraphQLInt
+      },
+      win_loss: {
+        type: _graphql.GraphQLInt
+      }
     };
   }
 });
-
-var ManualGamePerformance = exports.ManualGamePerformance = new _graphql.GraphQLObjectType({
+var ManualGamePerformance = new _graphql.GraphQLObjectType({
   name: 'ManualGamePerformance',
   fields: function fields() {
     return {
-      home: { type: _teamNba2.default },
-      away: { type: _teamNba2.default },
-      id_round_home: { type: _graphql.GraphQLInt },
-      id_round_away: { type: _graphql.GraphQLInt },
-      home_performances: { type: new _graphql.GraphQLList(ManualPlayerGamePerformance) },
-      away_performances: { type: new _graphql.GraphQLList(ManualPlayerGamePerformance) }
+      home: {
+        type: _teamNba["default"]
+      },
+      away: {
+        type: _teamNba["default"]
+      },
+      id_round_home: {
+        type: _graphql.GraphQLInt
+      },
+      id_round_away: {
+        type: _graphql.GraphQLInt
+      },
+      home_performances: {
+        type: new _graphql.GraphQLList(ManualPlayerGamePerformance)
+      },
+      away_performances: {
+        type: new _graphql.GraphQLList(ManualPlayerGamePerformance)
+      }
     };
   }
-});
+}); // Export query ------------------------------------------------------------------------------------
 
-// Export query ------------------------------------------------------------------------------------
-
-var ManualGamePerformanceQuery = exports.ManualGamePerformanceQuery = {
+exports.ManualGamePerformance = ManualGamePerformance;
+var ManualGamePerformanceQuery = {
   type: ManualGamePerformance,
   args: {
-    id_game_nba: { name: 'id_game_nba', type: _graphql.GraphQLInt }
+    id_game_nba: {
+      name: 'id_game_nba',
+      type: _graphql.GraphQLInt
+    }
   },
   resolve: function resolve(root, _ref) {
     var id_game_nba = _ref.id_game_nba;
-    return _gameNba2.default.findOne({ where: { id_game_nba: id_game_nba } }).then(function (game) {
-      var home = _setup.TeamNba.findOne({ where: { id_nba: game.id_home } });
-      var away = _setup.TeamNba.findOne({ where: { id_nba: game.id_away } });
+    return _gameNba["default"].findOne({
+      where: {
+        id_game_nba: id_game_nba
+      }
+    }).then(function (game) {
+      var home = _setup.TeamNba.findOne({
+        where: {
+          id_nba: game.id_home
+        }
+      });
+
+      var away = _setup.TeamNba.findOne({
+        where: {
+          id_nba: game.id_away
+        }
+      });
+
       var home_performances = _setup.PlayerPerformance.findAll({
-        include: [{ model: _setup.Player, where: { id_nba: game.id_home } }],
+        include: [{
+          model: _setup.Player,
+          where: {
+            id_nba: game.id_home
+          }
+        }],
         where: {
           id_round: game.id_round_home
         }
       });
+
       var away_performances = _setup.PlayerPerformance.findAll({
-        include: [{ model: _setup.Player, where: { id_nba: game.id_away } }],
+        include: [{
+          model: _setup.Player,
+          where: {
+            id_nba: game.id_away
+          }
+        }],
         where: {
           id_round: game.id_round_away
         }
@@ -97,3 +157,4 @@ var ManualGamePerformanceQuery = exports.ManualGamePerformanceQuery = {
     });
   }
 };
+exports.ManualGamePerformanceQuery = ManualGamePerformanceQuery;

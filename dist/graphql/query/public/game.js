@@ -1,32 +1,23 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _game = require('../../object-types/game');
+var _game = _interopRequireDefault(require("../../object-types/game"));
 
-var _game2 = _interopRequireDefault(_game);
+var _gameType = _interopRequireDefault(require("../../object-types/enum/game-type"));
 
-var _gameType = require('../../object-types/enum/game-type');
+var _setup = require("../../../model/setup");
 
-var _gameType2 = _interopRequireDefault(_gameType);
+var _conference = _interopRequireDefault(require("../../../model/conference"));
 
-var _setup = require('../../../model/setup');
+var _season = _interopRequireDefault(require("../../../model/season"));
 
-var _conference = require('../../../model/conference');
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _conference2 = _interopRequireDefault(_conference);
-
-var _season = require('../../../model/season');
-
-var _season2 = _interopRequireDefault(_season);
-
-var _sequelize = require('sequelize');
-
-var _sequelize2 = _interopRequireDefault(_sequelize);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 // import Game from '../../../model/game';
 var graphql = require('graphql'),
@@ -35,13 +26,10 @@ var graphql = require('graphql'),
 var GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLNonNull = graphql.GraphQLNonNull;
-
-
 var teamMap = {};
-
 var GameQuery = {
   games: {
-    type: new GraphQLList(_game2.default),
+    type: new GraphQLList(_game["default"]),
     resolve: resolver(_setup.Game),
     args: {
       id_game: {
@@ -54,7 +42,7 @@ var GameQuery = {
       },
       id_type: {
         name: 'id_type',
-        type: new GraphQLList(_gameType2.default)
+        type: new GraphQLList(_gameType["default"])
       },
       home_team: {
         name: 'home_team',
@@ -67,7 +55,7 @@ var GameQuery = {
     }
   },
   game: {
-    type: _game2.default,
+    type: _game["default"],
     resolve: resolver(_setup.Game),
     args: {
       id_game: {
@@ -77,7 +65,7 @@ var GameQuery = {
     }
   },
   league_games: {
-    type: new GraphQLList(_game2.default),
+    type: new GraphQLList(_game["default"]),
     args: {
       id_league: {
         name: 'id_league',
@@ -87,14 +75,22 @@ var GameQuery = {
     resolve: function resolve(root, _ref) {
       var id_league = _ref.id_league;
       return _setup.Game.findAll({
-        include: [{ model: _setup.Round, include: [{ model: _season2.default, where: { current: true } }] }, _setup.Game.HomeTeam, _setup.Game.AwayTeam],
+        include: [{
+          model: _setup.Round,
+          include: [{
+            model: _season["default"],
+            where: {
+              current: true
+            }
+          }]
+        }, _setup.Game.HomeTeam, _setup.Game.AwayTeam],
         where: {
-          id_type: [_gameType2.default.parseValue('LEAGUE'), _gameType2.default.parseValue('PLAYOFF')],
-          id_league: _sequelize2.default.where(_sequelize2.default.col('home.league_id'), id_league)
+          id_type: [_gameType["default"].parseValue('LEAGUE'), _gameType["default"].parseValue('PLAYOFF')],
+          id_league: _sequelize["default"].where(_sequelize["default"].col('home.league_id'), id_league)
         }
       });
     }
   }
 };
-
-exports.default = GameQuery;
+var _default = GameQuery;
+exports["default"] = _default;

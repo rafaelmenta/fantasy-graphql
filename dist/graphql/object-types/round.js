@@ -1,24 +1,19 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _game = require('./game');
+var _game = _interopRequireDefault(require("./game"));
 
-var _game2 = _interopRequireDefault(_game);
+var _playerPerformance = _interopRequireDefault(require("./player-performance"));
 
-var _playerPerformance = require('./player-performance');
+var _setup = require("../../model/setup");
 
-var _playerPerformance2 = _interopRequireDefault(_playerPerformance);
+var _graphqlDate = _interopRequireDefault(require("graphql-date"));
 
-var _setup = require('../../model/setup');
-
-var _graphqlDate = require('graphql-date');
-
-var _graphqlDate2 = _interopRequireDefault(_graphqlDate);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -28,8 +23,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLBoolean = graphql.GraphQLBoolean,
     GraphQLList = graphql.GraphQLList;
-
-
 var RoundType = new GraphQLObjectType({
   name: 'Round',
   fields: function fields() {
@@ -47,10 +40,10 @@ var RoundType = new GraphQLObjectType({
         type: GraphQLInt
       },
       open_date: {
-        type: _graphqlDate2.default
+        type: _graphqlDate["default"]
       },
       close_date: {
-        type: _graphqlDate2.default
+        type: _graphqlDate["default"]
       },
       processed: {
         type: GraphQLBoolean
@@ -59,11 +52,11 @@ var RoundType = new GraphQLObjectType({
         type: GraphQLBoolean
       },
       games: {
-        type: new GraphQLList(_game2.default),
+        type: new GraphQLList(_game["default"]),
         resolve: resolver(_setup.Round.Games)
       }
     };
   }
 });
-
-exports.default = RoundType;
+var _default = RoundType;
+exports["default"] = _default;

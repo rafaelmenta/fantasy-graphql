@@ -1,20 +1,17 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _player = require('../../object-types/player');
+var _player = _interopRequireDefault(require("../../object-types/player"));
 
-var _player2 = _interopRequireDefault(_player);
+var _teamSl = _interopRequireDefault(require("../../object-types/team-sl"));
 
-var _teamSl = require('../../object-types/team-sl');
+var _setup = require("../../../model/setup");
 
-var _teamSl2 = _interopRequireDefault(_teamSl);
-
-var _setup = require('../../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -23,11 +20,9 @@ var GraphQLString = graphql.GraphQLString,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLNonNull = graphql.GraphQLNonNull;
-
-
 var SearchQuery = {
   search_players: {
-    type: new GraphQLList(_player2.default),
+    type: new GraphQLList(_player["default"]),
     resolve: _setup.Player.PlayerSearch,
     args: {
       query: {
@@ -37,7 +32,7 @@ var SearchQuery = {
     }
   },
   search_teams: {
-    type: new GraphQLList(_teamSl2.default),
+    type: new GraphQLList(_teamSl["default"]),
     resolve: _setup.TeamSl.TeamSearch,
     args: {
       query: {
@@ -51,5 +46,5 @@ var SearchQuery = {
     }
   }
 };
-
-exports.default = SearchQuery;
+var _default = SearchQuery;
+exports["default"] = _default;

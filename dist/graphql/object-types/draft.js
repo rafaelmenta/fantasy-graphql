@@ -1,24 +1,19 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _pick = require('./pick');
+var _pick = _interopRequireDefault(require("./pick"));
 
-var _pick2 = _interopRequireDefault(_pick);
+var _league = _interopRequireDefault(require("./league"));
 
-var _league = require('./league');
+var _setup = require("../../model/setup");
 
-var _league2 = _interopRequireDefault(_league);
+var _player = _interopRequireDefault(require("./player"));
 
-var _setup = require('../../model/setup');
-
-var _player = require('./player');
-
-var _player2 = _interopRequireDefault(_player);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -27,8 +22,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLString = graphql.GraphQLString,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList;
-
-
 var DraftType = new GraphQLObjectType({
   name: 'Draft',
   fields: function fields() {
@@ -52,23 +45,23 @@ var DraftType = new GraphQLObjectType({
         type: GraphQLInt
       },
       picks: {
-        type: new GraphQLList(_pick2.default),
+        type: new GraphQLList(_pick["default"]),
         resolve: resolver(_setup.Draft.Picks)
       },
       season: {
-        type: _pick2.default,
+        type: _pick["default"],
         resolve: resolver(_setup.Draft.Season)
       },
       league: {
-        type: _league2.default,
+        type: _league["default"],
         resolve: resolver(_setup.Draft.League)
       },
       available_players: {
-        type: new GraphQLList(_player2.default),
+        type: new GraphQLList(_player["default"]),
         resolve: _setup.Draft.AvailablePlayers
       }
     };
   }
 });
-
-exports.default = DraftType;
+var _default = DraftType;
+exports["default"] = _default;

@@ -1,33 +1,31 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Taxonomy = undefined;
+exports.Taxonomy = void 0;
 
-var _connection = require('../../database/connection');
+var _connection = _interopRequireDefault(require("../../database/connection"));
 
-var _connection2 = _interopRequireDefault(_connection);
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _sequelize = require('sequelize');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _sequelize2 = _interopRequireDefault(_sequelize);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Taxonomy = exports.Taxonomy = _connection2.default.define('taxonomy', {
+var Taxonomy = _connection["default"].define('taxonomy', {
   tax_id: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   slug: {
-    type: _sequelize2.default.STRING,
+    type: _sequelize["default"].STRING,
     unique: true
   },
-  id: _sequelize2.default.INTEGER
+  id: _sequelize["default"].INTEGER
 }, {
   freezeTableName: true,
   updatedAt: false,
   createdAt: false
 });
+
+exports.Taxonomy = Taxonomy;

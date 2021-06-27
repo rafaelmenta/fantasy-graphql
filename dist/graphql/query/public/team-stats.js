@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _teamStats = require('../../object-types/team-stats');
+var _teamStats = _interopRequireDefault(require("../../object-types/team-stats"));
 
-var _teamStats2 = _interopRequireDefault(_teamStats);
+var _setup = require("../../../model/setup");
 
-var _setup = require('../../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -18,11 +17,9 @@ var graphql = require('graphql'),
 var GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLNonNull = graphql.GraphQLNonNull;
-
-
 var TeamStatsQuery = {
   team_averages: {
-    type: new GraphQLList(_teamStats2.default),
+    type: new GraphQLList(_teamStats["default"]),
     resolve: resolver(_setup.TeamStats),
     args: {
       id_sl: {
@@ -32,7 +29,7 @@ var TeamStatsQuery = {
     }
   },
   team_season_averages: {
-    type: new GraphQLList(_teamStats2.default),
+    type: new GraphQLList(_teamStats["default"]),
     resolve: resolver(_setup.TeamStats),
     args: {
       id_season: {
@@ -42,7 +39,7 @@ var TeamStatsQuery = {
     }
   },
   general_averages: {
-    type: new GraphQLList(_teamStats2.default),
+    type: new GraphQLList(_teamStats["default"]),
     resolve: resolver(_setup.TeamStats),
     args: {
       id_season: {
@@ -56,5 +53,5 @@ var TeamStatsQuery = {
     }
   }
 };
-
-exports.default = TeamStatsQuery;
+var _default = TeamStatsQuery;
+exports["default"] = _default;

@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _teamPerformance = require('../../object-types/team-performance');
+var _teamPerformance = _interopRequireDefault(require("../../object-types/team-performance"));
 
-var _teamPerformance2 = _interopRequireDefault(_teamPerformance);
+var _setup = require("../../../model/setup");
 
-var _setup = require('../../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -18,11 +17,9 @@ var graphql = require('graphql'),
 var GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLNonNull = graphql.GraphQLNonNull;
-
-
 var TeamPerformanceQuery = {
   team_performance: {
-    type: _teamPerformance2.default,
+    type: _teamPerformance["default"],
     resolve: resolver(_setup.TeamPerformance),
     args: {
       id_player_performance: {
@@ -32,7 +29,7 @@ var TeamPerformanceQuery = {
     }
   },
   team_performances: {
-    type: new GraphQLList(_teamPerformance2.default),
+    type: new GraphQLList(_teamPerformance["default"]),
     resolve: resolver(_setup.TeamPerformance),
     args: {
       id_round: {
@@ -46,5 +43,5 @@ var TeamPerformanceQuery = {
     }
   }
 };
-
-exports.default = TeamPerformanceQuery;
+var _default = TeamPerformanceQuery;
+exports["default"] = _default;

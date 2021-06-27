@@ -1,49 +1,42 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _user = require('./rule/user');
+var _user = _interopRequireDefault(require("./rule/user"));
 
-var _user2 = _interopRequireDefault(_user);
+var _team = _interopRequireDefault(require("./rule/team"));
 
-var _team = require('./rule/team');
+var _trade = _interopRequireDefault(require("./rule/trade"));
 
-var _team2 = _interopRequireDefault(_team);
+var _draft = require("./rule/draft");
 
-var _trade = require('./rule/trade');
+var _league = require("./rule/league");
 
-var _trade2 = _interopRequireDefault(_trade);
+var _game = require("./rule/game");
 
-var _draft = require('./rule/draft');
+var _player = require("./rule/player");
 
-var _league = require('./rule/league');
+var _gameNba = require("./rule/game-nba");
 
-var _game = require('./rule/game');
+var _team2 = require("./rule/team.performance");
 
-var _player = require('./rule/player');
+var _round = require("./rule/round");
 
-var _gameNba = require('./rule/game-nba');
+var _auction = require("./rule/auction");
 
-var _team3 = require('./rule/team.performance');
-
-var _round = require('./rule/round');
-
-var _auction = require('./rule/auction');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql');
 
 var GraphQLObjectType = graphql.GraphQLObjectType;
-
-
 var RootMutationType = new GraphQLObjectType({
   name: 'RootMutationType',
   fields: function fields() {
-    return Object.assign({}, _user2.default, _team2.default, _trade2.default, _draft.DraftMutation, _league.LeagueMutation, _game.GameMutation, _player.PlayerMutation, _gameNba.GameNbaMutation, _team3.TeamPerformanceMutation, _round.RoundMutation, _auction.AuctionMutation);
+    return Object.assign({}, _user["default"], _team["default"], _trade["default"], _draft.DraftMutation, _league.LeagueMutation, _game.GameMutation, _player.PlayerMutation, _gameNba.GameNbaMutation, _team2.TeamPerformanceMutation, _round.RoundMutation, _auction.AuctionMutation);
   }
 });
-
-exports.default = RootMutationType;
+var _default = RootMutationType;
+exports["default"] = _default;

@@ -1,116 +1,71 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _user = require('./private/user');
+var _user = _interopRequireDefault(require("./private/user"));
 
-var _user2 = _interopRequireDefault(_user);
+var _user2 = _interopRequireDefault(require("./public/user"));
 
-var _user3 = require('./public/user');
+var _teamSl = _interopRequireDefault(require("./public/team-sl"));
 
-var _user4 = _interopRequireDefault(_user3);
+var _teamNba = _interopRequireDefault(require("./public/team-nba"));
 
-var _teamSl = require('./public/team-sl');
+var _player = _interopRequireDefault(require("./public/player"));
 
-var _teamSl2 = _interopRequireDefault(_teamSl);
+var _division = _interopRequireDefault(require("./public/division"));
 
-var _teamNba = require('./public/team-nba');
+var _conference = _interopRequireDefault(require("./public/conference"));
 
-var _teamNba2 = _interopRequireDefault(_teamNba);
+var _league = _interopRequireDefault(require("./public/league"));
 
-var _player = require('./public/player');
+var _game = _interopRequireDefault(require("./public/game"));
 
-var _player2 = _interopRequireDefault(_player);
+var _round = _interopRequireDefault(require("./public/round"));
 
-var _division = require('./public/division');
+var _season = _interopRequireDefault(require("./public/season"));
 
-var _division2 = _interopRequireDefault(_division);
+var _playerPerformance = _interopRequireDefault(require("./public/player-performance"));
 
-var _conference = require('./public/conference');
+var _teamPerformance = _interopRequireDefault(require("./public/team-performance"));
 
-var _conference2 = _interopRequireDefault(_conference);
+var _playerTeamPerformance = _interopRequireDefault(require("./public/player-team-performance"));
 
-var _league = require('./public/league');
+var _playerStats = _interopRequireDefault(require("./public/player-stats"));
 
-var _league2 = _interopRequireDefault(_league);
+var _teamStats = _interopRequireDefault(require("./public/team-stats"));
 
-var _game = require('./public/game');
+var _gameNba = _interopRequireDefault(require("./public/game-nba"));
 
-var _game2 = _interopRequireDefault(_game);
+var _draft = _interopRequireDefault(require("./public/draft"));
 
-var _round = require('./public/round');
+var _pick = _interopRequireDefault(require("./public/pick"));
 
-var _round2 = _interopRequireDefault(_round);
+var _trade = _interopRequireDefault(require("./public/trade"));
 
-var _season = require('./public/season');
+var _freeAgencyHistory = _interopRequireDefault(require("./public/free-agency-history"));
 
-var _season2 = _interopRequireDefault(_season);
+var _search = _interopRequireDefault(require("./public/search"));
 
-var _playerPerformance = require('./public/player-performance');
+var _archive = require("./public/archive");
 
-var _playerPerformance2 = _interopRequireDefault(_playerPerformance);
+var _system = require("./public/system");
 
-var _teamPerformance = require('./public/team-performance');
+var _auction = require("./public/auction");
 
-var _teamPerformance2 = _interopRequireDefault(_teamPerformance);
-
-var _playerTeamPerformance = require('./public/player-team-performance');
-
-var _playerTeamPerformance2 = _interopRequireDefault(_playerTeamPerformance);
-
-var _playerStats = require('./public/player-stats');
-
-var _playerStats2 = _interopRequireDefault(_playerStats);
-
-var _teamStats = require('./public/team-stats');
-
-var _teamStats2 = _interopRequireDefault(_teamStats);
-
-var _gameNba = require('./public/game-nba');
-
-var _gameNba2 = _interopRequireDefault(_gameNba);
-
-var _draft = require('./public/draft');
-
-var _draft2 = _interopRequireDefault(_draft);
-
-var _pick = require('./public/pick');
-
-var _pick2 = _interopRequireDefault(_pick);
-
-var _trade = require('./public/trade');
-
-var _trade2 = _interopRequireDefault(_trade);
-
-var _freeAgencyHistory = require('./public/free-agency-history');
-
-var _freeAgencyHistory2 = _interopRequireDefault(_freeAgencyHistory);
-
-var _search = require('./public/search');
-
-var _search2 = _interopRequireDefault(_search);
-
-var _archive = require('./public/archive');
-
-var _system = require('./public/system');
-
-var _auction = require('./public/auction');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
 
 var GraphQLObjectType = graphql.GraphQLObjectType;
-
-
 var Query = new GraphQLObjectType({
   name: 'Query',
   fields: function fields() {
-    return Object.assign({}, _user2.default, _user4.default, _teamSl2.default, _teamNba2.default, _player2.default, _division2.default, _conference2.default, _league2.default, _game2.default, _round2.default, _season2.default, _playerPerformance2.default, _teamPerformance2.default, _playerTeamPerformance2.default, _playerStats2.default, _teamStats2.default, _gameNba2.default, _draft2.default, _pick2.default, _trade2.default, _freeAgencyHistory2.default, _search2.default, _archive.ArchiveQuery, _system.SystemQuery, _auction.AuctionQuery);
+    return Object.assign({}, _user["default"], _user2["default"], _teamSl["default"], _teamNba["default"], _player["default"], _division["default"], _conference["default"], _league["default"], _game["default"], _round["default"], _season["default"], _playerPerformance["default"], _teamPerformance["default"], _playerTeamPerformance["default"], _playerStats["default"], _teamStats["default"], _gameNba["default"], _draft["default"], _pick["default"], _trade["default"], _freeAgencyHistory["default"], _search["default"], _archive.ArchiveQuery, _system.SystemQuery, _auction.AuctionQuery);
   }
 });
-
-exports.default = Query;
+var _default = Query;
+exports["default"] = _default;

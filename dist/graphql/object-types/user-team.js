@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _teamSl = require('./team-sl');
+var _teamSl = _interopRequireDefault(require("./team-sl"));
 
-var _teamSl2 = _interopRequireDefault(_teamSl);
+var _setup = require("../../model/setup");
 
-var _setup = require('../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -20,22 +19,28 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLBoolean = graphql.GraphQLBoolean,
     GraphQLList = graphql.GraphQLList;
-
-
 var UserTeamType = new GraphQLObjectType({
   name: 'UserTeam',
   fields: function fields() {
     return {
-      ut_code: { type: GraphQLInt },
-      id_sl: { type: GraphQLInt },
-      id_user: { type: GraphQLInt },
-      default_team: { type: GraphQLBoolean },
+      ut_code: {
+        type: GraphQLInt
+      },
+      id_sl: {
+        type: GraphQLInt
+      },
+      id_user: {
+        type: GraphQLInt
+      },
+      default_team: {
+        type: GraphQLBoolean
+      },
       team: {
-        type: _teamSl2.default,
+        type: _teamSl["default"],
         resolve: resolver(_setup.UserTeam.Team)
       }
     };
   }
 });
-
-exports.default = UserTeamType;
+var _default = UserTeamType;
+exports["default"] = _default;

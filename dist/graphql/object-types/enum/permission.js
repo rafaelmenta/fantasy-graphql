@@ -1,14 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
 var graphql = require('graphql');
 
 var GraphQLEnumType = graphql.GraphQLEnumType;
-
-
 var PermissionType = new GraphQLEnumType({
   name: 'Permission',
   values: {
@@ -29,5 +28,5 @@ var PermissionType = new GraphQLEnumType({
     }
   }
 });
-
-exports.default = PermissionType;
+var _default = PermissionType;
+exports["default"] = _default;

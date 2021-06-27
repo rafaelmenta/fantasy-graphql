@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _user = require('../../object-types/user');
+var _user = _interopRequireDefault(require("../../object-types/user"));
 
-var _user2 = _interopRequireDefault(_user);
+var _setup = require("../../../model/setup");
 
-var _setup = require('../../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -19,11 +18,9 @@ var GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLString = graphql.GraphQLString,
     GraphQLNonNull = graphql.GraphQLNonNull;
-
-
 var UserQuery = {
   user: {
-    type: _user2.default,
+    type: _user["default"],
     resolve: resolver(_setup.User),
     args: {
       id_user: {
@@ -53,9 +50,9 @@ var UserQuery = {
     }
   },
   users: {
-    type: new GraphQLList(_user2.default),
+    type: new GraphQLList(_user["default"]),
     resolve: resolver(_setup.User)
   }
 };
-
-exports.default = UserQuery;
+var _default = UserQuery;
+exports["default"] = _default;

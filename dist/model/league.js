@@ -1,39 +1,37 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _sequelize = require('sequelize');
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _sequelize2 = _interopRequireDefault(_sequelize);
+var _connection = _interopRequireDefault(require("../database/connection"));
 
-var _connection = require('../database/connection');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _connection2 = _interopRequireDefault(_connection);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var League = _connection2.default.define('league', {
+var League = _connection["default"].define('league', {
   id_league: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     primaryKey: true
   },
-  name: _sequelize2.default.STRING,
-  symbol: _sequelize2.default.STRING,
+  name: _sequelize["default"].STRING,
+  symbol: _sequelize["default"].STRING,
   id_owner: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     references: {
       model: 'user',
       key: 'id_user'
     }
   },
-  id_type: _sequelize2.default.INTEGER,
-  number_of_teams: _sequelize2.default.INTEGER
+  id_type: _sequelize["default"].INTEGER,
+  number_of_teams: _sequelize["default"].INTEGER
 }, {
   updatedAt: false,
   createdAt: false,
   freezeTableName: true
 });
 
-exports.default = League;
+var _default = League;
+exports["default"] = _default;

@@ -1,18 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _userTeam = require('./user-team');
+var _userTeam = _interopRequireDefault(require("./user-team"));
 
-var _userTeam2 = _interopRequireDefault(_userTeam);
+var _user = _interopRequireDefault(require("../../model/user"));
 
-var _user = require('../../model/user');
-
-var _user2 = _interopRequireDefault(_user);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -21,8 +18,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLString = graphql.GraphQLString,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList;
-
-
 var UserType = new GraphQLObjectType({
   name: 'User',
   description: 'A User',
@@ -50,11 +45,11 @@ var UserType = new GraphQLObjectType({
         type: GraphQLString
       },
       teams: {
-        type: new GraphQLList(_userTeam2.default),
-        resolve: resolver(_user2.default.UserTeams)
+        type: new GraphQLList(_userTeam["default"]),
+        resolve: resolver(_user["default"].UserTeams)
       }
     };
   }
 });
-
-exports.default = UserType;
+var _default = UserType;
+exports["default"] = _default;

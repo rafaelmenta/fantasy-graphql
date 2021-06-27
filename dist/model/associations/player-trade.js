@@ -1,44 +1,42 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _connection = require('../../database/connection');
+var _connection = _interopRequireDefault(require("../../database/connection"));
 
-var _connection2 = _interopRequireDefault(_connection);
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _sequelize = require('sequelize');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _sequelize2 = _interopRequireDefault(_sequelize);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var PlayerTrade = _connection2.default.define('player_trade', {
+var PlayerTrade = _connection["default"].define('player_trade', {
   ptr_code: {
     autoIncrement: true,
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     primaryKey: true
   },
   id_trade: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     references: {
       model: 'trade',
       key: 'id_trade'
     }
   },
   id_player: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     references: {
       model: 'player',
       key: 'id_player'
     }
   },
-  is_sender: _sequelize2.default.BOOLEAN
+  is_sender: _sequelize["default"].BOOLEAN
 }, {
   freezeTableName: true,
   updatedAt: false,
   createdAt: false
 });
 
-exports.default = PlayerTrade;
+var _default = PlayerTrade;
+exports["default"] = _default;

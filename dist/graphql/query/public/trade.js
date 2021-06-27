@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _trade = require('../../object-types/trade');
+var _trade = _interopRequireDefault(require("../../object-types/trade"));
 
-var _trade2 = _interopRequireDefault(_trade);
+var _setup = require("../../../model/setup");
 
-var _setup = require('../../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -18,11 +17,9 @@ var graphql = require('graphql'),
 var GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLNonNull = graphql.GraphQLNonNull;
-
-
 var TradeQuery = {
   trade: {
-    type: _trade2.default,
+    type: _trade["default"],
     resolve: resolver(_setup.Trade),
     args: {
       id_trade: {
@@ -32,7 +29,7 @@ var TradeQuery = {
     }
   },
   trades: {
-    type: new GraphQLList(_trade2.default),
+    type: new GraphQLList(_trade["default"]),
     resolve: resolver(_setup.Trade),
     args: {
       id_sender: {
@@ -50,5 +47,5 @@ var TradeQuery = {
     }
   }
 };
-
-exports.default = TradeQuery;
+var _default = TradeQuery;
+exports["default"] = _default;

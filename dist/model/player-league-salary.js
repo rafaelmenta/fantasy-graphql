@@ -1,44 +1,42 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PlayerLeagueSalary = undefined;
+exports.PlayerLeagueSalary = void 0;
 
-var _sequelize = require('sequelize');
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _sequelize2 = _interopRequireDefault(_sequelize);
+var _connection = _interopRequireDefault(require("../database/connection"));
 
-var _connection = require('../database/connection');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _connection2 = _interopRequireDefault(_connection);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var PlayerLeagueSalary = exports.PlayerLeagueSalary = _connection2.default.define('player_league_salary', {
+var PlayerLeagueSalary = _connection["default"].define('player_league_salary', {
   pls_code: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
   id_league: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     references: {
       model: 'league',
       key: 'id_league'
     }
   },
   id_player: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     references: {
       model: 'player',
       key: 'id_player'
     }
   },
-  contract_salary: _sequelize2.default.DECIMAL,
-  contract_years: _sequelize2.default.INTEGER
+  contract_salary: _sequelize["default"].DECIMAL,
+  contract_years: _sequelize["default"].INTEGER
 }, {
   updatedAt: false,
   createdAt: false,
   freezeTableName: true
 });
+
+exports.PlayerLeagueSalary = PlayerLeagueSalary;

@@ -1,20 +1,17 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _teamSl = require('./team-sl');
+var _teamSl = _interopRequireDefault(require("./team-sl"));
 
-var _teamSl2 = _interopRequireDefault(_teamSl);
+var _conference = _interopRequireDefault(require("./conference"));
 
-var _conference = require('./conference');
+var _setup = require("../../model/setup");
 
-var _conference2 = _interopRequireDefault(_conference);
-
-var _setup = require('../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -23,8 +20,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLString = graphql.GraphQLString,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList;
-
-
 var DivisionType = new GraphQLObjectType({
   name: 'Division',
   fields: function fields() {
@@ -39,15 +34,15 @@ var DivisionType = new GraphQLObjectType({
         type: GraphQLString
       },
       teams: {
-        type: new GraphQLList(_teamSl2.default),
+        type: new GraphQLList(_teamSl["default"]),
         resolve: resolver(_setup.Division.Teams)
       },
       conference: {
-        type: _conference2.default,
+        type: _conference["default"],
         resolve: resolver(_setup.Division.Conference)
       }
     };
   }
 });
-
-exports.default = DivisionType;
+var _default = DivisionType;
+exports["default"] = _default;

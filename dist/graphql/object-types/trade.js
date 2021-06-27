@@ -1,24 +1,19 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _teamSl = require('./team-sl');
+var _teamSl = _interopRequireDefault(require("./team-sl"));
 
-var _teamSl2 = _interopRequireDefault(_teamSl);
+var _player = _interopRequireDefault(require("./player"));
 
-var _player = require('./player');
+var _pick = _interopRequireDefault(require("./pick"));
 
-var _player2 = _interopRequireDefault(_player);
+var _setup = require("../../model/setup");
 
-var _pick = require('./pick');
-
-var _pick2 = _interopRequireDefault(_pick);
-
-var _setup = require('../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -27,8 +22,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLString = graphql.GraphQLString,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList;
-
-
 var TradeType = new GraphQLObjectType({
   name: 'Trade',
   fields: function fields() {
@@ -48,34 +41,38 @@ var TradeType = new GraphQLObjectType({
       trade_comment: {
         type: GraphQLString
       },
-      last_change: { type: GraphQLString },
-      views: { type: GraphQLInt },
+      last_change: {
+        type: GraphQLString
+      },
+      views: {
+        type: GraphQLInt
+      },
       sender: {
-        type: _teamSl2.default,
+        type: _teamSl["default"],
         resolve: resolver(_setup.Trade.Sender)
       },
       receiver: {
-        type: _teamSl2.default,
+        type: _teamSl["default"],
         resolve: resolver(_setup.Trade.Receiver)
       },
       sender_players: {
-        type: new GraphQLList(_player2.default),
+        type: new GraphQLList(_player["default"]),
         resolve: _setup.Trade.SenderPlayers
       },
       receiver_players: {
-        type: new GraphQLList(_player2.default),
+        type: new GraphQLList(_player["default"]),
         resolve: _setup.Trade.ReceiverPlayers
       },
       sender_picks: {
-        type: new GraphQLList(_pick2.default),
+        type: new GraphQLList(_pick["default"]),
         resolve: _setup.Trade.SenderPicks
       },
       receiver_picks: {
-        type: new GraphQLList(_pick2.default),
+        type: new GraphQLList(_pick["default"]),
         resolve: _setup.Trade.ReceiverPicks
       }
     };
   }
 });
-
-exports.default = TradeType;
+var _default = TradeType;
+exports["default"] = _default;

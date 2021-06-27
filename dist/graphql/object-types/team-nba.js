@@ -1,18 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _player = require('./player');
+var _player = _interopRequireDefault(require("./player"));
 
-var _player2 = _interopRequireDefault(_player);
+var _teamNba = _interopRequireDefault(require("../../model/team-nba"));
 
-var _teamNba = require('../../model/team-nba');
-
-var _teamNba2 = _interopRequireDefault(_teamNba);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -21,8 +18,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLString = graphql.GraphQLString,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList;
-
-
 var TeamNbaType = new GraphQLObjectType({
   name: 'TeamNba',
   fields: function fields() {
@@ -42,14 +37,18 @@ var TeamNbaType = new GraphQLObjectType({
       slug: {
         type: GraphQLString
       },
-      primary_color: { type: GraphQLString },
-      secondary_color: { type: GraphQLString },
+      primary_color: {
+        type: GraphQLString
+      },
+      secondary_color: {
+        type: GraphQLString
+      },
       players: {
-        type: new GraphQLList(_player2.default),
-        resolve: resolver(_teamNba2.default.Players)
+        type: new GraphQLList(_player["default"]),
+        resolve: resolver(_teamNba["default"].Players)
       }
     };
   }
 });
-
-exports.default = TeamNbaType;
+var _default = TeamNbaType;
+exports["default"] = _default;

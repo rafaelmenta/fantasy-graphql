@@ -1,56 +1,35 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _teamSl = require('./team-sl');
+var _teamSl = _interopRequireDefault(require("./team-sl"));
 
-var _teamSl2 = _interopRequireDefault(_teamSl);
+var _user = _interopRequireDefault(require("./user"));
 
-var _user = require('./user');
+var _conference = _interopRequireDefault(require("./conference"));
 
-var _user2 = _interopRequireDefault(_user);
+var _leagueConfig = _interopRequireDefault(require("./league-config"));
 
-var _conference = require('./conference');
+var _freeAgencyHistory = _interopRequireDefault(require("./free-agency-history"));
 
-var _conference2 = _interopRequireDefault(_conference);
+var _setup = require("../../model/setup");
 
-var _leagueConfig = require('./league-config');
+var _player = _interopRequireDefault(require("./player"));
 
-var _leagueConfig2 = _interopRequireDefault(_leagueConfig);
+var _trade = _interopRequireDefault(require("./trade"));
 
-var _freeAgencyHistory = require('./free-agency-history');
+var _season = _interopRequireDefault(require("./season"));
 
-var _freeAgencyHistory2 = _interopRequireDefault(_freeAgencyHistory);
+var _draft = _interopRequireDefault(require("./draft"));
 
-var _setup = require('../../model/setup');
+var _draftStatus = _interopRequireDefault(require("./enum/draft-status"));
 
-var _player = require('./player');
+var _player2 = _interopRequireDefault(require("../../model/player"));
 
-var _player2 = _interopRequireDefault(_player);
-
-var _trade = require('./trade');
-
-var _trade2 = _interopRequireDefault(_trade);
-
-var _season = require('./season');
-
-var _season2 = _interopRequireDefault(_season);
-
-var _draft = require('./draft');
-
-var _draft2 = _interopRequireDefault(_draft);
-
-var _draftStatus = require('./enum/draft-status');
-
-var _draftStatus2 = _interopRequireDefault(_draftStatus);
-
-var _player3 = require('../../model/player');
-
-var _player4 = _interopRequireDefault(_player3);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -60,14 +39,12 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLBoolean = graphql.GraphQLBoolean;
-
-
-var teamMap = void 0;
+var teamMap;
 
 var ManualTeam = function ManualTeam(type) {
   return {
     type: new GraphQLObjectType({
-      name: 'ManualTeam' + type,
+      name: "ManualTeam".concat(type),
       fields: function fields() {
         return {
           id_sl: {
@@ -99,16 +76,32 @@ var ManualPicks = {
     name: 'ManualPicks',
     fields: function fields() {
       return {
-        id_pick: { type: GraphQLInt },
-        round: { type: GraphQLInt },
-        order: { type: GraphQLInt },
-        is_used: { type: GraphQLBoolean },
-        deadline: { type: GraphQLString },
-        id_player: { type: GraphQLInt },
+        id_pick: {
+          type: GraphQLInt
+        },
+        round: {
+          type: GraphQLInt
+        },
+        order: {
+          type: GraphQLInt
+        },
+        is_used: {
+          type: GraphQLBoolean
+        },
+        deadline: {
+          type: GraphQLString
+        },
+        id_player: {
+          type: GraphQLInt
+        },
         player: {
-          type: _player2.default,
+          type: _player["default"],
           resolve: function resolve(pick) {
-            return pick.id_player && _player4.default.findOne({ where: { id_player: pick.id_player } });
+            return pick.id_player && _player2["default"].findOne({
+              where: {
+                id_player: pick.id_player
+              }
+            });
           }
         },
         owner: ManualTeam('id_owner'),
@@ -144,7 +137,6 @@ var ManualPicks = {
     });
   }
 };
-
 var LeagueType = new GraphQLObjectType({
   name: 'League',
   fields: function fields() {
@@ -162,41 +154,41 @@ var LeagueType = new GraphQLObjectType({
         type: GraphQLInt
       },
       owner: {
-        type: _user2.default,
+        type: _user["default"],
         resolve: resolver(_setup.League.Owner)
       },
       conferences: {
-        type: new GraphQLList(_conference2.default),
+        type: new GraphQLList(_conference["default"]),
         resolve: resolver(_setup.League.Conferences)
       },
       teams: {
-        type: new GraphQLList(_teamSl2.default),
+        type: new GraphQLList(_teamSl["default"]),
         resolve: _setup.League.Teams
       },
       configs: {
-        type: new GraphQLList(_leagueConfig2.default),
+        type: new GraphQLList(_leagueConfig["default"]),
         resolve: resolver(_setup.League.Configs)
       },
       free_agency_history: {
-        type: new GraphQLList(_freeAgencyHistory2.default),
+        type: new GraphQLList(_freeAgencyHistory["default"]),
         resolve: _setup.FreeAgencyHistory.ByLeague
       },
       free_agents: {
-        type: new GraphQLList(_player2.default),
+        type: new GraphQLList(_player["default"]),
         resolve: _setup.League.FreeAgents
       },
       trade_history: {
-        type: new GraphQLList(_trade2.default),
+        type: new GraphQLList(_trade["default"]),
         resolve: _setup.Trade.History
       },
       previous_drafts: {
-        type: new GraphQLList(_draft2.default),
+        type: new GraphQLList(_draft["default"]),
         resolve: function resolve(league) {
           return _setup.Draft.findAll({
             where: {
               id_league: league.id_league,
               $or: {
-                status_draft: _draftStatus2.default.parseValue('STATUS_FINISHED'),
+                status_draft: _draftStatus["default"].parseValue('STATUS_FINISHED'),
                 year_draft: {
                   $lt: new Date().getFullYear()
                 }
@@ -206,7 +198,7 @@ var LeagueType = new GraphQLObjectType({
         }
       },
       next_drafts: {
-        type: new GraphQLList(_draft2.default),
+        type: new GraphQLList(_draft["default"]),
         resolve: function resolve(league) {
           return _setup.Draft.findAll({
             where: {
@@ -223,12 +215,24 @@ var LeagueType = new GraphQLObjectType({
           name: 'ManualDraft',
           fields: function fields() {
             return {
-              id_draft: { type: GraphQLInt },
-              id_league: { type: GraphQLInt },
-              year_draft: { type: GraphQLInt },
-              draft_type: { type: GraphQLInt },
-              status_draft: { type: GraphQLString },
-              season: { type: _season2.default },
+              id_draft: {
+                type: GraphQLInt
+              },
+              id_league: {
+                type: GraphQLInt
+              },
+              year_draft: {
+                type: GraphQLInt
+              },
+              draft_type: {
+                type: GraphQLInt
+              },
+              status_draft: {
+                type: GraphQLString
+              },
+              season: {
+                type: _season["default"]
+              },
               picks: ManualPicks
             };
           }
@@ -240,5 +244,5 @@ var LeagueType = new GraphQLObjectType({
     };
   }
 });
-
-exports.default = LeagueType;
+var _default = LeagueType;
+exports["default"] = _default;

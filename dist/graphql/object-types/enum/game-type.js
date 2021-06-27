@@ -1,14 +1,13 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
 var graphql = require('graphql');
 
 var GraphQLEnumType = graphql.GraphQLEnumType;
-
-
 var GameType = new GraphQLEnumType({
   name: 'GameType',
   values: {
@@ -23,5 +22,5 @@ var GameType = new GraphQLEnumType({
     }
   }
 });
-
-exports.default = GameType;
+var _default = GameType;
+exports["default"] = _default;

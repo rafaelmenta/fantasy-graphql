@@ -1,20 +1,17 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _draft = require('./draft');
+var _draft = _interopRequireDefault(require("./draft"));
 
-var _draft2 = _interopRequireDefault(_draft);
+var _teamSl = _interopRequireDefault(require("./team-sl"));
 
-var _teamSl = require('./team-sl');
+var _setup = require("../../model/setup");
 
-var _teamSl2 = _interopRequireDefault(_teamSl);
-
-var _setup = require('../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -24,8 +21,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLBoolean = graphql.GraphQLBoolean,
     GraphQLList = graphql.GraphQLList;
-
-
 var PickType = new GraphQLObjectType({
   name: 'Pick',
   fields: function fields() {
@@ -58,19 +53,19 @@ var PickType = new GraphQLObjectType({
         type: GraphQLInt
       },
       draft: {
-        type: _draft2.default,
+        type: _draft["default"],
         resolve: resolver(_setup.Pick.Draft)
       },
       owner: {
-        type: _teamSl2.default,
+        type: _teamSl["default"],
         resolve: resolver(_setup.Pick.Owner)
       },
       original: {
-        type: _teamSl2.default,
+        type: _teamSl["default"],
         resolve: resolver(_setup.Pick.Original)
       }
     };
   }
 });
-
-exports.default = PickType;
+var _default = PickType;
+exports["default"] = _default;

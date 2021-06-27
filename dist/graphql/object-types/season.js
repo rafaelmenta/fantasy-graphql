@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _round = require('./round');
+var _round = _interopRequireDefault(require("./round"));
 
-var _round2 = _interopRequireDefault(_round);
+var _setup = require("../../model/setup");
 
-var _setup = require('../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -20,8 +19,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLBoolean = graphql.GraphQLBoolean,
     GraphQLList = graphql.GraphQLList;
-
-
 var SeasonType = new GraphQLObjectType({
   name: 'Season',
   fields: function fields() {
@@ -36,11 +33,11 @@ var SeasonType = new GraphQLObjectType({
         type: GraphQLBoolean
       },
       rounds: {
-        type: new GraphQLList(_round2.default),
+        type: new GraphQLList(_round["default"]),
         resolve: resolver(_setup.Season.Rounds)
       }
     };
   }
 });
-
-exports.default = SeasonType;
+var _default = SeasonType;
+exports["default"] = _default;

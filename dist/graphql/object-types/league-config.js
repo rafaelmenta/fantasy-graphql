@@ -1,10 +1,11 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _setup = require('../../model/setup');
+var _setup = require("../../model/setup");
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -14,8 +15,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLBoolean = graphql.GraphQLBoolean,
     GraphQLList = graphql.GraphQLList;
-
-
 var LeagueConfigType = new GraphQLObjectType({
   name: 'LeagueConfig',
   fields: function fields() {
@@ -29,5 +28,5 @@ var LeagueConfigType = new GraphQLObjectType({
     };
   }
 });
-
-exports.default = LeagueConfigType;
+var _default = LeagueConfigType;
+exports["default"] = _default;

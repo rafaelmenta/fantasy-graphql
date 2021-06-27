@@ -1,28 +1,25 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _sequelize = require('sequelize');
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _sequelize2 = _interopRequireDefault(_sequelize);
+var _connection = _interopRequireDefault(require("../database/connection"));
 
-var _connection = require('../database/connection');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _connection2 = _interopRequireDefault(_connection);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Division = _connection2.default.define('division', {
+var Division = _connection["default"].define('division', {
   id_division: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     primaryKey: true
   },
-  name: _sequelize2.default.STRING,
-  symbol: _sequelize2.default.STRING,
+  name: _sequelize["default"].STRING,
+  symbol: _sequelize["default"].STRING,
   id_conference: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     references: {
       model: 'conference',
       key: 'id_conference'
@@ -34,4 +31,5 @@ var Division = _connection2.default.define('division', {
   freezeTableName: true
 });
 
-exports.default = Division;
+var _default = Division;
+exports["default"] = _default;

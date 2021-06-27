@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.AuctionQuery = undefined;
+exports.AuctionQuery = void 0;
 
-var _auction = require('../../object-types/auction');
+var _auction = require("../../object-types/auction");
 
-var _setup = require('../../../model/setup');
+var _setup = require("../../../model/setup");
 
-var _playerBid = require('../../object-types/player-bid');
+var _playerBid = require("../../object-types/player-bid");
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -17,7 +17,7 @@ var graphql = require('graphql'),
 var GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLNonNull = graphql.GraphQLNonNull;
-var AuctionQuery = exports.AuctionQuery = {
+var AuctionQuery = {
   auctions: {
     type: new GraphQLList(_auction.Auction),
     resolve: resolver(_setup.Auction)
@@ -53,3 +53,4 @@ var AuctionQuery = exports.AuctionQuery = {
     }
   }
 };
+exports.AuctionQuery = AuctionQuery;

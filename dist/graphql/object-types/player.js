@@ -1,42 +1,29 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _setup = require('../../model/setup');
+var _setup = require("../../model/setup");
 
-var _teamNba = require('./team-nba');
+var _teamNba = _interopRequireDefault(require("./team-nba"));
 
-var _teamNba2 = _interopRequireDefault(_teamNba);
+var _teamPlayer = _interopRequireDefault(require("./team-player"));
 
-var _teamPlayer = require('./team-player');
+var _playerPerformance = _interopRequireDefault(require("./player-performance"));
 
-var _teamPlayer2 = _interopRequireDefault(_teamPlayer);
+var _playerStats = _interopRequireDefault(require("./player-stats"));
 
-var _playerPerformance = require('./player-performance');
+var _gameNba = _interopRequireDefault(require("./game-nba"));
 
-var _playerPerformance2 = _interopRequireDefault(_playerPerformance);
+var _constant = require("../../config/constant");
 
-var _playerStats = require('./player-stats');
+var _graphqlDate = _interopRequireDefault(require("graphql-date"));
 
-var _playerStats2 = _interopRequireDefault(_playerStats);
+var _tradeStatus = _interopRequireDefault(require("./enum/trade-status"));
 
-var _gameNba = require('./game-nba');
-
-var _gameNba2 = _interopRequireDefault(_gameNba);
-
-var _constant = require('../../config/constant');
-
-var _graphqlDate = require('graphql-date');
-
-var _graphqlDate2 = _interopRequireDefault(_graphqlDate);
-
-var _tradeStatus = require('./enum/trade-status');
-
-var _tradeStatus2 = _interopRequireDefault(_tradeStatus);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -48,8 +35,6 @@ var GraphQLObjectType = graphql.GraphQLObjectType,
     GraphQLNonNull = graphql.GraphQLNonNull,
     GraphQLBoolean = graphql.GraphQLBoolean,
     GraphQLList = graphql.GraphQLList;
-
-
 var PlayerType = new GraphQLObjectType({
   name: 'Player',
   fields: function fields() {
@@ -57,20 +42,41 @@ var PlayerType = new GraphQLObjectType({
       id_player: {
         type: GraphQLInt
       },
-      first_name: { type: GraphQLString },
-      last_name: { type: GraphQLString },
-      id_nba: { type: GraphQLInt },
-      default_primary: { type: GraphQLString },
-      default_secondary: { type: GraphQLString },
-      player_slug: { type: GraphQLString },
-      retired: { type: GraphQLBoolean },
-      rookie: { type: GraphQLBoolean },
-      birthdate: { type: _graphqlDate2.default },
-      contract_salary: { type: GraphQLFloat },
-      contract_years: { type: GraphQLInt },
-
+      first_name: {
+        type: GraphQLString
+      },
+      last_name: {
+        type: GraphQLString
+      },
+      id_nba: {
+        type: GraphQLInt
+      },
+      default_primary: {
+        type: GraphQLString
+      },
+      default_secondary: {
+        type: GraphQLString
+      },
+      player_slug: {
+        type: GraphQLString
+      },
+      retired: {
+        type: GraphQLBoolean
+      },
+      rookie: {
+        type: GraphQLBoolean
+      },
+      birthdate: {
+        type: _graphqlDate["default"]
+      },
+      contract_salary: {
+        type: GraphQLFloat
+      },
+      contract_years: {
+        type: GraphQLInt
+      },
       team_info: {
-        type: _teamPlayer2.default,
+        type: _teamPlayer["default"],
         resolve: _setup.Player.Team,
         args: {
           id_league: {
@@ -84,14 +90,12 @@ var PlayerType = new GraphQLObjectType({
           }
         }
       },
-
       team_nba: {
-        type: _teamNba2.default,
+        type: _teamNba["default"],
         resolve: resolver(_setup.Player.TeamNba)
       },
-
       next_games: {
-        type: new GraphQLList(_gameNba2.default),
+        type: new GraphQLList(_gameNba["default"]),
         resolve: _setup.Player.NextGames,
         args: {
           limit: {
@@ -100,9 +104,8 @@ var PlayerType = new GraphQLObjectType({
           }
         }
       },
-
       performances: {
-        type: new GraphQLList(_playerPerformance2.default),
+        type: new GraphQLList(_playerPerformance["default"]),
         resolve: _setup.Player.Performances,
         args: {
           id_round: {
@@ -115,9 +118,8 @@ var PlayerType = new GraphQLObjectType({
           }
         }
       },
-
       stats: {
-        type: new GraphQLList(_playerStats2.default),
+        type: new GraphQLList(_playerStats["default"]),
         resolve: resolver(_setup.Player.Stats),
         args: {
           id_season: {
@@ -129,5 +131,5 @@ var PlayerType = new GraphQLObjectType({
     };
   }
 });
-
-exports.default = PlayerType;
+var _default = PlayerType;
+exports["default"] = _default;

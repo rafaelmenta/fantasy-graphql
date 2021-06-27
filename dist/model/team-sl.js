@@ -1,44 +1,39 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _connection = require('../database/connection');
+var _connection = _interopRequireDefault(require("../database/connection"));
 
-var _connection2 = _interopRequireDefault(_connection);
+var _sequelize = _interopRequireDefault(require("sequelize"));
 
-var _sequelize = require('sequelize');
+var _userTeam = _interopRequireDefault(require("./associations/user-team"));
 
-var _sequelize2 = _interopRequireDefault(_sequelize);
+var _user = _interopRequireDefault(require("./user"));
 
-var _userTeam = require('./associations/user-team');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var _userTeam2 = _interopRequireDefault(_userTeam);
-
-var _user = require('./user');
-
-var _user2 = _interopRequireDefault(_user);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var TeamSl = _connection2.default.define('team_sl', {
+var TeamSl = _connection["default"].define('team_sl', {
   id_sl: {
-    type: _sequelize2.default.INTEGER,
+    type: _sequelize["default"].INTEGER,
     primaryKey: true
   },
-  league_id: _sequelize2.default.INTEGER,
-  city: _sequelize2.default.STRING,
-  nickname: _sequelize2.default.STRING,
-  symbol: _sequelize2.default.STRING,
-  primary_color: _sequelize2.default.STRING,
-  secondary_color: _sequelize2.default.STRING,
-  id_division: _sequelize2.default.INTEGER,
-  slug: _sequelize2.default.STRING
+  league_id: _sequelize["default"].INTEGER,
+  city: _sequelize["default"].STRING,
+  nickname: _sequelize["default"].STRING,
+  symbol: _sequelize["default"].STRING,
+  primary_color: _sequelize["default"].STRING,
+  secondary_color: _sequelize["default"].STRING,
+  id_division: _sequelize["default"].INTEGER,
+  slug: _sequelize["default"].STRING
 }, {
   updatedAt: false,
   createdAt: false,
   freezeTableName: true // Model tableName will be the same as the model name
+
 });
 
-exports.default = TeamSl;
+var _default = TeamSl;
+exports["default"] = _default;

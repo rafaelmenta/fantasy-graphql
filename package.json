@@ -4,8 +4,8 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "babel-node": "nodemon --exec babel-node --presets=es2015  -- server.js",
-    "build": "babel ./ --ignore node_modules,dist --presets babel-preset-es2015 --out-dir dist",
+    "babel-node": "nodemon --exec babel-node --presets=@babel/preset-env  -- server.js",
+    "build": "babel ./ --ignore node_modules,dist --presets @babel/preset-env --out-dir dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -24,11 +24,11 @@
     "sequelize": "^3.28.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.5",
     "@babel/core": "^7.14.6",
     "@babel/node": "^7.14.7",
-    "babel-cli": "^6.26.0",
-    "babel-polyfill": "^6.0.16",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-latest": "^6.24.1"
+    "@babel/preset-env": "^7.14.7",
+    "core-js": "^3.15.1",
+    "regenerator-runtime": "^0.13.7"
   }
 }

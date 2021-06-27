@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _draft = require('../../object-types/draft');
+var _draft = _interopRequireDefault(require("../../object-types/draft"));
 
-var _draft2 = _interopRequireDefault(_draft);
+var _setup = require("../../../model/setup");
 
-var _setup = require('../../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -19,11 +18,9 @@ var GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLBoolean = graphql.GraphQLBoolean,
     GraphQLNonNull = graphql.GraphQLNonNull;
-
-
 var PickQuery = {
   pick: {
-    type: _draft2.default,
+    type: _draft["default"],
     resolve: resolver(_setup.Pick),
     args: {
       id_draft: {
@@ -33,7 +30,7 @@ var PickQuery = {
     }
   },
   picks: {
-    type: new GraphQLList(_draft2.default),
+    type: new GraphQLList(_draft["default"]),
     resolve: resolver(_setup.Pick),
     args: {
       id_owner: {
@@ -55,5 +52,5 @@ var PickQuery = {
     }
   }
 };
-
-exports.default = PickQuery;
+var _default = PickQuery;
+exports["default"] = _default;

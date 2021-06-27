@@ -1,16 +1,15 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports["default"] = void 0;
 
-var _playerTeamPerformance = require('../../object-types/player-team-performance');
+var _playerTeamPerformance = _interopRequireDefault(require("../../object-types/player-team-performance"));
 
-var _playerTeamPerformance2 = _interopRequireDefault(_playerTeamPerformance);
+var _setup = require("../../../model/setup");
 
-var _setup = require('../../../model/setup');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql'),
     resolver = require('graphql-sequelize').resolver;
@@ -19,8 +18,6 @@ var GraphQLInt = graphql.GraphQLInt,
     GraphQLList = graphql.GraphQLList,
     GraphQLString = graphql.GraphQLString,
     GraphQLNonNull = graphql.GraphQLNonNull;
-
-
 var PlayerTeamPerformanceQuery = {
   // performance: {
   //   type: PlayerPerformanceType,
@@ -33,7 +30,7 @@ var PlayerTeamPerformanceQuery = {
   //   }
   // },
   player_team_performances: {
-    type: new GraphQLList(_playerTeamPerformance2.default),
+    type: new GraphQLList(_playerTeamPerformance["default"]),
     resolve: resolver(_setup.PlayerTeamPerformance),
     args: {
       id_round: {
@@ -55,5 +52,5 @@ var PlayerTeamPerformanceQuery = {
     }
   }
 };
-
-exports.default = PlayerTeamPerformanceQuery;
+var _default = PlayerTeamPerformanceQuery;
+exports["default"] = _default;

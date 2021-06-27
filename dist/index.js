@@ -1,43 +1,31 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.makeQuery = undefined;
+exports.makeQuery = void 0;
 
-var _connection = require('./database/connection');
+var _connection = _interopRequireDefault(require("./database/connection"));
 
-var _connection2 = _interopRequireDefault(_connection);
+var _public = _interopRequireDefault(require("./graphql/query/public"));
 
-var _public = require('./graphql/query/public');
+var _private = _interopRequireDefault(require("./graphql/query/private"));
 
-var _public2 = _interopRequireDefault(_public);
+var _root = _interopRequireDefault(require("./graphql/mutation/root"));
 
-var _private = require('./graphql/query/private');
-
-var _private2 = _interopRequireDefault(_private);
-
-var _root = require('./graphql/mutation/root');
-
-var _root2 = _interopRequireDefault(_root);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var graphql = require('graphql');
 
 var GraphQLSchema = graphql.GraphQLSchema;
-
-
 var PublicSchema = new GraphQLSchema({
-  query: _public2.default,
-  mutation: _root2.default
+  query: _public["default"],
+  mutation: _root["default"]
 });
-
 var PrivateSchema = new GraphQLSchema({
-  query: _private2.default,
-  mutation: _root2.default
+  query: _private["default"],
+  mutation: _root["default"]
 });
-
 var client = graphql.graphql;
 
 var makeQuery = function makeQuery(query, variables, privateSchema) {

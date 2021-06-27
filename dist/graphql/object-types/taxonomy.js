@@ -1,19 +1,26 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.TaxonomyType = undefined;
+exports.TaxonomyType = void 0;
 
-var _graphql = require('graphql');
+var _graphql = require("graphql");
 
-var TaxonomyType = exports.TaxonomyType = new _graphql.GraphQLObjectType({
+var TaxonomyType = new _graphql.GraphQLObjectType({
   name: 'Taxonomy',
   fields: function fields() {
     return {
-      tax_id: { type: _graphql.GraphQLInt },
-      id: { type: _graphql.GraphQLInt },
-      slug: { type: _graphql.GraphQLString }
+      tax_id: {
+        type: _graphql.GraphQLInt
+      },
+      id: {
+        type: _graphql.GraphQLInt
+      },
+      slug: {
+        type: _graphql.GraphQLString
+      }
     };
   }
 });
+exports.TaxonomyType = TaxonomyType;

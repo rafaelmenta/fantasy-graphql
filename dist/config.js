@@ -1,17 +1,17 @@
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
-      value: true
+  value: true
 });
+exports["default"] = void 0;
 
-var _express = require('express');
+var _express = _interopRequireDefault(require("express"));
 
-var _express2 = _interopRequireDefault(_express);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var app = (0, _express2.default)(),
+var app = (0, _express["default"])(),
     env = app.get('env') || 'local',
-    config = require('./env/' + env);
+    config = require("./env/".concat(env));
 
-exports.default = config;
+var _default = config;
+exports["default"] = _default;
