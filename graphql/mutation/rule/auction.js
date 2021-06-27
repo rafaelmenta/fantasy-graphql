@@ -102,7 +102,7 @@ export const AuctionMutation = {
             throw new Error('BID_DOES_NOT_EXIST');
           }
 
-          if (updateBid.salary >= salary) {
+          if ((updateBid.salary * updateBid.years )>= (salary * years)) {
             throw new Error('BID_IS_LOWER');
           }
 

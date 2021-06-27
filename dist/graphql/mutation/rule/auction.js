@@ -195,7 +195,7 @@ var AuctionMutation = exports.AuctionMutation = {
                             throw new Error('BID_DOES_NOT_EXIST');
 
                           case 6:
-                            if (!(updateBid.salary >= salary)) {
+                            if (!(updateBid.salary * updateBid.years >= salary * years)) {
                               _context.next = 8;
                               break;
                             }
