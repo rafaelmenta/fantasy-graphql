@@ -7,6 +7,9 @@ import TradeStatus from '../../object-types/enum/trade-status';
 import Conn from '../../../database/connection';
 import { AuctionStatus } from '../../object-types/enum/auction-status';
 
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
 
