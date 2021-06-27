@@ -4,7 +4,8 @@ import { Auction, League, TeamSl, PlayerBid as PlayerBidModel } from "../../../m
 import { AuctionStatus } from "../../object-types/enum/auction-status";
 import { PlayerBid } from "../../object-types/player-bid";
 
-import "@babel/polyfill";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 const AuctionInput = new GraphQLInputObjectType({
   name: 'AuctionInput',

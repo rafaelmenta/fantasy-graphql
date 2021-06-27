@@ -17,7 +17,9 @@ var _auctionStatus = require("../../object-types/enum/auction-status");
 
 var _playerBid = require("../../object-types/player-bid");
 
-require("@babel/polyfill");
+require("core-js/stable");
+
+require("regenerator-runtime/runtime");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
