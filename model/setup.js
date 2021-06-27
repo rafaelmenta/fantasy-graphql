@@ -75,6 +75,15 @@ TeamSl.Division = TeamSl.belongsTo(Division, {
   foreignKey : 'id_division'
 });
 
+TeamSl.RosterSalary = function ({id_sl, id_league}) {
+  return Conn.query(`
+    SELECT ps.*
+    FROM team_player tp
+    JOIN player_league_salary ps ON tp.id_player=ps.id_player AND ps.id_league = ${id_league}
+    WHERE tp.id_sl =${id_sl}
+  `, { model: PlayerLeagueSalary });
+}
+
 TeamSl.GetCurrentRecord = function(id) {
   return TeamSeason.findOne({
     include: [{
@@ -550,7 +559,12 @@ League.Owner = League.belongsTo(User, {
 });
 
 League.Configs = League.hasMany(LeagueConfig, {
-  foreignKey : 'id_league'
+  foreignKey : 'id_league',
+  as: 'Configs',
+});
+
+LeagueConfig.League = LeagueConfig.belongsTo(LeagueConfig, {
+  foreignKey: 'id_league',
 });
 
 League.MostRecentDraft = function(league) {
@@ -993,6 +1007,7 @@ Player.LeagueSalary = Player.hasMany(PlayerLeagueSalary, {
 PlayerLeagueSalary.TeamPlayerSalary = function (player, args) {
   const idPlayer = player.id_player;
   const idSl = player.team_players[0].id_sl;
+
   return Conn.query(`
     SELECT ps.*
     FROM player_league_salary ps
@@ -1036,6 +1051,7 @@ export {
   Division,
   Conference,
   League,
+  LeagueConfig,
   Game,
   GameNba,
   Round,

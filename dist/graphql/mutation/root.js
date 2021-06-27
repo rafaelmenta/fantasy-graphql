@@ -30,6 +30,8 @@ var _team3 = require('./rule/team.performance');
 
 var _round = require('./rule/round');
 
+var _auction = require('./rule/auction');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var graphql = require('graphql');
@@ -40,7 +42,7 @@ var GraphQLObjectType = graphql.GraphQLObjectType;
 var RootMutationType = new GraphQLObjectType({
   name: 'RootMutationType',
   fields: function fields() {
-    return Object.assign({}, _user2.default, _team2.default, _trade2.default, _draft.DraftMutation, _league.LeagueMutation, _game.GameMutation, _player.PlayerMutation, _gameNba.GameNbaMutation, _team3.TeamPerformanceMutation, _round.RoundMutation);
+    return Object.assign({}, _user2.default, _team2.default, _trade2.default, _draft.DraftMutation, _league.LeagueMutation, _game.GameMutation, _player.PlayerMutation, _gameNba.GameNbaMutation, _team3.TeamPerformanceMutation, _round.RoundMutation, _auction.AuctionMutation);
   }
 });
 

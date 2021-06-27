@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.PlayerBid = exports.Auction = exports.TeamSeason = exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.PlayerLeagueSalary = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
+exports.PlayerBid = exports.Auction = exports.TeamSeason = exports.Taxonomy = exports.PickTrade = exports.PlayerTrade = exports.PlayerLeagueSalary = exports.TeamPlayer = exports.FreeAgencyHistory = exports.Trade = exports.Pick = exports.Draft = exports.TeamStats = exports.UserTeam = exports.PlayerStats = exports.PlayerTeamPerformance = exports.TeamPerformance = exports.PlayerPerformance = exports.Season = exports.Round = exports.GameNba = exports.Game = exports.LeagueConfig = exports.League = exports.Conference = exports.Division = exports.TeamNba = exports.Player = exports.TeamSl = exports.User = undefined;
 
 var _user = require('./user');
 
@@ -169,6 +169,13 @@ _teamSl2.default.Division = _teamSl2.default.belongsTo(_division2.default, {
   foreignKey: 'id_division'
 });
 
+_teamSl2.default.RosterSalary = function (_ref) {
+  var id_sl = _ref.id_sl,
+      id_league = _ref.id_league;
+
+  return _connection2.default.query('\n    SELECT ps.*\n    FROM team_player tp\n    JOIN player_league_salary ps ON tp.id_player=ps.id_player AND ps.id_league = ' + id_league + '\n    WHERE tp.id_sl =' + id_sl + '\n  ', { model: _playerLeagueSalary.PlayerLeagueSalary });
+};
+
 _teamSl2.default.GetCurrentRecord = function (id) {
   return _teamSeason2.default.findOne({
     include: [{
@@ -254,13 +261,13 @@ _teamSl2.default.Picks = function (team) {
   });
 };
 
-_teamSl2.default.GetGames = function (_ref) {
-  var id = _ref.id,
-      type = _ref.type,
-      processed = _ref.processed,
-      order = _ref.order,
-      limit = _ref.limit,
-      season = _ref.season;
+_teamSl2.default.GetGames = function (_ref2) {
+  var id = _ref2.id,
+      type = _ref2.type,
+      processed = _ref2.processed,
+      order = _ref2.order,
+      limit = _ref2.limit,
+      season = _ref2.season;
 
   var seasonFilter = void 0;
 
@@ -414,9 +421,9 @@ _game2.default.AwayPerformance = function (game, args) {
   return _game2.default.GetPerformance(game.away_team, game.id_round);
 };
 
-_game2.default.GetPlayersPerformance = function (_ref2) {
-  var idRound = _ref2.idRound,
-      idSl = _ref2.idSl;
+_game2.default.GetPlayersPerformance = function (_ref3) {
+  var idRound = _ref3.idRound,
+      idSl = _ref3.idSl;
 
   return _playerTeamPerformance2.default.findAll({
     where: {
@@ -649,6 +656,11 @@ _league2.default.Owner = _league2.default.belongsTo(_user2.default, {
 });
 
 _league2.default.Configs = _league2.default.hasMany(_leagueConfig2.default, {
+  foreignKey: 'id_league',
+  as: 'Configs'
+});
+
+_leagueConfig2.default.League = _leagueConfig2.default.belongsTo(_leagueConfig2.default, {
   foreignKey: 'id_league'
 });
 
@@ -1040,6 +1052,7 @@ _player2.default.LeagueSalary = _player2.default.hasMany(_playerLeagueSalary.Pla
 _playerLeagueSalary.PlayerLeagueSalary.TeamPlayerSalary = function (player, args) {
   var idPlayer = player.id_player;
   var idSl = player.team_players[0].id_sl;
+
   return _connection2.default.query('\n    SELECT ps.*\n    FROM player_league_salary ps\n    JOIN player p ON ps.id_player=p.id_player AND p.id_player=' + idPlayer + '\n    JOIN team_sl t ON t.id_sl=' + idSl + '\n    AND ps.id_league = t.league_id\n  ', { model: _playerLeagueSalary.PlayerLeagueSalary });
 };
 
@@ -1076,6 +1089,7 @@ exports.TeamNba = _teamNba2.default;
 exports.Division = _division2.default;
 exports.Conference = _conference2.default;
 exports.League = _league2.default;
+exports.LeagueConfig = _leagueConfig2.default;
 exports.Game = _game2.default;
 exports.GameNba = _gameNba2.default;
 exports.Round = _round2.default;
