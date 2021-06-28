@@ -1,6 +1,6 @@
 import { GraphQLInputObjectType, GraphQLInt, GraphQLNonNull } from "graphql";
 import Conn from "../../../database/connection";
-import { Auction, League, TeamSl, PlayerBid as PlayerBidModel } from "../../../model/setup";
+import { Auction, League, TeamSl, PlayerBid as PlayerBidModel, PlayerBidHistory } from "../../../model/setup";
 import { AuctionStatus } from "../../object-types/enum/auction-status";
 import { PlayerBid } from "../../object-types/player-bid";
 
@@ -86,11 +86,12 @@ export const AuctionMutation = {
 
       const offset = Number(configs.find(config => config.id_config === 'AUCTION_BID_OFFSET_TIME'));
 
+      const now = Date.now();
       let expiration;
       if (isNaN(offset)) {
-        expiration = new Date(Date.now() + (72 * 60 * 60 * 1000)); // Default
+        expiration = new Date(now + (72 * 60 * 60 * 1000)); // Default
       }  else {
-        expiration = new Date(Date.now() + offset);
+        expiration = new Date(now + offset);
       }
 
       let savedIdBid = id_bid;
@@ -109,17 +110,18 @@ export const AuctionMutation = {
           const bidUpdate = await PlayerBidModel.update({id_sl, salary, years, expiration}, {
             where: {id_bid}, transaction: t});
 
-          return bidUpdate;
+        } else {
+          const bidExists = await PlayerBidModel.findOne({where: {id_auction, id_player}});
+
+          if (bidExists) {
+            throw new Error('PLAYER_ALREADY_IN_AUCTION');
+          }
+
+          const createBid = await PlayerBidModel.create({id_sl, id_auction, id_player, salary, years, expiration}, {transaction: t});
+          savedIdBid = createBid.id_bid;
         }
 
-        const bidExists = await PlayerBidModel.findOne({where: {id_auction, id_player}});
-
-        if (bidExists) {
-          throw new Error('PLAYER_ALREADY_IN_AUCTION');
-        }
-
-        const createBid = await PlayerBidModel.create({id_sl, id_auction, id_player, salary, years, expiration});
-        savedIdBid = createBid.id_bid;
+        return PlayerBidHistory.create({id_sl, id_player, salary, years, bid_time: now, id_bid: savedIdBid}, {transaction: t});
       });
 
       return {id_bid: savedIdBid, id_auction, id_sl, id_player, salary, years, expiration};

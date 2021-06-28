@@ -32,6 +32,7 @@ import LeagueConfig from './associations/league-config';
 import {Taxonomy} from './associations/taxonomy';
 import Conn from '../database/connection';
 import TradeStatus from '../graphql/object-types/enum/trade-status';
+import { PlayerBidHistory } from './player-bid-history';
 
 // @TODO extract to constant
 const DEFAULT_LIMIT = 20;
@@ -1043,6 +1044,24 @@ PlayerBid.Team = PlayerBid.belongsTo(TeamSl, {
   foreignKey: 'id_sl',
 });
 
+PlayerBidHistory.Bid = PlayerBidHistory.belongsTo(PlayerBid, {
+  foreignKey: 'id_bid',
+  as: 'bid',
+});
+
+PlayerBidHistory.Team = PlayerBidHistory.belongsTo(TeamSl, {
+  foreignKey: 'id_sl',
+})
+
+PlayerBidHistory.Player = PlayerBidHistory.belongsTo(Player, {
+  foreignKey: 'id_player',
+});
+
+PlayerBid.History = PlayerBid.hasMany(PlayerBidHistory, {
+  foreignKey: 'id_bid',
+  as: 'history',
+});
+
 export {
   User,
   TeamSl,
@@ -1074,4 +1093,5 @@ export {
   TeamSeason,
   Auction,
   PlayerBid,
+  PlayerBidHistory,
 };

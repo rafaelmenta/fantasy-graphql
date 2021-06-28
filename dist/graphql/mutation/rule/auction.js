@@ -61,7 +61,7 @@ var AuctionMutation = {
     },
     resolve: function () {
       var _resolve = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(root, _ref) {
-        var bid, id_bid, id_auction, id_player, id_sl, salary, years, auction, team, id_league, league, configs, salaryCapConfig, salaryCap, contracts, salaries, bids, bidSalaries, teamCap, offset, expiration, savedIdBid, operation;
+        var bid, id_bid, id_auction, id_player, id_sl, salary, years, auction, team, id_league, league, configs, salaryCapConfig, salaryCap, contracts, salaries, bids, bidSalaries, teamCap, offset, now, expiration, savedIdBid, operation;
         return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
@@ -191,15 +191,16 @@ var AuctionMutation = {
                 offset = Number(configs.find(function (config) {
                   return config.id_config === 'AUCTION_BID_OFFSET_TIME';
                 }));
+                now = Date.now();
 
                 if (isNaN(offset)) {
-                  expiration = new Date(Date.now() + 72 * 60 * 60 * 1000); // Default
+                  expiration = new Date(now + 72 * 60 * 60 * 1000); // Default
                 } else {
-                  expiration = new Date(Date.now() + offset);
+                  expiration = new Date(now + offset);
                 }
 
                 savedIdBid = id_bid;
-                _context2.next = 43;
+                _context2.next = 44;
                 return _connection["default"].transaction( /*#__PURE__*/function () {
                   var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(t) {
                     var updateBid, bidUpdate, bidExists, createBid;
@@ -208,7 +209,7 @@ var AuctionMutation = {
                         switch (_context.prev = _context.next) {
                           case 0:
                             if (!id_bid) {
-                              _context.next = 12;
+                              _context.next = 13;
                               break;
                             }
 
@@ -251,10 +252,11 @@ var AuctionMutation = {
 
                           case 10:
                             bidUpdate = _context.sent;
-                            return _context.abrupt("return", bidUpdate);
+                            _context.next = 22;
+                            break;
 
-                          case 12:
-                            _context.next = 14;
+                          case 13:
+                            _context.next = 15;
                             return _setup.PlayerBid.findOne({
                               where: {
                                 id_auction: id_auction,
@@ -262,18 +264,18 @@ var AuctionMutation = {
                               }
                             });
 
-                          case 14:
+                          case 15:
                             bidExists = _context.sent;
 
                             if (!bidExists) {
-                              _context.next = 17;
+                              _context.next = 18;
                               break;
                             }
 
                             throw new Error('PLAYER_ALREADY_IN_AUCTION');
 
-                          case 17:
-                            _context.next = 19;
+                          case 18:
+                            _context.next = 20;
                             return _setup.PlayerBid.create({
                               id_sl: id_sl,
                               id_auction: id_auction,
@@ -281,13 +283,27 @@ var AuctionMutation = {
                               salary: salary,
                               years: years,
                               expiration: expiration
+                            }, {
+                              transaction: t
                             });
 
-                          case 19:
+                          case 20:
                             createBid = _context.sent;
                             savedIdBid = createBid.id_bid;
 
-                          case 21:
+                          case 22:
+                            return _context.abrupt("return", _setup.PlayerBidHistory.create({
+                              id_sl: id_sl,
+                              id_player: id_player,
+                              salary: salary,
+                              years: years,
+                              bid_time: now,
+                              id_bid: savedIdBid
+                            }, {
+                              transaction: t
+                            }));
+
+                          case 23:
                           case "end":
                             return _context.stop();
                         }
@@ -300,7 +316,7 @@ var AuctionMutation = {
                   };
                 }());
 
-              case 43:
+              case 44:
                 operation = _context2.sent;
                 return _context2.abrupt("return", {
                   id_bid: savedIdBid,
@@ -312,7 +328,7 @@ var AuctionMutation = {
                   expiration: expiration
                 });
 
-              case 45:
+              case 46:
               case "end":
                 return _context2.stop();
             }

@@ -183,6 +183,12 @@ Object.defineProperty(exports, "Taxonomy", {
     return _taxonomy.Taxonomy;
   }
 });
+Object.defineProperty(exports, "PlayerBidHistory", {
+  enumerable: true,
+  get: function get() {
+    return _playerBidHistory.PlayerBidHistory;
+  }
+});
 
 var _user = _interopRequireDefault(require("./user"));
 
@@ -247,6 +253,8 @@ var _taxonomy = require("./associations/taxonomy");
 var _connection = _interopRequireDefault(require("../database/connection"));
 
 var _tradeStatus = _interopRequireDefault(require("../graphql/object-types/enum/trade-status"));
+
+var _playerBidHistory = require("./player-bid-history");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -1125,4 +1133,18 @@ _playerBid.PlayerBid.Player = _playerBid.PlayerBid.belongsTo(_player["default"],
 });
 _playerBid.PlayerBid.Team = _playerBid.PlayerBid.belongsTo(_teamSl["default"], {
   foreignKey: 'id_sl'
+});
+_playerBidHistory.PlayerBidHistory.Bid = _playerBidHistory.PlayerBidHistory.belongsTo(_playerBid.PlayerBid, {
+  foreignKey: 'id_bid',
+  as: 'bid'
+});
+_playerBidHistory.PlayerBidHistory.Team = _playerBidHistory.PlayerBidHistory.belongsTo(_teamSl["default"], {
+  foreignKey: 'id_sl'
+});
+_playerBidHistory.PlayerBidHistory.Player = _playerBidHistory.PlayerBidHistory.belongsTo(_player["default"], {
+  foreignKey: 'id_player'
+});
+_playerBid.PlayerBid.History = _playerBid.PlayerBid.hasMany(_playerBidHistory.PlayerBidHistory, {
+  foreignKey: 'id_bid',
+  as: 'history'
 });
