@@ -1038,10 +1038,16 @@ PlayerBid.Auction = PlayerBid.belongsTo(Auction, {
 
 PlayerBid.Player = PlayerBid.belongsTo(Player, {
   foreignKey: 'id_player',
+  as: 'Player',
+});
+
+Player.Bids = Player.hasMany(PlayerBid, {
+  foreignKey: 'id_player',
 });
 
 PlayerBid.Team = PlayerBid.belongsTo(TeamSl, {
   foreignKey: 'id_sl',
+  as: 'Team',
 });
 
 PlayerBidHistory.Bid = PlayerBidHistory.belongsTo(PlayerBid, {

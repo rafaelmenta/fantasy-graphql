@@ -1,6 +1,6 @@
-import { GraphQLInputObjectType, GraphQLInt, GraphQLNonNull } from "graphql";
+import { GraphQLBoolean, GraphQLInputObjectType, GraphQLInt, GraphQLNonNull } from "graphql";
 import Conn from "../../../database/connection";
-import { Auction, League, TeamSl, PlayerBid as PlayerBidModel, PlayerBidHistory } from "../../../model/setup";
+import { Auction, League, TeamSl, PlayerBid as PlayerBidModel, PlayerBidHistory, PlayerLeagueSalary, TeamPlayer, FreeAgencyHistory } from "../../../model/setup";
 import { AuctionStatus } from "../../object-types/enum/auction-status";
 import { PlayerBid } from "../../object-types/player-bid";
 
@@ -20,6 +20,71 @@ const AuctionInput = new GraphQLInputObjectType({
 });
 
 export const AuctionMutation = {
+  processBid: {
+    description: 'Process expired bids',
+    type: GraphQLBoolean,
+    args: {},
+    resolve: async (root) => {
+      const now = Date.now();
+      const unprocessedBids = await PlayerBidModel.findAll({where: {
+        expiration: {
+          $lt: now,
+        },
+        processed: false,
+      }});
+
+      console.warn(unprocessedBids.length);
+
+      for (const bid of unprocessedBids) {
+        const player = await bid.getPlayer();
+        const team = await bid.getTeam();
+
+        const salary = await PlayerLeagueSalary.findOne({
+          where: {
+            id_player: bid.id_player,
+            id_league: team.league_id,
+          },
+        });
+
+        await Conn.transaction(async t => {
+          if (salary) {
+            await PlayerLeagueSalary.update({
+              contract_salary: bid.salary,
+              contract_years: bid.years,
+            }, { where: {pls_code: salary.pls_code}, transaction: t});
+          } else {
+            await PlayerLeagueSalary.create({
+              id_player: bid.id_player,
+              id_league: team.league_id,
+              contract_salary: bid.salary,
+              contract_years: bid.years,
+            }, {transaction: t});
+          };
+
+          await FreeAgencyHistory.create({
+            action: 'PICK',
+            event_date: now,
+            id_sl: bid.id_sl,
+            id_player: bid.id_player,
+          }, {transaction: t});
+
+          await TeamPlayer.create({
+            id_sl: bid.id_sl,
+            id_player: bid.id_player,
+            primary_position: player.default_primary,
+            secondary_position: player.default_secondary,
+            order: 999,
+          }, {transaction: t});
+
+          await PlayerBidModel.update({
+            processed: true,
+          }, {where: {id_bid: bid.id_bid}, transaction: t});
+        });
+      }
+
+      return true;
+    },
+  },
   saveBid: {
     description: 'Save a bid',
     type: PlayerBid,

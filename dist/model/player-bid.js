@@ -40,7 +40,8 @@ var PlayerBid = _connection["default"].define('player_bid', {
   },
   salary: _sequelize["default"].DECIMAL,
   years: _sequelize["default"].INTEGER,
-  expiration: _sequelize["default"].DATE
+  expiration: _sequelize["default"].DATE,
+  processed: _sequelize["default"].BOOLEAN
 }, {
   updatedAt: false,
   createdAt: false,

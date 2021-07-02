@@ -1129,10 +1129,15 @@ _playerBid.PlayerBid.Auction = _playerBid.PlayerBid.belongsTo(_auction.Auction, 
   foreignKey: 'id_auction'
 });
 _playerBid.PlayerBid.Player = _playerBid.PlayerBid.belongsTo(_player["default"], {
+  foreignKey: 'id_player',
+  as: 'Player'
+});
+_player["default"].Bids = _player["default"].hasMany(_playerBid.PlayerBid, {
   foreignKey: 'id_player'
 });
 _playerBid.PlayerBid.Team = _playerBid.PlayerBid.belongsTo(_teamSl["default"], {
-  foreignKey: 'id_sl'
+  foreignKey: 'id_sl',
+  as: 'Team'
 });
 _playerBidHistory.PlayerBidHistory.Bid = _playerBidHistory.PlayerBidHistory.belongsTo(_playerBid.PlayerBid, {
   foreignKey: 'id_bid',

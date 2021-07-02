@@ -31,6 +31,7 @@ export const PlayerBid = Conn.define('player_bid', {
   salary: Sequelize.DECIMAL,
   years: Sequelize.INTEGER,
   expiration: Sequelize.DATE,
+  processed: Sequelize.BOOLEAN,
 }, {
   updatedAt: false,
   createdAt: false,
