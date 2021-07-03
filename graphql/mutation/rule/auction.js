@@ -33,8 +33,6 @@ export const AuctionMutation = {
         processed: false,
       }});
 
-      console.warn(unprocessedBids.length);
-
       for (const bid of unprocessedBids) {
         const player = await bid.getPlayer();
         const team = await bid.getTeam();
@@ -152,6 +150,7 @@ export const AuctionMutation = {
       const offset = Number(configs.find(config => config.id_config === 'AUCTION_BID_OFFSET_TIME'));
 
       const now = Date.now();
+      const nowDate = new Date();
       let expiration;
       if (isNaN(offset)) {
         expiration = new Date(now + (72 * 60 * 60 * 1000)); // Default
@@ -186,7 +185,7 @@ export const AuctionMutation = {
           savedIdBid = createBid.id_bid;
         }
 
-        return PlayerBidHistory.create({id_sl, id_player, salary, years, bid_time: now, id_bid: savedIdBid}, {transaction: t});
+        return PlayerBidHistory.create({id_sl, id_player, salary, years, bid_time: nowDate, id_bid: savedIdBid}, {transaction: t});
       });
 
       return {id_bid: savedIdBid, id_auction, id_sl, id_player, salary, years, expiration};
