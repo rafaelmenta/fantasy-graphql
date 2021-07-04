@@ -66,6 +66,9 @@ var TeamSlType = new GraphQLObjectType({
       slug: {
         type: GraphQLString
       },
+      waiver: {
+        type: GraphQLInt
+      },
       users: {
         type: new GraphQLList(_user["default"]),
         resolve: resolver(_setup.TeamSl.Users)

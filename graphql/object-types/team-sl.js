@@ -33,6 +33,7 @@ const TeamSlType = new GraphQLObjectType({
     primary_color: { type: GraphQLString },
     secondary_color: { type: GraphQLString },
     slug: { type: GraphQLString },
+    waiver: { type: GraphQLInt },
 
     users: {
       type: new GraphQLList(UserType),

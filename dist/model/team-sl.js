@@ -27,7 +27,8 @@ var TeamSl = _connection["default"].define('team_sl', {
   primary_color: _sequelize["default"].STRING,
   secondary_color: _sequelize["default"].STRING,
   id_division: _sequelize["default"].INTEGER,
-  slug: _sequelize["default"].STRING
+  slug: _sequelize["default"].STRING,
+  waiver: _sequelize["default"].INTEGER
 }, {
   updatedAt: false,
   createdAt: false,

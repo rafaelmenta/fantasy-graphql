@@ -16,7 +16,8 @@ const TeamSl = Conn.define('team_sl', {
   primary_color : Sequelize.STRING,
   secondary_color : Sequelize.STRING,
   id_division : Sequelize.INTEGER,
-  slug : Sequelize.STRING,
+  slug: Sequelize.STRING,
+  waiver: Sequelize.INTEGER,
 }, {
   updatedAt : false,
   createdAt : false,
