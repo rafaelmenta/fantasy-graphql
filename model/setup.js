@@ -1057,6 +1057,7 @@ PlayerBidHistory.Bid = PlayerBidHistory.belongsTo(PlayerBid, {
 
 PlayerBidHistory.Team = PlayerBidHistory.belongsTo(TeamSl, {
   foreignKey: 'id_sl',
+  as: 'Team',
 })
 
 PlayerBidHistory.Player = PlayerBidHistory.belongsTo(Player, {

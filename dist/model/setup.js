@@ -1144,7 +1144,8 @@ _playerBidHistory.PlayerBidHistory.Bid = _playerBidHistory.PlayerBidHistory.belo
   as: 'bid'
 });
 _playerBidHistory.PlayerBidHistory.Team = _playerBidHistory.PlayerBidHistory.belongsTo(_teamSl["default"], {
-  foreignKey: 'id_sl'
+  foreignKey: 'id_sl',
+  as: 'Team'
 });
 _playerBidHistory.PlayerBidHistory.Player = _playerBidHistory.PlayerBidHistory.belongsTo(_player["default"], {
   foreignKey: 'id_player'

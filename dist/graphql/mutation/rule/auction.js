@@ -114,6 +114,8 @@ var AuctionMutation = {
                           _context2.next = 12;
                           return _connection["default"].transaction( /*#__PURE__*/function () {
                             var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(t) {
+                              var sameBids, winner, _iterator2, _step2, sameBid, sameBidTeam, waiverTeams, _iterator3, _step3, waiverTeam;
+
                               return regeneratorRuntime.wrap(function _callee$(_context) {
                                 while (1) {
                                   switch (_context.prev = _context.next) {
@@ -152,19 +154,153 @@ var AuctionMutation = {
                                     case 7:
                                       ;
                                       _context.next = 10;
+                                      return _setup.PlayerBidHistory.findAll({
+                                        where: {
+                                          id_bid: bid.id_bid,
+                                          salary: bid.salary,
+                                          years: bid.years
+                                        },
+                                        transaction: t
+                                      });
+
+                                    case 10:
+                                      sameBids = _context.sent;
+                                      winner = team;
+
+                                      if (!(sameBids.length > 1)) {
+                                        _context.next = 32;
+                                        break;
+                                      }
+
+                                      _iterator2 = _createForOfIteratorHelper(sameBids);
+                                      _context.prev = 14;
+
+                                      _iterator2.s();
+
+                                    case 16:
+                                      if ((_step2 = _iterator2.n()).done) {
+                                        _context.next = 24;
+                                        break;
+                                      }
+
+                                      sameBid = _step2.value;
+                                      _context.next = 20;
+                                      return sameBid.getTeam();
+
+                                    case 20:
+                                      sameBidTeam = _context.sent;
+
+                                      if (sameBidTeam.waiver < winner.waiver) {
+                                        winner = sameBidTeam;
+                                      }
+
+                                    case 22:
+                                      _context.next = 16;
+                                      break;
+
+                                    case 24:
+                                      _context.next = 29;
+                                      break;
+
+                                    case 26:
+                                      _context.prev = 26;
+                                      _context.t0 = _context["catch"](14);
+
+                                      _iterator2.e(_context.t0);
+
+                                    case 29:
+                                      _context.prev = 29;
+
+                                      _iterator2.f();
+
+                                      return _context.finish(29);
+
+                                    case 32:
+                                      _context.next = 34;
+                                      return _setup.TeamSl.findAll({
+                                        where: {
+                                          league_id: team.league_id
+                                        },
+                                        transaction: t
+                                      });
+
+                                    case 34:
+                                      waiverTeams = _context.sent;
+                                      _iterator3 = _createForOfIteratorHelper(waiverTeams);
+                                      _context.prev = 36;
+
+                                      _iterator3.s();
+
+                                    case 38:
+                                      if ((_step3 = _iterator3.n()).done) {
+                                        _context.next = 45;
+                                        break;
+                                      }
+
+                                      waiverTeam = _step3.value;
+
+                                      if (!(waiverTeam.waiver < winner.waiver)) {
+                                        _context.next = 42;
+                                        break;
+                                      }
+
+                                      return _context.abrupt("continue", 43);
+
+                                    case 42:
+                                      _setup.TeamSl.update({
+                                        waiver: waiverTeam.waiver - 1
+                                      }, {
+                                        where: {
+                                          id_sl: waiverTeam.id_sl
+                                        },
+                                        transaction: t
+                                      });
+
+                                    case 43:
+                                      _context.next = 38;
+                                      break;
+
+                                    case 45:
+                                      _context.next = 50;
+                                      break;
+
+                                    case 47:
+                                      _context.prev = 47;
+                                      _context.t1 = _context["catch"](36);
+
+                                      _iterator3.e(_context.t1);
+
+                                    case 50:
+                                      _context.prev = 50;
+
+                                      _iterator3.f();
+
+                                      return _context.finish(50);
+
+                                    case 53:
+                                      _setup.TeamSl.update({
+                                        waiver: waiverTeams.length
+                                      }, {
+                                        where: {
+                                          id_sl: winner.id_sl
+                                        },
+                                        transaction: t
+                                      });
+
+                                      _context.next = 56;
                                       return _setup.FreeAgencyHistory.create({
                                         action: 'PICK',
                                         event_date: now,
-                                        id_sl: bid.id_sl,
+                                        id_sl: winner.id_sl,
                                         id_player: bid.id_player
                                       }, {
                                         transaction: t
                                       });
 
-                                    case 10:
-                                      _context.next = 12;
+                                    case 56:
+                                      _context.next = 58;
                                       return _setup.TeamPlayer.create({
-                                        id_sl: bid.id_sl,
+                                        id_sl: winner.id_sl,
                                         id_player: bid.id_player,
                                         primary_position: player.default_primary,
                                         secondary_position: player.default_secondary,
@@ -173,8 +309,8 @@ var AuctionMutation = {
                                         transaction: t
                                       });
 
-                                    case 12:
-                                      _context.next = 14;
+                                    case 58:
+                                      _context.next = 60;
                                       return _setup.PlayerBid.update({
                                         processed: true
                                       }, {
@@ -184,12 +320,12 @@ var AuctionMutation = {
                                         transaction: t
                                       });
 
-                                    case 14:
+                                    case 60:
                                     case "end":
                                       return _context.stop();
                                   }
                                 }
-                              }, _callee);
+                              }, _callee, null, [[14, 26, 29, 32], [36, 47, 50, 53]]);
                             }));
 
                             return function (_x2) {
@@ -407,13 +543,13 @@ var AuctionMutation = {
                 _context5.next = 45;
                 return _connection["default"].transaction( /*#__PURE__*/function () {
                   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(t) {
-                    var updateBid, bidUpdate, bidExists, createBid;
+                    var updateBid, updateTotal, total, shouldUpdateBid, updateTeam, bidUpdate, bidExists, createBid, bidHistory;
                     return regeneratorRuntime.wrap(function _callee3$(_context4) {
                       while (1) {
                         switch (_context4.prev = _context4.next) {
                           case 0:
                             if (!id_bid) {
-                              _context4.next = 13;
+                              _context4.next = 22;
                               break;
                             }
 
@@ -433,15 +569,41 @@ var AuctionMutation = {
                             throw new Error('BID_DOES_NOT_EXIST');
 
                           case 6:
-                            if (!(updateBid.salary * updateBid.years >= salary * years)) {
-                              _context4.next = 8;
+                            updateTotal = updateBid.salary * updateBid.years;
+                            total = salary * years;
+
+                            if (!(updateTotal > total)) {
+                              _context4.next = 10;
                               break;
                             }
 
                             throw new Error('BID_IS_LOWER');
 
-                          case 8:
-                            _context4.next = 10;
+                          case 10:
+                            shouldUpdateBid = false;
+
+                            if (!(updateTotal === total)) {
+                              _context4.next = 16;
+                              break;
+                            }
+
+                            _context4.next = 14;
+                            return updateBid.getTeam();
+
+                          case 14:
+                            updateTeam = _context4.sent;
+
+                            if (team.waiver < updateTeam.waiver) {
+                              shouldUpdateBid = true;
+                            }
+
+                          case 16:
+                            if (!shouldUpdateBid) {
+                              _context4.next = 20;
+                              break;
+                            }
+
+                            _context4.next = 19;
                             return _setup.PlayerBid.update({
                               id_sl: id_sl,
                               salary: salary,
@@ -454,13 +616,15 @@ var AuctionMutation = {
                               transaction: t
                             });
 
-                          case 10:
+                          case 19:
                             bidUpdate = _context4.sent;
-                            _context4.next = 22;
+
+                          case 20:
+                            _context4.next = 31;
                             break;
 
-                          case 13:
-                            _context4.next = 15;
+                          case 22:
+                            _context4.next = 24;
                             return _setup.PlayerBid.findOne({
                               where: {
                                 id_auction: id_auction,
@@ -468,18 +632,18 @@ var AuctionMutation = {
                               }
                             });
 
-                          case 15:
+                          case 24:
                             bidExists = _context4.sent;
 
                             if (!bidExists) {
-                              _context4.next = 18;
+                              _context4.next = 27;
                               break;
                             }
 
                             throw new Error('PLAYER_ALREADY_IN_AUCTION');
 
-                          case 18:
-                            _context4.next = 20;
+                          case 27:
+                            _context4.next = 29;
                             return _setup.PlayerBid.create({
                               id_sl: id_sl,
                               id_auction: id_auction,
@@ -491,11 +655,33 @@ var AuctionMutation = {
                               transaction: t
                             });
 
-                          case 20:
+                          case 29:
                             createBid = _context4.sent;
                             savedIdBid = createBid.id_bid;
 
-                          case 22:
+                          case 31:
+                            _context4.next = 33;
+                            return _setup.PlayerBidHistory.findOne({
+                              where: {
+                                id_bid: savedIdBid,
+                                id_sl: id_sl,
+                                id_player: id_player,
+                                salary: salary,
+                                years: years
+                              }
+                            });
+
+                          case 33:
+                            bidHistory = _context4.sent;
+
+                            if (!bidHistory) {
+                              _context4.next = 36;
+                              break;
+                            }
+
+                            throw new Error('BID_ALREADY_EXISTS');
+
+                          case 36:
                             return _context4.abrupt("return", _setup.PlayerBidHistory.create({
                               id_sl: id_sl,
                               id_player: id_player,
@@ -507,7 +693,7 @@ var AuctionMutation = {
                               transaction: t
                             }));
 
-                          case 23:
+                          case 37:
                           case "end":
                             return _context4.stop();
                         }

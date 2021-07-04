@@ -59,15 +59,57 @@ export const AuctionMutation = {
             }, {transaction: t});
           };
 
+          const sameBids = await PlayerBidHistory.findAll({
+            where: {
+              id_bid: bid.id_bid,
+              salary: bid.salary,
+              years: bid.years,
+            },
+            transaction: t,
+          });
+
+          let winner = team;
+          if (sameBids.length > 1) {
+            for (const sameBid of sameBids) {
+              const sameBidTeam = await sameBid.getTeam();
+              if (sameBidTeam.waiver < winner.waiver) {
+                winner = sameBidTeam;
+              }
+            }
+          }
+
+          const waiverTeams = await TeamSl.findAll({
+            where: {
+              league_id: team.league_id,
+            },
+            transaction: t,
+          });
+
+          for (const waiverTeam of waiverTeams) {
+            if (waiverTeam.waiver < winner.waiver) { continue; }
+
+            TeamSl.update({
+              waiver: waiverTeam.waiver - 1,
+            }, {where: {
+              id_sl: waiverTeam.id_sl,
+            }, transaction: t});
+          }
+
+          TeamSl.update({
+            waiver: waiverTeams.length,
+          }, {where: {
+            id_sl: winner.id_sl,
+          }, transaction: t});
+
           await FreeAgencyHistory.create({
             action: 'PICK',
             event_date: now,
-            id_sl: bid.id_sl,
+            id_sl: winner.id_sl,
             id_player: bid.id_player,
           }, {transaction: t});
 
           await TeamPlayer.create({
-            id_sl: bid.id_sl,
+            id_sl: winner.id_sl,
             id_player: bid.id_player,
             primary_position: player.default_primary,
             secondary_position: player.default_secondary,
@@ -167,12 +209,25 @@ export const AuctionMutation = {
             throw new Error('BID_DOES_NOT_EXIST');
           }
 
-          if ((updateBid.salary * updateBid.years )>= (salary * years)) {
+          const updateTotal = updateBid.salary * updateBid.years;
+          const total = salary * years;
+          if (updateTotal > total) {
             throw new Error('BID_IS_LOWER');
           }
 
-          const bidUpdate = await PlayerBidModel.update({id_sl, salary, years, expiration}, {
-            where: {id_bid}, transaction: t});
+          let shouldUpdateBid = false;
+          if (updateTotal === total) {
+            const updateTeam = await updateBid.getTeam();
+
+            if (team.waiver < updateTeam.waiver) {
+              shouldUpdateBid = true;
+            }
+          }
+
+          if (shouldUpdateBid) {
+            const bidUpdate = await PlayerBidModel.update({id_sl, salary, years, expiration}, {
+              where: {id_bid}, transaction: t});
+          }
 
         } else {
           const bidExists = await PlayerBidModel.findOne({where: {id_auction, id_player}});
@@ -183,6 +238,20 @@ export const AuctionMutation = {
 
           const createBid = await PlayerBidModel.create({id_sl, id_auction, id_player, salary, years, expiration}, {transaction: t});
           savedIdBid = createBid.id_bid;
+        }
+
+        const bidHistory = await PlayerBidHistory.findOne({
+          where: {
+            id_bid: savedIdBid,
+            id_sl,
+            id_player,
+            salary,
+            years
+          },
+        });
+
+        if (bidHistory) {
+          throw new Error('BID_ALREADY_EXISTS');
         }
 
         return PlayerBidHistory.create({id_sl, id_player, salary, years, bid_time: nowDate, id_bid: savedIdBid}, {transaction: t});
