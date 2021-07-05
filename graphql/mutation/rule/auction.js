@@ -191,15 +191,8 @@ export const AuctionMutation = {
 
       const maxPlayers = Number(configs.find(config => config.id_config === 'MAX_PLAYERS').config_value);
       const roster = await team.getPlayers();
-      const openBids = await PlayerBidModel.findAll({
-        where: {
-          id_sl,
-          id_auction,
-          processed: false,
-        },
-      });
 
-      if (roster.length + openBids.length >= maxPlayers) {
+      if (roster.length + bids.length >= maxPlayers) {
         throw new Error('BID_EXCEEDS_ROSTER');
       }
 
