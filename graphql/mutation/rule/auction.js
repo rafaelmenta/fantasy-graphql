@@ -224,16 +224,16 @@ export const AuctionMutation = {
 
           // Bids expiring in less than 24 hours will only extend for an additional day.
           const tomorrow = new Date(now + 24 * 60 * 60 * 1000);
-          if (bid.expiration < tomorrow) {
+          if (updateBid.expiration < tomorrow) {
             expiration = tomorrow;
           }
 
-          let shouldUpdateBid = false;
+          let shouldUpdateBid = true;
           if (updateTotal === total) {
             const updateTeam = await updateBid.getTeam();
 
-            if (team.waiver < updateTeam.waiver) {
-              shouldUpdateBid = true;
+            if (team.waiver > updateTeam.waiver) {
+              shouldUpdateBid = false;
             }
           }
 

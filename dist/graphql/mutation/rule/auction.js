@@ -600,11 +600,11 @@ var AuctionMutation = {
                             // Bids expiring in less than 24 hours will only extend for an additional day.
                             tomorrow = new Date(now + 24 * 60 * 60 * 1000);
 
-                            if (bid.expiration < tomorrow) {
+                            if (updateBid.expiration < tomorrow) {
                               expiration = tomorrow;
                             }
 
-                            shouldUpdateBid = false;
+                            shouldUpdateBid = true;
 
                             if (!(updateTotal === total)) {
                               _context4.next = 18;
@@ -617,8 +617,8 @@ var AuctionMutation = {
                           case 16:
                             updateTeam = _context4.sent;
 
-                            if (team.waiver < updateTeam.waiver) {
-                              shouldUpdateBid = true;
+                            if (team.waiver > updateTeam.waiver) {
+                              shouldUpdateBid = false;
                             }
 
                           case 18:
