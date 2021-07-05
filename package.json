@@ -23,7 +23,7 @@
     "mysql": "^2.15.0",
     "mysql2": "^1.5.3",
     "regenerator-runtime": "^0.13.7",
-    "sequelize": "^3.28.0"
+    "sequelize": "^5.15.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
