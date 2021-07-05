@@ -189,7 +189,21 @@ export const AuctionMutation = {
         throw new Error('SALARY_EXCEEDS_CAP');
       }
 
-      const offset = Number(configs.find(config => config.id_config === 'AUCTION_BID_OFFSET_TIME'));
+      const maxPlayers = Number(configs.find(config => config.id_config === 'MAX_PLAYERS').config_value);
+      const roster = await team.getPlayers();
+      const openBids = await PlayerBidModel.findAll({
+        where: {
+          id_sl,
+          id_auction,
+          processed: false,
+        },
+      });
+
+      if (roster.length + openBids.length >= maxPlayers) {
+        throw new Error('BID_EXCEEDS_ROSTER');
+      }
+
+      const offset = Number(configs.find(config => config.id_config === 'AUCTION_BID_OFFSET_TIME').config_value);
 
       const now = Date.now();
       const nowDate = new Date();

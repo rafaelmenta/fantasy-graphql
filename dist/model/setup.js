@@ -279,7 +279,8 @@ _teamSl["default"].Users = _teamSl["default"].belongsToMany(_user["default"], {
 });
 _teamSl["default"].Players = _teamSl["default"].belongsToMany(_player["default"], {
   through: _teamPlayer["default"],
-  foreignKey: 'id_sl'
+  foreignKey: 'id_sl',
+  as: 'Players'
 });
 _teamSl["default"].TeamPlayer = _teamSl["default"].hasMany(_teamPlayer["default"], {
   foreignKey: 'id_sl'

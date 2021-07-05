@@ -62,6 +62,7 @@ TeamSl.Users = TeamSl.belongsToMany(User, {
 TeamSl.Players = TeamSl.belongsToMany(Player, {
   through : TeamPlayer,
   foreignKey : 'id_sl',
+  as: 'Players',
 });
 
 TeamSl.TeamPlayer = TeamSl.hasMany(TeamPlayer, {
