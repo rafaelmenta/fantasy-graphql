@@ -560,13 +560,13 @@ var AuctionMutation = {
                 _context5.next = 51;
                 return _connection["default"].transaction( /*#__PURE__*/function () {
                   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(t) {
-                    var updateBid, updateTotal, total, shouldUpdateBid, updateTeam, bidUpdate, bidExists, createBid, bidHistory;
+                    var updateBid, updateTotal, total, tomorrow, shouldUpdateBid, updateTeam, bidUpdate, bidExists, createBid, bidHistory;
                     return regeneratorRuntime.wrap(function _callee3$(_context4) {
                       while (1) {
                         switch (_context4.prev = _context4.next) {
                           case 0:
                             if (!id_bid) {
-                              _context4.next = 22;
+                              _context4.next = 24;
                               break;
                             }
 
@@ -597,30 +597,37 @@ var AuctionMutation = {
                             throw new Error('BID_IS_LOWER');
 
                           case 10:
+                            // Bids expiring in less than 24 hours will only extend for an additional day.
+                            tomorrow = new Date(now + 24 * 60 * 60 * 1000);
+
+                            if (bid.expiration < tomorrow) {
+                              expiration = tomorrow;
+                            }
+
                             shouldUpdateBid = false;
 
                             if (!(updateTotal === total)) {
-                              _context4.next = 16;
+                              _context4.next = 18;
                               break;
                             }
 
-                            _context4.next = 14;
+                            _context4.next = 16;
                             return updateBid.getTeam();
 
-                          case 14:
+                          case 16:
                             updateTeam = _context4.sent;
 
                             if (team.waiver < updateTeam.waiver) {
                               shouldUpdateBid = true;
                             }
 
-                          case 16:
+                          case 18:
                             if (!shouldUpdateBid) {
-                              _context4.next = 20;
+                              _context4.next = 22;
                               break;
                             }
 
-                            _context4.next = 19;
+                            _context4.next = 21;
                             return _setup.PlayerBid.update({
                               id_sl: id_sl,
                               salary: salary,
@@ -633,15 +640,15 @@ var AuctionMutation = {
                               transaction: t
                             });
 
-                          case 19:
+                          case 21:
                             bidUpdate = _context4.sent;
 
-                          case 20:
-                            _context4.next = 31;
+                          case 22:
+                            _context4.next = 33;
                             break;
 
-                          case 22:
-                            _context4.next = 24;
+                          case 24:
+                            _context4.next = 26;
                             return _setup.PlayerBid.findOne({
                               where: {
                                 id_auction: id_auction,
@@ -649,18 +656,18 @@ var AuctionMutation = {
                               }
                             });
 
-                          case 24:
+                          case 26:
                             bidExists = _context4.sent;
 
                             if (!bidExists) {
-                              _context4.next = 27;
+                              _context4.next = 29;
                               break;
                             }
 
                             throw new Error('PLAYER_ALREADY_IN_AUCTION');
 
-                          case 27:
-                            _context4.next = 29;
+                          case 29:
+                            _context4.next = 31;
                             return _setup.PlayerBid.create({
                               id_sl: id_sl,
                               id_auction: id_auction,
@@ -672,12 +679,12 @@ var AuctionMutation = {
                               transaction: t
                             });
 
-                          case 29:
+                          case 31:
                             createBid = _context4.sent;
                             savedIdBid = createBid.id_bid;
 
-                          case 31:
-                            _context4.next = 33;
+                          case 33:
+                            _context4.next = 35;
                             return _setup.PlayerBidHistory.findOne({
                               where: {
                                 id_bid: savedIdBid,
@@ -688,17 +695,17 @@ var AuctionMutation = {
                               }
                             });
 
-                          case 33:
+                          case 35:
                             bidHistory = _context4.sent;
 
                             if (!bidHistory) {
-                              _context4.next = 36;
+                              _context4.next = 38;
                               break;
                             }
 
                             throw new Error('BID_ALREADY_EXISTS');
 
-                          case 36:
+                          case 38:
                             return _context4.abrupt("return", _setup.PlayerBidHistory.create({
                               id_sl: id_sl,
                               id_player: id_player,
@@ -710,7 +717,7 @@ var AuctionMutation = {
                               transaction: t
                             }));
 
-                          case 37:
+                          case 39:
                           case "end":
                             return _context4.stop();
                         }

@@ -222,6 +222,12 @@ export const AuctionMutation = {
             throw new Error('BID_IS_LOWER');
           }
 
+          // Bids expiring in less than 24 hours will only extend for an additional day.
+          const tomorrow = new Date(now + 24 * 60 * 60 * 1000);
+          if (bid.expiration < tomorrow) {
+            expiration = tomorrow;
+          }
+
           let shouldUpdateBid = false;
           if (updateTotal === total) {
             const updateTeam = await updateBid.getTeam();
