@@ -189,6 +189,21 @@ export const AuctionMutation = {
         throw new Error('SALARY_EXCEEDS_CAP');
       }
 
+      const minBid = Number(configs.find(config => config.id_config === 'AUCTION_MIN_BID').config_value);
+      if (!isNaN(minBid) && salary < minBid) {
+        throw new Error('SALARY_LOWER_MIN_BID');
+      }
+
+      const maxBid = Number(configs.find(config => config.id_config === 'AUCTION_MAX_BID').config_value);
+      if (!isNaN(maxBid) && salary > maxBid) {
+        throw new Error('SALARY_HIGHER_MAX_BID');
+      }
+
+      const increments = Number(configs.find(config => config.id_config === 'AUCTION_BID_INCREMENT').config_value);
+      if (!isNaN(increments) && salary % increments !== 0) {
+        throw new Error('SALARY_NOT_IN_INCREMENTS');
+      }
+
       const maxPlayers = Number(configs.find(config => config.id_config === 'MAX_PLAYERS').config_value);
       const roster = await team.getPlayers();
 

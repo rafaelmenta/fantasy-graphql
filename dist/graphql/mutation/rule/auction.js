@@ -400,7 +400,7 @@ var AuctionMutation = {
     },
     resolve: function () {
       var _resolve2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(root, _ref2) {
-        var bid, id_bid, id_auction, id_player, id_sl, salary, years, auction, team, id_league, league, configs, salaryCapConfig, salaryCap, contracts, salaries, bids, bidSalaries, teamCap, maxPlayers, roster, offset, now, nowDate, expiration, savedIdBid, operation;
+        var bid, id_bid, id_auction, id_player, id_sl, salary, years, auction, team, id_league, league, configs, salaryCapConfig, salaryCap, contracts, salaries, bids, bidSalaries, teamCap, minBid, maxBid, increments, maxPlayers, roster, offset, now, nowDate, expiration, savedIdBid, operation;
         return regeneratorRuntime.wrap(function _callee4$(_context5) {
           while (1) {
             switch (_context5.prev = _context5.next) {
@@ -527,23 +527,59 @@ var AuctionMutation = {
                 throw new Error('SALARY_EXCEEDS_CAP');
 
               case 38:
+                minBid = Number(configs.find(function (config) {
+                  return config.id_config === 'AUCTION_MIN_BID';
+                }).config_value);
+
+                if (!(!isNaN(minBid) && salary < minBid)) {
+                  _context5.next = 41;
+                  break;
+                }
+
+                throw new Error('SALARY_LOWER_MIN_BID');
+
+              case 41:
+                maxBid = Number(configs.find(function (config) {
+                  return config.id_config === 'AUCTION_MAX_BID';
+                }).config_value);
+
+                if (!(!isNaN(maxBid) && salary > maxBid)) {
+                  _context5.next = 44;
+                  break;
+                }
+
+                throw new Error('SALARY_HIGHER_MAX_BID');
+
+              case 44:
+                increments = Number(configs.find(function (config) {
+                  return config.id_config === 'AUCTION_BID_INCREMENT';
+                }).config_value);
+
+                if (!(!isNaN(increments) && salary % increments !== 0)) {
+                  _context5.next = 47;
+                  break;
+                }
+
+                throw new Error('SALARY_NOT_IN_INCREMENTS');
+
+              case 47:
                 maxPlayers = Number(configs.find(function (config) {
                   return config.id_config === 'MAX_PLAYERS';
                 }).config_value);
-                _context5.next = 41;
+                _context5.next = 50;
                 return team.getPlayers();
 
-              case 41:
+              case 50:
                 roster = _context5.sent;
 
                 if (!(roster.length + bids.length >= maxPlayers)) {
-                  _context5.next = 44;
+                  _context5.next = 53;
                   break;
                 }
 
                 throw new Error('BID_EXCEEDS_ROSTER');
 
-              case 44:
+              case 53:
                 offset = Number(configs.find(function (config) {
                   return config.id_config === 'AUCTION_BID_OFFSET_TIME';
                 }).config_value);
@@ -557,7 +593,7 @@ var AuctionMutation = {
                 }
 
                 savedIdBid = id_bid;
-                _context5.next = 51;
+                _context5.next = 60;
                 return _connection["default"].transaction( /*#__PURE__*/function () {
                   var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(t) {
                     var updateBid, updateTotal, total, tomorrow, shouldUpdateBid, updateTeam, bidUpdate, bidExists, createBid, bidHistory;
@@ -730,7 +766,7 @@ var AuctionMutation = {
                   };
                 }());
 
-              case 51:
+              case 60:
                 operation = _context5.sent;
                 return _context5.abrupt("return", {
                   id_bid: savedIdBid,
@@ -742,7 +778,7 @@ var AuctionMutation = {
                   expiration: expiration
                 });
 
-              case 53:
+              case 62:
               case "end":
                 return _context5.stop();
             }
