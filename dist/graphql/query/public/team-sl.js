@@ -158,7 +158,7 @@ var TeamSLQuery = {
 
               case 17:
                 _context.next = 19;
-                return _connection["default"].query("\n        SELECT sum(b.salary) as salary\n        FROM player_bid b\n        JOIN auction a ON a.id_auction=b.id_auction\n        WHERE a.status = ".concat(_auctionStatus.AuctionStatus.parseValue('STATUS_OPEN'), "\n          AND b.id_sl = ").concat(id_sl, "\n          AND b.expiration >= CURDATE();\n      "), {
+                return _connection["default"].query("\n        SELECT sum(b.salary) as salary\n        FROM player_bid b\n        JOIN auction a ON a.id_auction=b.id_auction\n        WHERE a.status = ".concat(_auctionStatus.AuctionStatus.parseValue('STATUS_OPEN'), "\n          AND b.id_sl = ").concat(id_sl, "\n          AND b.processed = FALSE\n          AND b.expiration >= CURDATE();\n      "), {
                   model: _setup.PlayerBid
                 });
 

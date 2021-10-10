@@ -93,6 +93,7 @@ const TeamSLQuery = {
         JOIN auction a ON a.id_auction=b.id_auction
         WHERE a.status = ${AuctionStatus.parseValue('STATUS_OPEN')}
           AND b.id_sl = ${id_sl}
+          AND b.processed = FALSE
           AND b.expiration >= CURDATE();
       `, {model: PlayerBid});
       const contracts = await TeamSl.RosterSalary({ id_sl, id_league: team.league_id })
