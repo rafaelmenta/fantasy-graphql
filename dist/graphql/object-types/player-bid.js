@@ -44,6 +44,9 @@ var PlayerBid = new _graphql.GraphQLObjectType({
       years: {
         type: _graphql.GraphQLInt
       },
+      processed: {
+        type: _graphql.GraphQLBoolean
+      },
       player: {
         type: _player["default"],
         resolve: resolver(_setup.PlayerBid.Player)

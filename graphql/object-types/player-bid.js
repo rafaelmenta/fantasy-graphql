@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLFloat, GraphQLList } from 'graphql';
+import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLFloat, GraphQLList, GraphQLBoolean } from 'graphql';
 import { PlayerBid as PlayerBidModel, TeamSl } from '../../model/setup';
 import PlayerType from './player';
 import { PlayerBidHistory } from './player-bid-history';
@@ -16,6 +16,7 @@ export const PlayerBid = new GraphQLObjectType({
     expiration: { type: GraphQLString },
     salary: { type: GraphQLFloat },
     years: { type: GraphQLInt },
+    processed: {type: GraphQLBoolean },
 
     player: {
       type: PlayerType,
