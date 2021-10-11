@@ -16,6 +16,7 @@ export const PlayerBid = new GraphQLObjectType({
     expiration: { type: GraphQLString },
     salary: { type: GraphQLFloat },
     years: { type: GraphQLInt },
+    processed: {type: GraphQLBoolean },
 
     player: {
       type: PlayerType,
