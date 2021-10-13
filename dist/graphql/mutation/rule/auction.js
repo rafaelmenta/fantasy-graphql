@@ -688,7 +688,8 @@ var AuctionMutation = {
                             return _setup.PlayerBid.findOne({
                               where: {
                                 id_auction: id_auction,
-                                id_player: id_player
+                                id_player: id_player,
+                                processed: false
                               }
                             });
 

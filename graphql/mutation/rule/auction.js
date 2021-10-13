@@ -258,7 +258,12 @@ export const AuctionMutation = {
           }
 
         } else {
-          const bidExists = await PlayerBidModel.findOne({where: {id_auction, id_player}});
+          const bidExists = await PlayerBidModel.findOne({
+            where: {
+              id_auction,
+              id_player,
+              processed: false,
+            }});
 
           if (bidExists) {
             throw new Error('PLAYER_ALREADY_IN_AUCTION');
