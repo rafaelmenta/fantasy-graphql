@@ -103,7 +103,14 @@ export const TeamPerformanceMutation = {
                               ptp_code=${player.ptp_code};`;
                         });
                       })
-                      .then(playerUpdates => Conn.query(playerUpdates.join(' '), {transaction: t}))
+                      .then(playerUpdates => {
+                        // Prevent ER_EMPTY_QUERY
+                        if (!playerUpdates || playerUpdates.length === 0) {
+                          console.log('Skipping empty query');
+                          return playerUpdates;
+                        }
+                        return Conn.query(playerUpdates.join(' '), {transaction: t})
+                      })
                       .then(playerUpdates => TeamPerformance.update({
                         minutes_pg: minutes.PG,
                         minutes_sg: minutes.SG,

@@ -114,6 +114,12 @@ var TeamPerformanceMutation = {
                     return "\n                            UPDATE\n                              player_team_performance\n                            SET\n                              fantasy_points=".concat(player.fantasy_points.toFixed(3), ",\n                              minutes_primary=").concat(player.minutes_primary, ",\n                              minutes_secondary=").concat(player.minutes_secondary, "\n                            WHERE\n                              ptp_code=").concat(player.ptp_code, ";");
                   });
                 }).then(function (playerUpdates) {
+                  // Prevent ER_EMPTY_QUERY
+                  if (!playerUpdates || playerUpdates.length === 0) {
+                    console.log('Skipping empty query');
+                    return playerUpdates;
+                  }
+
                   return _connection["default"].query(playerUpdates.join(' '), {
                     transaction: t
                   });
