@@ -24,11 +24,11 @@ const GameNbaType = new GraphQLObjectType({
     },
     away_team: {
       type: TeamNbaType,
-      resolve: resolver(GameNba.HomeTeam)
+      resolve: resolver(GameNba.AwayTeam)
     },
     home_team: {
       type: TeamNbaType,
-      resolve: resolver(GameNba.AwayTeam)
+      resolve: resolver(GameNba.HomeTeam)
     },
     round_away: {
       type: RoundType,
