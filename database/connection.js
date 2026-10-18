@@ -26,7 +26,8 @@ const Conn = new Sequelize(
     benchmark: false,
     host: config.database.host,
     dialect: config.database.dialect,
-    timezone: timezone,
+    // Remove timezone so Sequelize can handle raw timestamps from database
+    // timezone: timezone,
     dialectOptions: {
       socketPath: config.database.socketPath,
       multipleStatements: true,
