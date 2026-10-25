@@ -26,6 +26,7 @@ var GraphQLList = graphql.GraphQLList,
     GraphQLInt = graphql.GraphQLInt,
     GraphQLString = graphql.GraphQLString,
     GraphQLBoolean = graphql.GraphQLBoolean,
+    GraphQLFloat = graphql.GraphQLFloat,
     GraphQLNonNull = graphql.GraphQLNonNull;
 var input = new GraphQLInputObjectType({
   name: 'TeamInfoInput',
@@ -219,6 +220,89 @@ var TeamMutation = {
       });
     }
   },
+  updateContract: {
+    description: 'Update salary and years on the cotract of a team player',
+    type: GraphQLBoolean,
+    args: {
+      contract_salary: {
+        type: GraphQLFloat
+      },
+      contract_years: {
+        type: GraphQLInt
+      },
+      id_sl: {
+        type: GraphQLInt
+      },
+      id_player: {
+        type: GraphQLInt
+      }
+    },
+    resolve: function resolve(root, _ref5) {
+      var contract_salary = _ref5.contract_salary,
+          contract_years = _ref5.contract_years,
+          id_sl = _ref5.id_sl,
+          id_player = _ref5.id_player;
+
+      var verifyContract = function verifyContract(result) {
+        return result instanceof Array ? result.length > 0 : result.pls_code > 0;
+      };
+
+      var saveContract = function saveContract(playerLeagueSalary, id_league) {
+        if (playerLeagueSalary) {
+          return _setup.PlayerLeagueSalary.update({
+            contract_salary: contract_salary,
+            contract_years: contract_years
+          }, {
+            where: {
+              pls_code: playerLeagueSalary.pls_code
+            }
+          }).then(verifyContract);
+        }
+
+        return _setup.PlayerLeagueSalary.create({
+          id_league: id_league,
+          id_player: id_player,
+          contract_salary: contract_salary,
+          contract_years: contract_years
+        }).then(verifyContract);
+      };
+
+      var findContract = function findContract(player, id_league) {
+        if (!player) {
+          throw new Error('Player not found');
+        }
+
+        return _setup.PlayerLeagueSalary.findOne({
+          where: {
+            id_league: id_league,
+            id_player: id_player
+          }
+        }).then(function (playerLeagueSalary) {
+          return saveContract(playerLeagueSalary, id_league);
+        });
+      };
+
+      var findPlayer = function findPlayer(team) {
+        if (!team) {
+          throw new Error('Team not found');
+        }
+
+        return _setup.Player.findOne({
+          where: {
+            id_player: id_player
+          }
+        }).then(function (player) {
+          return findContract(player, team.league_id);
+        });
+      };
+
+      return _teamSl["default"].findOne({
+        where: {
+          id_sl: id_sl
+        }
+      }).then(findPlayer);
+    }
+  },
   recruitPlayer: {
     description: 'Returns player',
     type: _player["default"],
@@ -230,9 +314,9 @@ var TeamMutation = {
         type: new GraphQLNonNull(GraphQLInt)
       }
     },
-    resolve: function resolve(root, _ref5) {
-      var team_info = _ref5.team_info,
-          id_league = _ref5.id_league;
+    resolve: function resolve(root, _ref6) {
+      var team_info = _ref6.team_info,
+          id_league = _ref6.id_league;
       return _leagueConfig["default"].findOne({
         where: {
           id_config: 'FREE_AGENCY_LOCKED',
