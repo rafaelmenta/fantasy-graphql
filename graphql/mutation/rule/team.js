@@ -1,5 +1,5 @@
 import PlayerType from '../../object-types/player';
-import {TeamPlayer, Player, Division, FreeAgencyHistory, UserTeam, Taxonomy} from '../../../model/setup';
+import {TeamPlayer, Player, Division, FreeAgencyHistory, UserTeam, Taxonomy, PlayerLeagueSalary} from '../../../model/setup';
 import TeamSl from '../../../model/team-sl';
 import Conference from '../../../model/conference';
 import Conn from '../../../database/connection';
@@ -13,6 +13,7 @@ const {
   GraphQLInt,
   GraphQLString,
   GraphQLBoolean,
+  GraphQLFloat,
   GraphQLNonNull
 
 } =  graphql;
@@ -129,6 +130,59 @@ const TeamMutation = {
 
       return Promise.all(updates).then(results => results[0]);
     })),
+  },
+  updateContract: {
+    description: 'Update salary and years on the cotract of a team player',
+    type: GraphQLBoolean,
+    args: {
+      contract_salary: { type: GraphQLFloat },
+      contract_years: { type: GraphQLInt },
+      id_sl: { type: GraphQLInt },
+      id_player: { type: GraphQLInt },
+    },
+    resolve: (root, {contract_salary, contract_years, id_sl, id_player}) => {
+
+      const verifyContract = (result) => {
+        return result instanceof Array ?
+          result.length > 0 : result.pls_code > 0;
+      }
+
+      const saveContract = (playerLeagueSalary, id_league) => {
+        if (playerLeagueSalary) {
+          return PlayerLeagueSalary.update(
+            { contract_salary, contract_years },
+            { where: { pls_code: playerLeagueSalary.pls_code }})
+            .then(verifyContract);
+        }
+
+        return PlayerLeagueSalary.create({
+          id_league,
+          id_player,
+          contract_salary,
+          contract_years
+        }).then(verifyContract);
+      };
+
+      const findContract = (player, id_league) => {
+        if (!player) {
+          throw new Error('Player not found');
+        }
+        return PlayerLeagueSalary
+          .findOne({where: {id_league, id_player}})
+          .then(playerLeagueSalary => saveContract(playerLeagueSalary, id_league));
+      };
+
+      const findPlayer = (team) => {
+        if (!team) {
+          throw new Error('Team not found');
+        }
+
+        return Player.findOne({where: {id_player}})
+          .then(player => findContract(player, team.league_id));
+      };
+
+      return TeamSl.findOne({where: {id_sl}}).then(findPlayer);
+    }
   },
   recruitPlayer: {
     description: 'Returns player',
