@@ -244,7 +244,7 @@ var TeamMutation = {
           id_player = _ref5.id_player;
 
       var verifyContract = function verifyContract(result) {
-        return result instanceof Array ? result.length > 0 : result.pls_code > 0;
+        return !!result.length ? result.length > 0 : result.pls_code > 0;
       };
 
       var saveContract = function saveContract(playerLeagueSalary, id_league) {

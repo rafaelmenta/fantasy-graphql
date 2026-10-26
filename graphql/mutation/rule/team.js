@@ -143,7 +143,7 @@ const TeamMutation = {
     resolve: (root, {contract_salary, contract_years, id_sl, id_player}) => {
 
       const verifyContract = (result) => {
-        return result instanceof Array ?
+        return !!result.length ?
           result.length > 0 : result.pls_code > 0;
       }
 
