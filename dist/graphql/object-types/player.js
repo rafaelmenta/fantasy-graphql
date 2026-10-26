@@ -21,6 +21,10 @@ var _constant = require("../../config/constant");
 
 var _graphqlDate = _interopRequireDefault(require("graphql-date"));
 
+var _playerStats2 = _interopRequireDefault(require("../../model/views/player-stats"));
+
+var _season = _interopRequireDefault(require("../../model/season"));
+
 var _tradeStatus = _interopRequireDefault(require("./enum/trade-status"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -126,6 +130,27 @@ var PlayerType = new GraphQLObjectType({
             name: 'id_season',
             type: new GraphQLList(GraphQLInt)
           }
+        }
+      },
+      quick_stats: {
+        type: _playerStats["default"],
+        resolve: function resolve(player, args) {
+          var quickStats = function quickStats(season) {
+            return _playerStats2["default"].findOne({
+              where: {
+                id_player: player.id_player,
+                id_season: season.id_season
+              }
+            });
+          };
+
+          var currentSeason = _season["default"].findOne({
+            where: {
+              current: true
+            }
+          });
+
+          return currentSeason.then(quickStats);
         }
       }
     };

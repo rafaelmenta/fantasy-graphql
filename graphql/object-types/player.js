@@ -6,6 +6,8 @@ import PlayerStatsType from './player-stats';
 import GameNbaType from './game-nba';
 import {LIMIT_GAMES} from '../../config/constant';
 import GraphQLDate from 'graphql-date';
+import PlayerStats from '../../model/views/player-stats';
+import Season from '../../model/season';
 
 const graphql = require('graphql'),
       resolver = require('graphql-sequelize').resolver;
@@ -95,6 +97,20 @@ const PlayerType = new GraphQLObjectType({
           name :'id_season',
           type : new GraphQLList(GraphQLInt)
         }
+      }
+    },
+
+    quick_stats : {
+      type : PlayerStatsType,
+      resolve : (player, args) => {
+        const quickStats = (season) => PlayerStats.findOne({
+          where: {id_player: player.id_player, id_season: season.id_season},
+        });
+
+        const currentSeason = Season
+          .findOne({ where: {current: true}});
+
+        return currentSeason.then(quickStats);
       }
     }
   })
