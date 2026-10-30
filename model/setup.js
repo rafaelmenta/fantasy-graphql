@@ -755,8 +755,10 @@ Trade.TradePlayers = function (trade, isSender) {
     return Conn.query(`
       SELECT
         player.*,
-        player_trades.*,
-        player_league_salaries.*
+        player.primary_position AS default_primary,
+        player.secondary_position AS default_secondary,
+        player_league_salaries.contract_salary,
+        player_league_salaries.contract_years,
       FROM player
       INNER JOIN player_trade AS player_trades ON
         player.id_player = player_trades.id_player AND
