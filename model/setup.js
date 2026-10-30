@@ -748,15 +748,24 @@ Player.hasMany(PlayerTrade, {
 Trade.TradePlayers = function (trade, isSender) {
   const findSender = TeamSl.findOne({ where: { id_sl: trade.id_sender }});
   const findPlayer = function (team) {
+    // const team_player_join = `INNER JOIN player_team ON
+    //   player_team.id_player = player.id_player AND
+    //   player_team.id_sl = ${team.id_sl}
+
     return Conn.query(`
       SELECT
         player.*,
         player_trade.*,
         player_league_salary.*
       FROM player
-      INNER JOIN player_trade ON player.id_player = player_trade.id_player AND player_trade.is_sender = ${isSender} AND player_trade.id_trade = ${trade.id_trade}
-      LEFT JOIN player_league_salary ON player.id_player = player_league_salary.id_player AND player_league_salary.id_league = ${team.league_id}
-    `, { model: Player })
+      INNER JOIN player_trade ON
+        player.id_player = player_trade.id_player AND
+        player_trade.is_sender = ${isSender} AND
+        player_trade.id_trade = ${trade.id_trade}
+      LEFT OUTER JOIN player_league_salary ON
+        player.id_player = player_league_salary.id_player AND
+        player_league_salary.id_league = ${team.league_id}
+    `, { model: Player });
   };
 
   return findSender.then(findPlayer);
