@@ -760,8 +760,8 @@ Trade.TradePlayers = function (trade, isSender) {
       FROM player
       INNER JOIN player_trade AS player_trades ON
         player.id_player = player_trades.id_player AND
-        player_trade.is_sender = ${isSender} AND
-        player_trade.id_trade = ${trade.id_trade}
+        player_trades.is_sender = ${isSender} AND
+        player_trades.id_trade = ${trade.id_trade}
       LEFT OUTER JOIN player_league_salary AS player_league_salaries ON
         player.id_player = player_league_salaries.id_player AND
         player_league_salaries.id_league = ${team.league_id}
