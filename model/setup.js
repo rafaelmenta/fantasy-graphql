@@ -745,18 +745,47 @@ Player.hasMany(PlayerTrade, {
   foreignKey : 'id_player'
 });
 
-Trade.TradePlayers = function(trade, isSender) {
-  return Player.findAll({
-    include : [{
-      model : PlayerTrade,
-      foreignKey : 'id_player',
-      where : {
-        is_sender : isSender,
-        id_trade : trade.id_trade
-      }
-    }]
-  });
+Trade.TradePlayers = function (trade, isSender) {
+  const findSender = TeamSl.findOne({ where: { id_sl: trade.id_sender }});
+  const findPlayer = function (team) {
+    return Conn.query(`
+      SELECT
+        player.*,
+        player_trade.*,
+        player_league_salary.*
+      FROM player
+      INNER JOIN player_trade ON player.id_player = player_trade.id_player AND player_trade.is_sender = true AND player_trade.id_trade = ${trade.id_trade}
+      INNER JOIN player_league_salary ON player.id_player = player_league_salary.id_player AND player_league_salary.id_league = ${team.league_id}
+    `, { model: Player })
+  };
+
+  return findSender.then(findPlayer);
 }
+
+// Trade.TradePlayers = function(trade, isSender) {
+//   const findSender = TeamSl.findOne({ where: { id_sl: trade.id_sender }});
+//   const findPlayer = function (team) {
+//     console.log('team league id', team.league_id);
+//     return Player.findAll({
+//       include : [{
+//         model : PlayerTrade,
+//         foreignKey : 'id_player',
+//         where : {
+//           is_sender : isSender,
+//           id_trade : trade.id_trade
+//         }
+//       }, {
+//         model : PlayerLeagueSalary,
+//         foreignKey : 'id_player',
+//         where : {
+//           id_league : team.league_id
+//         }
+//       }]
+//     });
+//   };
+
+//   return findSender.then(findPlayer);
+// }
 
 Trade.SenderPlayers = function(trade) {
   return Trade.TradePlayers(trade, true)
