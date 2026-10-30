@@ -899,7 +899,7 @@ _trade["default"].TradePlayers = function (trade, isSender) {
     // const team_player_join = `INNER JOIN player_team ON
     //   player_team.id_player = player.id_player AND
     //   player_team.id_sl = ${team.id_sl}
-    return _connection["default"].query("\n      SELECT\n        player.*,\n        player_trade.*,\n        player_league_salary.*\n      FROM player\n      INNER JOIN player_trade ON\n        player.id_player = player_trade.id_player AND\n        player_trade.is_sender = ".concat(isSender, " AND\n        player_trade.id_trade = ").concat(trade.id_trade, "\n      LEFT OUTER JOIN player_league_salary ON\n        player.id_player = player_league_salary.id_player AND\n        player_league_salary.id_league = ").concat(team.league_id, "\n    "), {
+    return _connection["default"].query("\n      SELECT\n        player.*,\n        player_trades.*,\n        player_league_salaries.*\n      FROM player\n      INNER JOIN player_trade AS player_trades ON\n        player.id_player = player_trades.id_player AND\n        player_trade.is_sender = ".concat(isSender, " AND\n        player_trade.id_trade = ").concat(trade.id_trade, "\n      LEFT OUTER JOIN player_league_salary AS player_league_salaries ON\n        player.id_player = player_league_salaries.id_player AND\n        player_league_salaries.id_league = ").concat(team.league_id, "\n    "), {
       model: _player["default"]
     });
   };

@@ -755,16 +755,16 @@ Trade.TradePlayers = function (trade, isSender) {
     return Conn.query(`
       SELECT
         player.*,
-        player_trade.*,
-        player_league_salary.*
+        player_trades.*,
+        player_league_salaries.*
       FROM player
-      INNER JOIN player_trade ON
-        player.id_player = player_trade.id_player AND
+      INNER JOIN player_trade AS player_trades ON
+        player.id_player = player_trades.id_player AND
         player_trade.is_sender = ${isSender} AND
         player_trade.id_trade = ${trade.id_trade}
-      LEFT OUTER JOIN player_league_salary ON
-        player.id_player = player_league_salary.id_player AND
-        player_league_salary.id_league = ${team.league_id}
+      LEFT OUTER JOIN player_league_salary AS player_league_salaries ON
+        player.id_player = player_league_salaries.id_player AND
+        player_league_salaries.id_league = ${team.league_id}
     `, { model: Player });
   };
 
