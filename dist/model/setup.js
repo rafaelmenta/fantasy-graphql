@@ -891,7 +891,7 @@ _player["default"].hasMany(_playerTrade["default"], {
 _trade["default"].TradePlayers = function (trade, isSender) {
   var findSender = _teamSl["default"].findOne({
     where: {
-      id_sl: trade.id_sender
+      id_sl: trade.id_sl
     }
   });
 

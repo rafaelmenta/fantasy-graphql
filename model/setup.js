@@ -746,7 +746,7 @@ Player.hasMany(PlayerTrade, {
 });
 
 Trade.TradePlayers = function (trade, isSender) {
-  const findSender = TeamSl.findOne({ where: { id_sl: trade.id_sender }});
+  const findSender = TeamSl.findOne({ where: { id_sl: trade.id_sl }});
   const findPlayer = function (team) {
     return Conn.query(`
       SELECT
