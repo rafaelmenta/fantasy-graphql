@@ -754,7 +754,7 @@ Trade.TradePlayers = function (trade, isSender) {
         player_trade.*,
         player_league_salary.*
       FROM player
-      INNER JOIN player_trade ON player.id_player = player_trade.id_player AND player_trade.is_sender = true AND player_trade.id_trade = ${trade.id_trade}
+      INNER JOIN player_trade ON player.id_player = player_trade.id_player AND player_trade.is_sender = ${isSender} AND player_trade.id_trade = ${trade.id_trade}
       INNER JOIN player_league_salary ON player.id_player = player_league_salary.id_player AND player_league_salary.id_league = ${team.league_id}
     `, { model: Player })
   };

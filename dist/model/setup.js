@@ -896,7 +896,7 @@ _trade["default"].TradePlayers = function (trade, isSender) {
   });
 
   var findPlayer = function findPlayer(team) {
-    return _connection["default"].query("\n      SELECT\n        player.*,\n        player_trade.*,\n        player_league_salary.*\n      FROM player\n      INNER JOIN player_trade ON player.id_player = player_trade.id_player AND player_trade.is_sender = true AND player_trade.id_trade = ".concat(trade.id_trade, "\n      INNER JOIN player_league_salary ON player.id_player = player_league_salary.id_player AND player_league_salary.id_league = ").concat(team.league_id, "\n    "), {
+    return _connection["default"].query("\n      SELECT\n        player.*,\n        player_trade.*,\n        player_league_salary.*\n      FROM player\n      INNER JOIN player_trade ON player.id_player = player_trade.id_player AND player_trade.is_sender = ".concat(isSender, " AND player_trade.id_trade = ").concat(trade.id_trade, "\n      INNER JOIN player_league_salary ON player.id_player = player_league_salary.id_player AND player_league_salary.id_league = ").concat(team.league_id, "\n    "), {
       model: _player["default"]
     });
   };
